@@ -20,7 +20,7 @@ export function AppShell({ children }: AppShellProps) {
         <div className="hidden lg:flex shrink-0">
           <Sidebar
             collapsed={collapsed}
-            onToggleCollapse={() => setCollapsed(!collapsed)}
+            onToggleCollapse={() => setCollapsed((prev) => !prev)}
           />
         </div>
 

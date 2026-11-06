@@ -53,5 +53,51 @@ test.describe("PeopleOS Responsive & Navigation E2E Tests", () => {
     expect(data.authenticated).toBe(false);
     expect(data.user).toBeNull();
   });
+
+  test("desktop sidebar layout persists across route navigation without reloading or unmounting", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto("/dashboard");
+
+    // Check desktop sidebar is initially expanded
+    const aside = page.locator("aside").first();
+    await expect(aside).toBeVisible();
+    await expect(aside).toHaveClass(/w-64/);
+
+    // Collapse the sidebar
+    const collapseBtn = page.getByTestId("collapse-sidebar");
+    await expect(collapseBtn).toBeVisible();
+    await collapseBtn.click();
+
+    // Verify sidebar is now collapsed (w-16)
+    await expect(aside).toHaveClass(/w-16/);
+
+    // Navigate to Employees by clicking the collapsed icon link
+    const employeesLink = aside.getByRole("link", { name: /Employees/i });
+    await employeesLink.click();
+
+    // Verify navigation occurred to /employees
+    await page.waitForURL("**/employees");
+    await expect(page.getByRole("heading", { name: /Employee Directory & Lifecycle/i })).toBeVisible();
+
+    // Crucial check: Sidebar state MUST PERSIST (still w-16 collapsed) because AppShell was not unmounted!
+    await expect(aside).toHaveClass(/w-16/);
+
+    // Expand sidebar again
+    const expandBtn = page.getByTestId("expand-sidebar");
+    await expandBtn.scrollIntoViewIfNeeded();
+    await expandBtn.click();
+    await expect(aside).toHaveClass(/w-64/);
+
+    // Navigate to Leave Management
+    const leaveLink = aside.getByRole("link", { name: /Leave Management/i });
+    await leaveLink.click();
+    await page.waitForURL("**/leave");
+    await expect(page.getByRole("heading", { name: /Leave & Air Entitlement Engine/i })).toBeVisible();
+
+    // Sidebar remains expanded (w-64)
+    await expect(aside).toHaveClass(/w-64/);
+  });
 });
 

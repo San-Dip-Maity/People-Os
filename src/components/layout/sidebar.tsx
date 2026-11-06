@@ -49,38 +49,51 @@ export function Sidebar({
         "flex items-center h-16 border-b border-zinc-200 dark:border-zinc-800 transition-all",
         collapsed ? "justify-center px-2" : "justify-between px-5"
       )}>
-        <Link
-          href="/dashboard"
-          onClick={onItemClick}
-          className="flex items-center gap-2.5 min-w-0"
-        >
-          <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white font-bold text-sm shadow-sm shadow-blue-500/20 shrink-0">
-            P
-          </div>
-          {!collapsed && (
-            <div className="flex flex-col min-w-0">
-              <span className="font-semibold text-sm tracking-tight text-zinc-900 dark:text-zinc-100 flex items-center gap-1.5">
-                PeopleOS
-                <span className="text-[10px] px-1.5 py-0.2 font-medium bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300 rounded-full border border-blue-200 dark:border-blue-800">
-                  v1.0
-                </span>
-              </span>
-              <span className="text-[10px] text-zinc-500 dark:text-zinc-400 truncate">
-                People Operations Platform
-              </span>
-            </div>
-          )}
-        </Link>
-
-        {!collapsed && onToggleCollapse && (
+        {collapsed ? (
           <button
             onClick={onToggleCollapse}
-            aria-label="Collapse sidebar"
-            title="Collapse sidebar"
-            className="p-1 rounded text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors"
+            aria-label="Expand sidebar"
+            title="Expand sidebar"
+            data-testid="expand-sidebar"
+            className="p-1.5 rounded-lg text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors"
           >
-            <PanelLeftClose className="w-4 h-4" />
+            <PanelLeftOpen className="w-5 h-5 text-blue-600 dark:text-blue-400" />
           </button>
+        ) : (
+          <>
+            <Link
+              href="/dashboard"
+              onClick={onItemClick}
+              className="flex items-center gap-2.5 min-w-0"
+            >
+              <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white font-bold text-sm shadow-sm shadow-blue-500/20 shrink-0">
+                P
+              </div>
+              <div className="flex flex-col min-w-0">
+                <span className="font-semibold text-sm tracking-tight text-zinc-900 dark:text-zinc-100 flex items-center gap-1.5">
+                  PeopleOS
+                  <span className="text-[10px] px-1.5 py-0.2 font-medium bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300 rounded-full border border-blue-200 dark:border-blue-800">
+                    v1.0
+                  </span>
+                </span>
+                <span className="text-[10px] text-zinc-500 dark:text-zinc-400 truncate">
+                  People Operations Platform
+                </span>
+              </div>
+            </Link>
+
+            {onToggleCollapse && (
+              <button
+                onClick={onToggleCollapse}
+                aria-label="Collapse sidebar"
+                title="Collapse sidebar"
+                data-testid="collapse-sidebar"
+                className="p-1 rounded text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors"
+              >
+                <PanelLeftClose className="w-4 h-4" />
+              </button>
+            )}
+          </>
         )}
       </div>
 
@@ -160,7 +173,7 @@ export function Sidebar({
       </div>
 
       {/* AI Assistant Quick Pill / Collapsed Button */}
-      <div className="p-2 border-t border-zinc-200 dark:border-zinc-800 space-y-2">
+      <div className="p-2 border-t border-zinc-200 dark:border-zinc-800">
         {collapsed ? (
           <Link
             href="/copilot"
@@ -189,18 +202,6 @@ export function Sidebar({
             </div>
             <ChevronRight className="w-3.5 h-3.5 text-blue-500 group-hover:translate-x-0.5 transition-transform" />
           </Link>
-        )}
-
-        {/* Collapsed expand toggle button */}
-        {collapsed && onToggleCollapse && (
-          <button
-            onClick={onToggleCollapse}
-            aria-label="Expand sidebar"
-            title="Expand sidebar"
-            className="w-full flex items-center justify-center p-2 rounded text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition-colors"
-          >
-            <PanelLeftOpen className="w-4 h-4" />
-          </button>
         )}
       </div>
     </aside>
