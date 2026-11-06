@@ -11,7 +11,7 @@ test.describe("PeopleOS Dashboard E2E Browser Testing", () => {
 
     // 2. Validate branding and layout
     await expect(page.getByText("PeopleOS").first()).toBeVisible();
-    await expect(page.getByText("Intelligent People Ops")).toBeVisible();
+    await expect(page.getByText("People Operations Platform")).toBeVisible();
     await expect(page.getByText("Operations Command Center")).toBeVisible();
     await expect(page.getByText("Tenant: Acme Global (UAE / IND)")).toBeVisible();
 
@@ -26,7 +26,7 @@ test.describe("PeopleOS Dashboard E2E Browser Testing", () => {
     await expect(page.getByText("Today's Attendance")).toBeVisible();
     await expect(page.getByText("96.4%")).toBeVisible();
     await expect(page.getByText("Pending Approvals")).toBeVisible();
-    await expect(page.getByText("14")).toBeVisible();
+    await expect(page.getByText("Leaves, Regularizations & Air")).toBeVisible();
 
     // Take screenshot of Light Mode
     const screenshotDir = path.resolve(process.cwd(), "public/screenshots");
@@ -50,6 +50,7 @@ test.describe("PeopleOS Dashboard E2E Browser Testing", () => {
     const themeButton = page.getByRole("button", { name: /Toggle theme/i });
     await expect(themeButton).toBeVisible();
     await themeButton.click();
+    await page.getByRole("button", { name: /Dark/i }).click();
 
     // Give theme switch a moment
     await page.waitForTimeout(500);

@@ -12,8 +12,6 @@ test.describe("PeopleOS Responsive & Navigation E2E Tests", () => {
     const menuButton = page.getByLabel("Toggle navigation");
     await expect(menuButton).toBeVisible();
 
-    // Desktop sidebar should be hidden
-    const desktopSidebar = page.locator("aside").first();
     // Click hamburger to open mobile sidebar
     await menuButton.click();
 
@@ -56,3 +54,4 @@ test.describe("PeopleOS Responsive & Navigation E2E Tests", () => {
     expect(data.user).toBeNull();
   });
 });
+

@@ -14,10 +14,54 @@ import {
   ChevronRight,
   TrendingUp,
 } from "lucide-react";
+import Link from "next/link";
+
+interface PendingItem {
+  id: string;
+  employee: string;
+  type: string;
+  details: string;
+  entity: string;
+  level: string;
+  badge: string;
+  status: "PENDING" | "APPROVED" | "REJECTED";
+}
 
 export default function DashboardPage() {
   const [clockedIn, setClockedIn] = React.useState(false);
   const [clockTime, setClockTime] = React.useState("09:00 AM");
+  const [pendingQueue, setPendingQueue] = React.useState<PendingItem[]>([
+    {
+      id: "WF-1092",
+      employee: "Sarah Connor",
+      type: "Annual Leave",
+      details: "5 days (Nov 15 - Nov 20)",
+      entity: "Acme UAE Ltd",
+      level: "L2 HR Approval",
+      badge: "bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300",
+      status: "PENDING",
+    },
+    {
+      id: "WF-1093",
+      employee: "Rajesh Kumar",
+      type: "Attendance Regularization",
+      details: "Missing Check-Out (Nov 4)",
+      entity: "Acme India Pvt Ltd",
+      level: "L1 Manager Approval",
+      badge: "bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300",
+      status: "PENDING",
+    },
+    {
+      id: "WF-1094",
+      employee: "Daniel Lee",
+      type: "Air Entitlement Claim",
+      details: "Annual Flight Ticket (2 Yrs Service)",
+      entity: "Acme UAE Ltd",
+      level: "L2 HR & Finance",
+      badge: "bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300",
+      status: "PENDING",
+    },
+  ]);
 
   const handleClockToggle = () => {
     setClockedIn(!clockedIn);
@@ -28,6 +72,16 @@ export default function DashboardPage() {
       );
     }
   };
+
+  const handleDecision = (id: string, decision: "APPROVED" | "REJECTED") => {
+    setPendingQueue((prev) =>
+      prev.map((item) =>
+        item.id === id ? { ...item, status: decision } : item
+      )
+    );
+  };
+
+  const activePendingCount = pendingQueue.filter((p) => p.status === "PENDING").length;
 
   return (
     <AppShell>
@@ -78,7 +132,10 @@ export default function DashboardPage() {
         {/* KPI Metric Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {/* Card 1 */}
-          <div className="p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-xs space-y-2">
+          <Link
+            href="/employees"
+            className="p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-xs space-y-2 hover:border-blue-300 dark:hover:border-blue-800 transition-colors block"
+          >
             <div className="flex items-center justify-between">
               <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400">
                 Total Headcount
@@ -98,10 +155,13 @@ export default function DashboardPage() {
             <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
               Across 3 legal entities & 5 offices
             </p>
-          </div>
+          </Link>
 
           {/* Card 2 */}
-          <div className="p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-xs space-y-2">
+          <Link
+            href="/attendance"
+            className="p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-xs space-y-2 hover:border-emerald-300 dark:hover:border-emerald-800 transition-colors block"
+          >
             <div className="flex items-center justify-between">
               <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400">
                 Today&apos;s Attendance
@@ -121,10 +181,13 @@ export default function DashboardPage() {
             <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
               28 on approved leave, 17 remote
             </p>
-          </div>
+          </Link>
 
           {/* Card 3 */}
-          <div className="p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-xs space-y-2">
+          <Link
+            href="/workflows"
+            className="p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-xs space-y-2 hover:border-amber-300 dark:hover:border-amber-800 transition-colors block"
+          >
             <div className="flex items-center justify-between">
               <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400">
                 Pending Approvals
@@ -135,19 +198,22 @@ export default function DashboardPage() {
             </div>
             <div className="flex items-baseline justify-between">
               <span className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
-                14
+                {activePendingCount}
               </span>
               <span className="text-xs font-medium text-amber-600 dark:text-amber-400">
-                3 require SLA action
+                Queue active
               </span>
             </div>
             <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
-              8 Leaves, 4 Regularizations, 2 Air
+              Leaves, Regularizations & Air
             </p>
-          </div>
+          </Link>
 
           {/* Card 4 */}
-          <div className="p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-xs space-y-2">
+          <Link
+            href="/payroll"
+            className="p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-xs space-y-2 hover:border-purple-300 dark:hover:border-purple-800 transition-colors block"
+          >
             <div className="flex items-center justify-between">
               <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400">
                 Payroll Cycle
@@ -167,7 +233,7 @@ export default function DashboardPage() {
             <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
               Cut-off: 24th Nov • In Audit Review
             </p>
-          </div>
+          </Link>
         </div>
 
         {/* Two-Column Operations Layout */}
@@ -183,41 +249,16 @@ export default function DashboardPage() {
                   Unified multi-level queue across modules
                 </p>
               </div>
-              <button className="text-xs font-medium text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1">
+              <Link
+                href="/workflows"
+                className="text-xs font-medium text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
+              >
                 View All Queue <ArrowUpRight className="w-3.5 h-3.5" />
-              </button>
+              </Link>
             </div>
 
             <div className="divide-y divide-zinc-200 dark:divide-zinc-800">
-              {[
-                {
-                  id: "WF-1092",
-                  employee: "Sarah Connor",
-                  type: "Annual Leave",
-                  details: "5 days (Nov 15 - Nov 20)",
-                  entity: "Acme UAE Ltd",
-                  level: "L2 HR Approval",
-                  badge: "bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300",
-                },
-                {
-                  id: "WF-1093",
-                  employee: "Rajesh Kumar",
-                  type: "Attendance Regularization",
-                  details: "Missing Check-Out (Nov 4)",
-                  entity: "Acme India Pvt Ltd",
-                  level: "L1 Manager Approval",
-                  badge: "bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300",
-                },
-                {
-                  id: "WF-1094",
-                  employee: "Daniel Lee",
-                  type: "Air Entitlement Claim",
-                  details: "Annual Flight Ticket (2 Yrs Service)",
-                  entity: "Acme UAE Ltd",
-                  level: "L2 HR & Finance",
-                  badge: "bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300",
-                },
-              ].map((item) => (
+              {pendingQueue.map((item) => (
                 <div
                   key={item.id}
                   className="p-4 sm:px-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-zinc-50/60 dark:hover:bg-zinc-900/40 transition-colors"
@@ -242,18 +283,34 @@ export default function DashboardPage() {
                   </div>
 
                   <div className="flex items-center gap-2 self-end sm:self-center">
-                    <button
-                      title="Approve request"
-                      className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-medium transition-colors"
-                    >
-                      <CheckCircle2 className="w-3.5 h-3.5" /> Approve
-                    </button>
-                    <button
-                      title="Reject request"
-                      className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-900 text-zinc-700 dark:text-zinc-300 text-xs font-medium transition-colors"
-                    >
-                      <XCircle className="w-3.5 h-3.5" /> Reject
-                    </button>
+                    {item.status === "PENDING" ? (
+                      <>
+                        <button
+                          onClick={() => handleDecision(item.id, "APPROVED")}
+                          title="Approve request"
+                          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-medium transition-colors"
+                        >
+                          <CheckCircle2 className="w-3.5 h-3.5" /> Approve
+                        </button>
+                        <button
+                          onClick={() => handleDecision(item.id, "REJECTED")}
+                          title="Reject request"
+                          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-900 text-zinc-700 dark:text-zinc-300 text-xs font-medium transition-colors"
+                        >
+                          <XCircle className="w-3.5 h-3.5" /> Reject
+                        </button>
+                      </>
+                    ) : (
+                      <span
+                        className={`text-xs px-2.5 py-1 rounded-md font-semibold ${
+                          item.status === "APPROVED"
+                            ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300"
+                            : "bg-red-100 text-red-800 dark:bg-red-950 dark:text-red-300"
+                        }`}
+                      >
+                        {item.status}
+                      </span>
+                    )}
                   </div>
                 </div>
               ))}
@@ -309,14 +366,14 @@ export default function DashboardPage() {
                   { title: "Preview Payroll Calculation", href: "/payroll" },
                   { title: "Review Holiday Assignment", href: "/holidays" },
                 ].map((act, i) => (
-                  <a
+                  <Link
                     key={i}
                     href={act.href}
                     className="flex items-center justify-between p-2.5 rounded-lg text-xs font-medium text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors group"
                   >
                     <span>{act.title}</span>
                     <ChevronRight className="w-3.5 h-3.5 text-zinc-400 group-hover:translate-x-0.5 transition-transform" />
-                  </a>
+                  </Link>
                 ))}
               </div>
             </div>
@@ -326,4 +383,3 @@ export default function DashboardPage() {
     </AppShell>
   );
 }
-

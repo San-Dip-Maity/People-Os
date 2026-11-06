@@ -11,13 +11,17 @@ interface AppShellProps {
 
 export function AppShell({ children }: AppShellProps) {
   const [mobileSidebarOpen, setMobileSidebarOpen] = React.useState(false);
+  const [collapsed, setCollapsed] = React.useState(false);
 
   return (
-    <div className="min-h-screen bg-zinc-50/50 dark:bg-zinc-900/50 flex flex-col antialiased">
+    <div className="min-h-screen bg-zinc-50/50 dark:bg-zinc-950 flex flex-col antialiased transition-colors">
       <div className="flex h-screen overflow-hidden">
         {/* Desktop Sidebar */}
         <div className="hidden lg:flex shrink-0">
-          <Sidebar />
+          <Sidebar
+            collapsed={collapsed}
+            onToggleCollapse={() => setCollapsed(!collapsed)}
+          />
         </div>
 
         {/* Mobile Sidebar Overlay */}
@@ -28,7 +32,7 @@ export function AppShell({ children }: AppShellProps) {
               onClick={() => setMobileSidebarOpen(false)}
             />
             <div className="fixed inset-y-0 left-0 w-64 bg-white dark:bg-zinc-950 flex flex-col z-10 shadow-2xl animate-in slide-in-from-left duration-200">
-              <div className="absolute top-4 right-3">
+              <div className="absolute top-4 right-3 z-10">
                 <button
                   onClick={() => setMobileSidebarOpen(false)}
                   className="p-1.5 rounded-lg text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200"
@@ -53,4 +57,3 @@ export function AppShell({ children }: AppShellProps) {
     </div>
   );
 }
-
