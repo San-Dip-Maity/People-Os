@@ -1,0 +1,106 @@
+// PeopleOS Multi-Tenant HRMS Database Schema
+// Prisma 6 with PostgreSQL
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// -------------------------------------------------------------
+// Core Tenancy & Membership
+// -------------------------------------------------------------
+
+model Tenant {
+  id          String   @id @default(uuid())
+  slug        String   @unique
+  name        String
+  isActive    Boolean  @default(true)
+  settings    Json?    // Global tenant preferences
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  users       UserMembership[]
+  auditLogs   AuditLog[]
+
+  @@index([slug])
+  @@index([isActive])
+}
+
+model User {
+  id             String           @id @default(uuid())
+  email          String           @unique
+  passwordHash   String
+  firstName      String
+  lastName       String
+  isSuperAdmin   Boolean          @default(false)
+  isActive       Boolean          @default(true)
+  avatarUrl      String?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  memberships    UserMembership[]
+  sessions       Session[]
+  auditLogs      AuditLog[]
+
+  @@index([email])
+}
+
+model Session {
+  id           String   @id @default(uuid())
+  userId       String
+  token        String   @unique
+  expiresAt    DateTime
+  createdAt    DateTime @default(now())
+  userAgent    String?
+  ipAddress    String?
+
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([token])
+}
+
+model UserMembership {
+  id         String     @id @default(uuid())
+  tenantId   String
+  userId     String
+  role       String     @default("EMPLOYEE") // SUPER_ADMIN, ORG_ADMIN, HR_ADMIN, HR_MANAGER, DEPT_MANAGER, EMPLOYEE
+  isActive   Boolean    @default(true)
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+
+  tenant     Tenant     @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, userId])
+  @@index([tenantId])
+  @@index([userId])
+}
+
+// -------------------------------------------------------------
+// Audit Logging
+// -------------------------------------------------------------
+
+model AuditLog {
+  id          String   @id @default(uuid())
+  tenantId    String?
+  actorId     String?
+  action      String   // CREATE, UPDATE, DELETE, APPROVE, REJECT, EXPORT, LOGIN
+  resource    String   // Tenant, User, Employee, Leave, Payroll, etc.
+  resourceId  String?
+  details     Json?    // Diff or contextual payload
+  ipAddress   String?
+  userAgent   String?
+  createdAt   DateTime @default(now())
+
+  tenant      Tenant?  @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  actor       User?    @relation(fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([tenantId, action])
+  @@index([tenantId, resource, resourceId])
+  @@index([createdAt])
+}
