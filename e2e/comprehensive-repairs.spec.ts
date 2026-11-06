@@ -1,6 +1,11 @@
 import { test, expect } from "@playwright/test";
+import { loginAsAdmin } from "./helpers/auth";
 
 test.describe("PeopleOS Comprehensive Repair Verification", () => {
+  test.beforeEach(async ({ page }) => {
+    await loginAsAdmin(page);
+  });
+
   test("Theme switcher: immediate response, 3 modes, persistence across refresh", async ({
     page,
   }) => {

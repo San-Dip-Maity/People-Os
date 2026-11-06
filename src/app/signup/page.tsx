@@ -1,0 +1,352 @@
+"use client";
+
+import * as React from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { ThemeToggle } from "@/components/theme-toggle";
+import {
+  Lock,
+  Mail,
+  User,
+  Building,
+  Eye,
+  EyeOff,
+  ArrowRight,
+  AlertCircle,
+  Loader2,
+  CheckCircle2,
+  ShieldCheck,
+} from "lucide-react";
+
+export default function SignupPage() {
+  const router = useRouter();
+
+  const [fullName, setFullName] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [organizationName, setOrganizationName] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [confirmPassword, setConfirmPassword] = React.useState("");
+  const [terms, setTerms] = React.useState(false);
+  const [showPassword, setShowPassword] = React.useState(false);
+
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = React.useState<Record<string, string[]>>({});
+  const [success, setSuccess] = React.useState(false);
+
+  // Password strength checks
+  const hasMinLength = password.length >= 8;
+  const hasUppercase = /[A-Z]/.test(password);
+  const hasLowercase = /[a-z]/.test(password);
+  const hasNumber = /[0-9]/.test(password);
+  const isPasswordStrong = hasMinLength && hasUppercase && hasLowercase && hasNumber;
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setFieldErrors({});
+
+    // Client-side validations
+    if (!isPasswordStrong) {
+      setError("Password must meet all complexity requirements (8+ characters, uppercase, lowercase, and a number).");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+
+    if (!terms) {
+      setError("You must accept the terms of service and privacy policy to continue.");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const res = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullName,
+          email,
+          organizationName,
+          password,
+          confirmPassword,
+          terms,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        if (data.details?.fieldErrors) {
+          setFieldErrors(data.details.fieldErrors);
+        }
+        setError(data.error || "Registration failed. Please review the highlighted fields.");
+        setLoading(false);
+        return;
+      }
+
+      setSuccess(true);
+      setTimeout(() => {
+        router.push("/dashboard");
+        router.refresh();
+      }, 700);
+    } catch {
+      setError("An unexpected network error occurred. Please try again.");
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 flex flex-col justify-between p-4 sm:p-6 transition-colors">
+      <div className="max-w-7xl mx-auto w-full flex items-center justify-between h-12">
+        <Link
+          href="/"
+          className="text-xs font-semibold text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors"
+        >
+          &larr; Back to PeopleOS Home
+        </Link>
+        <ThemeToggle />
+      </div>
+
+      <div className="flex items-center justify-center py-6">
+        <div className="w-full max-w-lg p-6 sm:p-8 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xl">
+          {/* Header */}
+          <div className="text-center mb-6">
+            <Link href="/" className="inline-flex items-center gap-2 mb-3 group">
+              <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white font-bold text-lg shadow-sm shadow-blue-500/20 group-hover:scale-105 transition-transform">
+                P
+              </div>
+              <span className="font-bold text-xl tracking-tight text-zinc-900 dark:text-zinc-100">
+                PeopleOS
+              </span>
+            </Link>
+            <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+              Create an Organization Account
+            </h1>
+            <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
+              Stand up your dedicated multi-tenant people operations workspace
+            </p>
+          </div>
+
+          {/* Error Alert */}
+          {error && (
+            <div className="mb-5 p-3.5 rounded-xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/50 flex items-start gap-2.5 text-xs text-red-700 dark:text-red-300 animate-in fade-in duration-200">
+              <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+              <span>{error}</span>
+            </div>
+          )}
+
+          {/* Success Alert */}
+          {success && (
+            <div className="mb-5 p-3.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900/50 flex items-center gap-2.5 text-xs text-emerald-700 dark:text-emerald-300 animate-in fade-in duration-200">
+              <CheckCircle2 className="w-4 h-4 shrink-0" />
+              <span>Workspace provisioned successfully! Redirecting to dashboard...</span>
+            </div>
+          )}
+
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1.5">
+                Full Name
+              </label>
+              <div className="relative">
+                <User className="w-4 h-4 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                <input
+                  type="text"
+                  required
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                  placeholder="Sarah Connor"
+                  className="w-full pl-9 pr-3 py-2 text-sm rounded-lg bg-zinc-50 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-hidden focus:ring-2 focus:ring-blue-500 transition-all"
+                />
+              </div>
+              {fieldErrors.fullName && (
+                <p className="text-[11px] text-red-600 dark:text-red-400 mt-1">
+                  {fieldErrors.fullName[0]}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1.5">
+                Work Email Address
+              </label>
+              <div className="relative">
+                <Mail className="w-4 h-4 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                <input
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="sarah@acme.com"
+                  className="w-full pl-9 pr-3 py-2 text-sm rounded-lg bg-zinc-50 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-hidden focus:ring-2 focus:ring-blue-500 transition-all"
+                />
+              </div>
+              {fieldErrors.email && (
+                <p className="text-[11px] text-red-600 dark:text-red-400 mt-1">
+                  {fieldErrors.email[0]}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1.5">
+                Company / Organization Name
+              </label>
+              <div className="relative">
+                <Building className="w-4 h-4 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                <input
+                  type="text"
+                  required
+                  value={organizationName}
+                  onChange={(e) => setOrganizationName(e.target.value)}
+                  placeholder="Acme Global Inc"
+                  className="w-full pl-9 pr-3 py-2 text-sm rounded-lg bg-zinc-50 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-hidden focus:ring-2 focus:ring-blue-500 transition-all"
+                />
+              </div>
+              {fieldErrors.organizationName && (
+                <p className="text-[11px] text-red-600 dark:text-red-400 mt-1">
+                  {fieldErrors.organizationName[0]}
+                </p>
+              )}
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1.5">
+                  Password
+                </label>
+                <div className="relative">
+                  <Lock className="w-4 h-4 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="••••••••"
+                    className="w-full pl-9 pr-10 py-2 text-sm rounded-lg bg-zinc-50 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-hidden focus:ring-2 focus:ring-blue-500 transition-all"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    aria-label={showPassword ? "Hide password" : "Show password"}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300"
+                  >
+                    {showPassword ? (
+                      <EyeOff className="w-4 h-4" />
+                    ) : (
+                      <Eye className="w-4 h-4" />
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1.5">
+                  Confirm Password
+                </label>
+                <div className="relative">
+                  <Lock className="w-4 h-4 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    required
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder="••••••••"
+                    className="w-full pl-9 pr-3 py-2 text-sm rounded-lg bg-zinc-50 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-hidden focus:ring-2 focus:ring-blue-500 transition-all"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Password Strength Checklist */}
+            <div className="p-3 rounded-lg bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200/60 dark:border-zinc-800 space-y-1 text-[11px]">
+              <div className="font-semibold text-zinc-600 dark:text-zinc-300 mb-1 flex items-center gap-1.5">
+                <ShieldCheck className="w-3.5 h-3.5 text-blue-500" />
+                Password requirements:
+              </div>
+              <div className="grid grid-cols-2 gap-1 text-zinc-500 dark:text-zinc-400">
+                <span className={hasMinLength ? "text-emerald-600 dark:text-emerald-400 font-medium" : ""}>
+                  {hasMinLength ? "✓" : "•"} At least 8 characters
+                </span>
+                <span className={hasUppercase ? "text-emerald-600 dark:text-emerald-400 font-medium" : ""}>
+                  {hasUppercase ? "✓" : "•"} One uppercase letter
+                </span>
+                <span className={hasLowercase ? "text-emerald-600 dark:text-emerald-400 font-medium" : ""}>
+                  {hasLowercase ? "✓" : "•"} One lowercase letter
+                </span>
+                <span className={hasNumber ? "text-emerald-600 dark:text-emerald-400 font-medium" : ""}>
+                  {hasNumber ? "✓" : "•"} One number
+                </span>
+              </div>
+            </div>
+
+            {/* Terms Checkbox */}
+            <div className="pt-1">
+              <label className="flex items-start gap-2.5 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  required
+                  checked={terms}
+                  onChange={(e) => setTerms(e.target.checked)}
+                  className="mt-0.5 w-4 h-4 rounded-sm border-zinc-300 text-blue-600 focus:ring-blue-500 dark:border-zinc-700 dark:bg-zinc-800"
+                />
+                <span className="text-xs text-zinc-600 dark:text-zinc-400 leading-snug">
+                  I agree to the{" "}
+                  <a href="#" className="text-blue-600 dark:text-blue-400 hover:underline">
+                    Terms of Service
+                  </a>{" "}
+                  and{" "}
+                  <a href="#" className="text-blue-600 dark:text-blue-400 hover:underline">
+                    Privacy Policy
+                  </a>
+                  , and confirm I am authorized to register this organization.
+                </span>
+              </label>
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading || success}
+              className="w-full py-2.5 px-4 rounded-lg bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white font-semibold text-sm shadow-sm shadow-blue-500/20 active:scale-[0.99] transition-all flex items-center justify-center gap-2 pt-2.5"
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <span>Provisioning workspace...</span>
+                </>
+              ) : (
+                <>
+                  <span>Create Organization & Workspace</span>
+                  <ArrowRight className="w-4 h-4" />
+                </>
+              )}
+            </button>
+          </form>
+
+          {/* Footer */}
+          <div className="mt-6 pt-5 border-t border-zinc-200 dark:border-zinc-800 text-center">
+            <p className="text-xs text-zinc-500 dark:text-zinc-400">
+              Already have an organization account?{" "}
+              <Link
+                href="/login"
+                className="font-semibold text-blue-600 dark:text-blue-400 hover:underline"
+              >
+                Sign in
+              </Link>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div className="text-center py-4 text-xs text-zinc-400">
+        &copy; 2026 PeopleOS Platform. Multi-Tenant Isolated Infrastructure.
+      </div>
+    </div>
+  );
+}

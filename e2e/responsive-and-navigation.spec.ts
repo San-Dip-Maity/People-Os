@@ -1,9 +1,13 @@
 import { test, expect } from "@playwright/test";
+import { loginAsAdmin } from "./helpers/auth";
 
 test.describe("PeopleOS Responsive & Navigation E2E Tests", () => {
   test("mobile view renders hamburger menu and toggles drawer cleanly", async ({
     page,
   }) => {
+    // Authenticate first
+    await loginAsAdmin(page);
+
     // Set mobile viewport
     await page.setViewportSize({ width: 375, height: 812 });
     await page.goto("/dashboard");
@@ -30,6 +34,7 @@ test.describe("PeopleOS Responsive & Navigation E2E Tests", () => {
   test("not found 404 page renders gracefully with recovery button", async ({
     page,
   }) => {
+    await loginAsAdmin(page);
     await page.goto("/non-existent-module-path");
     await expect(page.getByText("Page Not Found")).toBeVisible();
     await expect(
@@ -57,6 +62,7 @@ test.describe("PeopleOS Responsive & Navigation E2E Tests", () => {
   test("desktop sidebar layout persists across route navigation without reloading or unmounting", async ({
     page,
   }) => {
+    await loginAsAdmin(page);
     await page.setViewportSize({ width: 1280, height: 800 });
     await page.goto("/dashboard");
 

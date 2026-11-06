@@ -18,9 +18,15 @@ export function generateSessionToken(): string {
   return crypto.randomBytes(32).toString("hex");
 }
 
-export async function createSession(userId: string, userAgent?: string, ipAddress?: string) {
+export async function createSession(
+  userId: string,
+  userAgent?: string,
+  ipAddress?: string,
+  rememberMe?: boolean
+) {
   const token = generateSessionToken();
-  const expiresAt = new Date(Date.now() + SESSION_TTL_DAYS * 24 * 60 * 60 * 1000);
+  const ttlDays = rememberMe ? 30 : SESSION_TTL_DAYS;
+  const expiresAt = new Date(Date.now() + ttlDays * 24 * 60 * 60 * 1000);
 
   const session = await prisma.session.create({
     data: {

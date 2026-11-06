@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
     const ipAddress =
       req.headers.get("x-forwarded-for") || req.headers.get("x-real-ip") || undefined;
 
-    await createSession(user.id, userAgent, ipAddress);
+    await createSession(user.id, userAgent, ipAddress, result.data.rememberMe);
 
     // Audit log login
     await prisma.auditLog.create({

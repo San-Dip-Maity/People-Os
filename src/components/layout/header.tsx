@@ -149,7 +149,7 @@ export function Header({
       // ignore
     }
     setProfileOpen(false);
-    router.push("/dashboard");
+    router.push("/login");
     router.refresh();
   };
 

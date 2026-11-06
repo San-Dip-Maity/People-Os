@@ -5,11 +5,20 @@ import { Sidebar } from "./sidebar";
 import { Header } from "./header";
 import { X } from "lucide-react";
 
-interface AppShellProps {
-  children: React.ReactNode;
+export interface AppShellUser {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  organization: string;
 }
 
-export function AppShell({ children }: AppShellProps) {
+interface AppShellProps {
+  children: React.ReactNode;
+  user?: AppShellUser;
+}
+
+export function AppShell({ children, user }: AppShellProps) {
   const [mobileSidebarOpen, setMobileSidebarOpen] = React.useState(false);
   const [collapsed, setCollapsed] = React.useState(false);
 
@@ -48,7 +57,12 @@ export function AppShell({ children }: AppShellProps) {
 
         {/* Main Content Area */}
         <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-          <Header onMenuToggle={() => setMobileSidebarOpen(true)} />
+          <Header
+            onMenuToggle={() => setMobileSidebarOpen(true)}
+            userName={user?.name}
+            userRole={user?.role}
+            activeOrgName={user?.organization}
+          />
           <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
             <div className="max-w-7xl mx-auto w-full">{children}</div>
           </main>

@@ -1,18 +1,18 @@
 import { test, expect } from "@playwright/test";
 import path from "path";
+import { loginAsAdmin } from "./helpers/auth";
 
 test.describe("PeopleOS Dashboard E2E Browser Testing", () => {
   test("loads root and redirects to dashboard with full application shell", async ({
     page,
   }) => {
-    // 1. Visit root
-    await page.goto("/");
-    await page.waitForURL("**/dashboard");
+    // 1. Authenticate as admin
+    await loginAsAdmin(page);
 
     // 2. Validate branding and layout
     await expect(page.getByText("PeopleOS").first()).toBeVisible();
     await expect(page.getByText("People Operations Platform")).toBeVisible();
-    await expect(page.getByText("Operations Command Center")).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Operations Command Center" })).toBeVisible();
     await expect(page.getByText("Tenant: Acme Global (UAE / IND)")).toBeVisible();
 
     // 3. Validate AI Insights banner
