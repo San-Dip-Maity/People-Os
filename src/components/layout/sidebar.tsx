@@ -39,25 +39,27 @@ export function Sidebar({
   return (
     <aside
       className={cn(
-        "flex flex-col h-full bg-white dark:bg-zinc-950 border-r border-zinc-200 dark:border-zinc-800 transition-all duration-200 select-none",
+        "flex flex-col h-full bg-[#071B2B] text-[#f0f7f9] border-r border-[#163854] transition-all duration-200 select-none shadow-md",
         collapsed ? "w-16" : "w-64",
         className
       )}
     >
       {/* Brand Header */}
-      <div className={cn(
-        "flex items-center h-16 border-b border-zinc-200 dark:border-zinc-800 transition-all",
-        collapsed ? "justify-center px-2" : "justify-between px-5"
-      )}>
+      <div
+        className={cn(
+          "flex items-center h-16 border-b border-[#163854] transition-all",
+          collapsed ? "justify-center px-2" : "justify-between px-5"
+        )}
+      >
         {collapsed ? (
           <button
             onClick={onToggleCollapse}
             aria-label="Expand sidebar"
             title="Expand sidebar"
             data-testid="expand-sidebar"
-            className="p-1.5 rounded-lg text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors"
+            className="p-1.5 rounded-lg text-[#8ca3b5] hover:text-white hover:bg-[#0c263d] transition-colors"
           >
-            <PanelLeftOpen className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+            <PanelLeftOpen className="w-5 h-5 text-[#B9E4E8]" />
           </button>
         ) : (
           <>
@@ -66,17 +68,17 @@ export function Sidebar({
               onClick={onItemClick}
               className="flex items-center gap-2.5 min-w-0"
             >
-              <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white font-bold text-sm shadow-sm shadow-blue-500/20 shrink-0">
+              <div className="w-8 h-8 rounded-lg bg-[#167D8D] flex items-center justify-center text-white font-bold text-sm shadow-sm shadow-[#167D8D]/30 shrink-0">
                 P
               </div>
               <div className="flex flex-col min-w-0">
-                <span className="font-semibold text-sm tracking-tight text-zinc-900 dark:text-zinc-100 flex items-center gap-1.5">
+                <span className="font-bold text-sm tracking-tight text-white flex items-center gap-1.5">
                   PeopleOS
-                  <span className="text-[10px] px-1.5 py-0.2 font-medium bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300 rounded-full border border-blue-200 dark:border-blue-800">
+                  <span className="text-[10px] px-1.5 py-0.2 font-bold bg-[#B9E4E8] text-[#071B2B] rounded-full">
                     v1.0
                   </span>
                 </span>
-                <span className="text-[10px] text-zinc-500 dark:text-zinc-400 truncate">
+                <span className="text-[10px] text-[#8ca3b5] truncate font-medium">
                   People Operations Platform
                 </span>
               </div>
@@ -88,7 +90,7 @@ export function Sidebar({
                 aria-label="Collapse sidebar"
                 title="Collapse sidebar"
                 data-testid="collapse-sidebar"
-                className="p-1 rounded text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors"
+                className="p-1 rounded text-[#8ca3b5] hover:text-white hover:bg-[#0c263d] transition-colors"
               >
                 <PanelLeftClose className="w-4 h-4" />
               </button>
@@ -107,13 +109,13 @@ export function Sidebar({
               {!collapsed && (
                 <button
                   onClick={() => toggleSection(section.title)}
-                  className="w-full px-2.5 py-1 text-[10px] font-semibold text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 uppercase tracking-wider flex items-center justify-between transition-colors"
+                  className="w-full px-2.5 py-1 text-[10px] font-semibold text-[#8ca3b5] hover:text-white uppercase tracking-wider flex items-center justify-between transition-colors"
                 >
                   <span>{section.title}</span>
                   {isSectionCollapsed ? (
-                    <ChevronRight className="w-3 h-3" />
+                    <ChevronRight className="w-3 h-3 text-[#8ca3b5]" />
                   ) : (
-                    <ChevronDown className="w-3 h-3" />
+                    <ChevronDown className="w-3 h-3 text-[#8ca3b5]" />
                   )}
                 </button>
               )}
@@ -139,8 +141,8 @@ export function Sidebar({
                             ? "justify-center p-2.5"
                             : "justify-between px-3 py-2",
                           isActive
-                            ? "bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300 font-semibold"
-                            : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-900 hover:text-zinc-900 dark:hover:text-zinc-100"
+                            ? "bg-[#167D8D] text-white font-semibold shadow-xs"
+                            : "text-[#c2d3e0] hover:bg-[#0c263d] hover:text-white"
                         )}
                       >
                         <div className="flex items-center gap-2.5 min-w-0">
@@ -148,8 +150,8 @@ export function Sidebar({
                             className={cn(
                               "w-4 h-4 shrink-0 transition-colors",
                               isActive
-                                ? "text-blue-600 dark:text-blue-400"
-                                : "text-zinc-400 group-hover:text-zinc-700 dark:group-hover:text-zinc-200"
+                                ? "text-white"
+                                : "text-[#8ca3b5] group-hover:text-[#B9E4E8]"
                             )}
                           />
                           {!collapsed && (
@@ -158,7 +160,7 @@ export function Sidebar({
                         </div>
 
                         {!collapsed && item.badge && (
-                          <span className="text-[9px] px-1.5 py-0.5 rounded-full font-semibold uppercase tracking-wider bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300 border border-blue-200 dark:border-blue-800 shrink-0">
+                          <span className="text-[9px] px-1.5 py-0.5 rounded-full font-bold uppercase tracking-wider bg-[#B9E4E8] text-[#071B2B] shrink-0">
                             {item.badge}
                           </span>
                         )}
@@ -172,14 +174,14 @@ export function Sidebar({
         })}
       </div>
 
-      {/* AI Assistant Quick Pill / Collapsed Button */}
-      <div className="p-2 border-t border-zinc-200 dark:border-zinc-800">
+      {/* AI Assistant Quick Pill */}
+      <div className="p-2 border-t border-[#163854]">
         {collapsed ? (
           <Link
             href="/copilot"
             onClick={onItemClick}
             title="AI People Copilot"
-            className="flex items-center justify-center p-2.5 rounded-lg bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 hover:bg-blue-100 transition-colors"
+            className="flex items-center justify-center p-2.5 rounded-lg bg-[#0c263d] text-[#B9E4E8] hover:bg-[#12334f] border border-[#163854] transition-colors"
           >
             <Sparkles className="w-4 h-4" />
           </Link>
@@ -187,20 +189,20 @@ export function Sidebar({
           <Link
             href="/copilot"
             onClick={onItemClick}
-            className="flex items-center justify-between p-2.5 rounded-lg bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/40 dark:to-indigo-950/40 border border-blue-200 dark:border-blue-900/50 text-blue-900 dark:text-blue-100 group transition-all"
+            className="flex items-center justify-between p-2.5 rounded-lg bg-[#0c263d] hover:bg-[#12334f] border border-[#163854] text-white group transition-all"
           >
             <div className="flex items-center gap-2">
-              <div className="p-1 rounded-md bg-blue-600 text-white shadow-xs">
+              <div className="p-1 rounded-md bg-[#167D8D] text-white shadow-xs">
                 <Sparkles className="w-3.5 h-3.5" />
               </div>
               <div className="text-left">
                 <div className="text-xs font-semibold">AI Copilot</div>
-                <div className="text-[10px] text-zinc-500 dark:text-zinc-400">
+                <div className="text-[10px] text-[#8ca3b5]">
                   Ask policy & analytics
                 </div>
               </div>
             </div>
-            <ChevronRight className="w-3.5 h-3.5 text-blue-500 group-hover:translate-x-0.5 transition-transform" />
+            <ChevronRight className="w-3.5 h-3.5 text-[#B9E4E8] group-hover:translate-x-0.5 transition-transform" />
           </Link>
         )}
       </div>

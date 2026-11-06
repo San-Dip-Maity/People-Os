@@ -50,7 +50,6 @@ function LoginForm() {
       }
 
       setSuccess(true);
-      // Small timeout for smooth feedback
       setTimeout(() => {
         router.push(returnUrl);
         router.refresh();
@@ -68,35 +67,35 @@ function LoginForm() {
   };
 
   return (
-    <div className="w-full max-w-md p-6 sm:p-8 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xl">
+    <div className="w-full max-w-md p-6 sm:p-8 rounded-2xl bg-white dark:bg-[#0c263d] border border-[#EEEEEE] dark:border-[#163854] shadow-xl">
       {/* Header */}
       <div className="text-center mb-6">
         <Link href="/" className="inline-flex items-center gap-2 mb-4 group">
-          <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white font-bold text-lg shadow-sm shadow-blue-500/20 group-hover:scale-105 transition-transform">
+          <div className="w-10 h-10 rounded-xl bg-[#167D8D] flex items-center justify-center text-white font-bold text-lg shadow-xs group-hover:scale-105 transition-transform">
             P
           </div>
-          <span className="font-bold text-xl tracking-tight text-zinc-900 dark:text-zinc-100">
+          <span className="font-bold text-xl tracking-tight text-[#071B2B] dark:text-white">
             PeopleOS
           </span>
         </Link>
-        <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+        <h1 className="text-2xl font-bold tracking-tight text-[#071B2B] dark:text-white">
           Sign in to your organization
         </h1>
-        <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
+        <p className="text-supporting text-[#4a6173] dark:text-[#8ca3b5] mt-1">
           Access your unified workforce and people operations portal
         </p>
       </div>
 
       {/* Demo Credentials Quick-Fill Pill */}
-      <div className="mb-6 p-3 rounded-xl bg-blue-50/70 dark:bg-blue-950/40 border border-blue-200/80 dark:border-blue-900/60 flex items-center justify-between">
-        <div className="flex items-center gap-2 text-xs text-blue-900 dark:text-blue-200">
-          <Sparkles className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0" />
+      <div className="mb-6 p-3 rounded-xl bg-[#e8f4f6] dark:bg-[#12334f] border border-[#B9E4E8] dark:border-[#163854] flex items-center justify-between">
+        <div className="flex items-center gap-2 text-xs text-[#071B2B] dark:text-[#f0f7f9]">
+          <Sparkles className="w-4 h-4 text-[#167D8D] dark:text-[#B9E4E8] shrink-0" />
           <span>Demo admin account available</span>
         </div>
         <button
           type="button"
           onClick={handleFillDemoAdmin}
-          className="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline"
+          className="text-xs font-semibold text-[#167D8D] dark:text-[#B9E4E8] hover:underline"
         >
           Auto-fill
         </button>
@@ -121,49 +120,49 @@ function LoginForm() {
       {/* Form */}
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1.5">
+          <label className="block text-label text-[#071B2B] dark:text-[#c2d3e0] mb-1.5 font-semibold">
             Work Email Address
           </label>
           <div className="relative">
-            <Mail className="w-4 h-4 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <Mail className="w-4 h-4 text-[#4a6173] dark:text-[#8ca3b5] absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="name@company.com"
-              className="w-full pl-9 pr-3 py-2 text-sm rounded-lg bg-zinc-50 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-hidden focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-all"
+              className="w-full pl-9 pr-3 py-2 text-sm rounded-lg bg-[#fafafa] dark:bg-[#071B2B] border border-[#EEEEEE] dark:border-[#163854] text-[#071B2B] dark:text-[#f0f7f9] placeholder-[#8ca3b5] focus:outline-none focus:ring-2 focus:ring-[#167D8D] transition-all"
             />
           </div>
         </div>
 
         <div>
           <div className="flex items-center justify-between mb-1.5">
-            <label className="text-xs font-semibold text-zinc-700 dark:text-zinc-300">
+            <label className="text-label text-[#071B2B] dark:text-[#c2d3e0] font-semibold">
               Password
             </label>
             <Link
               href="/forgot-password"
-              className="text-xs text-blue-600 dark:text-blue-400 hover:underline"
+              className="text-xs text-[#167D8D] dark:text-[#B9E4E8] hover:underline"
             >
               Forgot password?
             </Link>
           </div>
           <div className="relative">
-            <Lock className="w-4 h-4 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <Lock className="w-4 h-4 text-[#4a6173] dark:text-[#8ca3b5] absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type={showPassword ? "text" : "password"}
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              className="w-full pl-9 pr-10 py-2 text-sm rounded-lg bg-zinc-50 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-hidden focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 transition-all"
+              className="w-full pl-9 pr-10 py-2 text-sm rounded-lg bg-[#fafafa] dark:bg-[#071B2B] border border-[#EEEEEE] dark:border-[#163854] text-[#071B2B] dark:text-[#f0f7f9] placeholder-[#8ca3b5] focus:outline-none focus:ring-2 focus:ring-[#167D8D] transition-all"
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
               aria-label={showPassword ? "Hide password" : "Show password"}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-[#4a6173] dark:text-[#8ca3b5] hover:text-[#071B2B] dark:hover:text-white"
             >
               {showPassword ? (
                 <EyeOff className="w-4 h-4" />
@@ -180,9 +179,9 @@ function LoginForm() {
               type="checkbox"
               checked={rememberMe}
               onChange={(e) => setRememberMe(e.target.checked)}
-              className="w-4 h-4 rounded-sm border-zinc-300 text-blue-600 focus:ring-blue-500 dark:border-zinc-700 dark:bg-zinc-800"
+              className="w-4 h-4 rounded-sm border-[#EEEEEE] dark:border-[#163854] text-[#167D8D] focus:ring-[#167D8D] dark:bg-[#071B2B]"
             />
-            <span className="text-xs text-zinc-600 dark:text-zinc-400">
+            <span className="text-supporting text-[#4a6173] dark:text-[#8ca3b5]">
               Keep me signed in (30 days)
             </span>
           </label>
@@ -191,7 +190,7 @@ function LoginForm() {
         <button
           type="submit"
           disabled={loading || success}
-          className="w-full py-2.5 px-4 rounded-lg bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white font-semibold text-sm shadow-sm shadow-blue-500/20 active:scale-[0.99] transition-all flex items-center justify-center gap-2"
+          className="w-full py-2.5 px-4 rounded-lg bg-[#167D8D] hover:bg-[#126876] disabled:opacity-60 text-white font-semibold text-sm shadow-xs active:scale-[0.99] transition-all flex items-center justify-center gap-2"
         >
           {loading ? (
             <>
@@ -208,12 +207,12 @@ function LoginForm() {
       </form>
 
       {/* Footer */}
-      <div className="mt-6 pt-5 border-t border-zinc-200 dark:border-zinc-800 text-center">
-        <p className="text-xs text-zinc-500 dark:text-zinc-400">
+      <div className="mt-6 pt-5 border-t border-[#EEEEEE] dark:border-[#163854] text-center">
+        <p className="text-supporting text-[#4a6173] dark:text-[#8ca3b5]">
           Don&apos;t have an organization tenant yet?{" "}
           <Link
             href="/signup"
-            className="font-semibold text-blue-600 dark:text-blue-400 hover:underline"
+            className="font-semibold text-[#167D8D] dark:text-[#B9E4E8] hover:underline"
           >
             Create account
           </Link>
@@ -225,21 +224,21 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 flex flex-col justify-between p-4 sm:p-6 transition-colors">
+    <div className="min-h-screen bg-[#fafafa] dark:bg-[#071B2B] flex flex-col justify-between p-4 sm:p-6 transition-colors">
       <div className="max-w-7xl mx-auto w-full flex items-center justify-between h-12">
-        <Link href="/" className="text-xs font-semibold text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors">
+        <Link href="/" className="text-xs font-semibold text-[#4a6173] hover:text-[#071B2B] dark:text-[#8ca3b5] dark:hover:text-white transition-colors">
           &larr; Back to PeopleOS Home
         </Link>
         <ThemeToggle />
       </div>
 
       <div className="flex items-center justify-center py-8">
-        <React.Suspense fallback={<div className="text-xs text-zinc-500">Loading sign in form...</div>}>
+        <React.Suspense fallback={<div className="text-xs text-[#4a6173]">Loading sign in form...</div>}>
           <LoginForm />
         </React.Suspense>
       </div>
 
-      <div className="text-center py-4 text-xs text-zinc-400">
+      <div className="text-center py-4 text-xs text-[#4a6173] dark:text-[#8ca3b5]">
         &copy; 2026 PeopleOS Platform. Multi-Tenant Enterprise Security.
       </div>
     </div>

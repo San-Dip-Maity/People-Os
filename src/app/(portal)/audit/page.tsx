@@ -38,7 +38,7 @@ export default function AuditPage() {
       details: "Updated statutory social security deduction for UAE entity",
       ip: "10.0.4.19",
       time: "2026-11-06 14:15:22 UTC",
-      badge: "bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300",
+      badge: "bg-[#B9E4E8] text-[#071B2B]",
     },
     {
       id: "AUD-8904",
@@ -62,7 +62,7 @@ export default function AuditPage() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-1">
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50 flex items-center gap-2">
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[#071B2B] dark:text-[#f0f7f9] flex items-center gap-2">
               Audit Ledger & Compliance Governance
             </h1>
             <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">
@@ -73,7 +73,7 @@ export default function AuditPage() {
           <div className="flex items-center gap-2">
             <button
               onClick={() => alert("Exporting tamper-evident compliance audit trail (CSV / JSON)")}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-900 text-xs font-semibold transition-colors"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg border border-[#EEEEEE] dark:border-[#163854] hover:bg-zinc-100 dark:hover:bg-zinc-900 text-xs font-semibold transition-colors"
             >
               <Download className="w-3.5 h-3.5" />
               <span>Export Audit Trail</span>
@@ -82,10 +82,10 @@ export default function AuditPage() {
         </div>
 
         {/* Security Invariant */}
-        <div className="p-4 rounded-xl border border-blue-200 dark:border-blue-900/60 bg-blue-50/60 dark:bg-blue-950/20 text-xs text-zinc-700 dark:text-zinc-300 flex items-start gap-3">
-          <ShieldCheck className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
+        <div className="p-4 rounded-xl border border-[#B9E4E8] dark:border-[#163854] bg-[#eaf7f9] dark:bg-[#0a2134] text-xs text-zinc-700 dark:text-zinc-300 flex items-start gap-3">
+          <ShieldCheck className="w-4 h-4 text-[#167D8D] shrink-0 mt-0.5" />
           <div className="space-y-1">
-            <h4 className="font-semibold text-blue-900 dark:text-blue-200">
+            <h4 className="font-semibold text-[#071B2B] dark:text-[#B9E4E8]">
               Immutable Append-Only Audit Trail
             </h4>
             <p className="text-zinc-600 dark:text-zinc-400">
@@ -95,16 +95,16 @@ export default function AuditPage() {
         </div>
 
         {/* Audit Table */}
-        <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-xs overflow-hidden">
-          <div className="p-4 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between">
-            <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-50">
+        <div className="rounded-xl border border-[#EEEEEE] dark:border-[#163854] bg-white dark:bg-[#0c263d] shadow-xs overflow-hidden">
+          <div className="p-4 border-b border-[#EEEEEE] dark:border-[#163854] flex items-center justify-between">
+            <h3 className="font-bold text-sm text-[#071B2B] dark:text-[#f0f7f9]">
               Audit Event Stream
             </h3>
 
             <select
               value={filterAction}
               onChange={(e) => setFilterAction(e.target.value)}
-              className="px-2.5 py-1 text-xs rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 focus:outline-none"
+              className="px-2.5 py-1 text-xs rounded-lg border border-[#EEEEEE] dark:border-[#163854] bg-[#fafafa] dark:bg-[#0a2134] text-zinc-700 dark:text-zinc-300 focus:outline-none"
             >
               <option value="ALL">All Event Types</option>
               <option value="APPROVE">Approvals</option>
@@ -116,7 +116,7 @@ export default function AuditPage() {
 
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-zinc-50 dark:bg-zinc-900/60 border-b border-zinc-200 dark:border-zinc-800 text-zinc-500 uppercase font-semibold">
+              <thead className="bg-[#fafafa] dark:bg-[#0a2134] border-b border-[#EEEEEE] dark:border-[#163854] text-zinc-500 uppercase font-semibold">
                 <tr>
                   <th className="px-5 py-3">Audit ID & Timestamp</th>
                   <th className="px-5 py-3">Actor</th>
@@ -126,7 +126,7 @@ export default function AuditPage() {
                   <th className="px-5 py-3 text-right">IP / Origin</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800">
+              <tbody className="divide-y divide-[#EEEEEE] dark:divide-[#163854]">
                 {filtered.map((log) => (
                   <tr key={log.id} className="hover:bg-zinc-50 dark:hover:bg-zinc-900/50">
                     <td className="px-5 py-3.5">

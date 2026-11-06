@@ -106,15 +106,15 @@ export default function CopilotPage() {
     <>
       <div className="space-y-6 max-w-4xl mx-auto">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-zinc-200 dark:border-zinc-800">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-[#EEEEEE] dark:border-[#163854]">
           <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-xl bg-blue-600 text-white shadow-md shadow-blue-500/20">
+            <div className="p-2.5 rounded-xl bg-[#167D8D] text-white shadow-md shadow-[#167D8D]/20">
               <Bot className="w-5 h-5" />
             </div>
             <div>
-              <h1 className="text-xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50 flex items-center gap-2">
+              <h1 className="text-xl font-bold tracking-tight text-[#071B2B] dark:text-[#f0f7f9] flex items-center gap-2">
                 PeopleOS AI Copilot
-                <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300">
+                <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-[#B9E4E8] text-[#071B2B]">
                   Read-Only Sandbox
                 </span>
               </h1>
@@ -131,10 +131,10 @@ export default function CopilotPage() {
         </div>
 
         {/* Security Warning Notice */}
-        <div className="p-3.5 rounded-xl border border-blue-200 dark:border-blue-900/60 bg-blue-50/50 dark:bg-blue-950/20 text-xs text-zinc-700 dark:text-zinc-300 flex items-start gap-3">
-          <Sparkles className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
+        <div className="p-3.5 rounded-xl border border-[#B9E4E8] dark:border-[#163854] bg-[#eaf7f9] dark:bg-[#0a2134] text-xs text-zinc-700 dark:text-zinc-300 flex items-start gap-3">
+          <Sparkles className="w-4 h-4 text-[#167D8D] shrink-0 mt-0.5" />
           <div className="space-y-0.5">
-            <span className="font-semibold text-blue-900 dark:text-blue-200">
+            <span className="font-semibold text-[#071B2B] dark:text-[#B9E4E8]">
               Zero-Hallucination Policy Citation
             </span>
             <p className="text-zinc-600 dark:text-zinc-400">
@@ -144,7 +144,7 @@ export default function CopilotPage() {
         </div>
 
         {/* Chat Stream Window */}
-        <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-xs flex flex-col h-[520px]">
+        <div className="rounded-2xl border border-[#EEEEEE] dark:border-[#163854] bg-white dark:bg-[#0c263d] shadow-xs flex flex-col h-[520px]">
           {/* Messages list */}
           <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4">
             {messages.map((m) => (
@@ -155,7 +155,7 @@ export default function CopilotPage() {
                 }`}
               >
                 {m.sender === "copilot" && (
-                  <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center shrink-0 text-xs font-semibold shadow-xs">
+                  <div className="w-8 h-8 rounded-full bg-[#167D8D] text-white flex items-center justify-center shrink-0 text-xs font-semibold shadow-xs">
                     <Bot className="w-4 h-4" />
                   </div>
                 )}
@@ -163,14 +163,14 @@ export default function CopilotPage() {
                 <div
                   className={`max-w-[85%] sm:max-w-[75%] rounded-2xl p-4 text-xs sm:text-sm space-y-2 ${
                     m.sender === "user"
-                      ? "bg-blue-600 text-white rounded-br-none"
-                      : "bg-zinc-100 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 rounded-bl-none border border-zinc-200 dark:border-zinc-800"
+                      ? "bg-[#167D8D] text-white rounded-br-none"
+                      : "bg-zinc-100 dark:bg-zinc-900 text-[#071B2B] dark:text-[#f0f7f9] rounded-bl-none border border-[#EEEEEE] dark:border-[#163854]"
                   }`}
                 >
                   <div className="leading-relaxed whitespace-pre-wrap">{m.text}</div>
 
                   {m.citation && (
-                    <div className="pt-2 border-t border-zinc-200/80 dark:border-zinc-800 flex items-start gap-2 text-[11px] text-blue-700 dark:text-blue-300 font-medium">
+                    <div className="pt-2 border-t border-zinc-200/80 dark:border-zinc-800 flex items-start gap-2 text-[11px] text-[#071B2B] dark:text-[#B9E4E8] font-medium">
                       <FileText className="w-3.5 h-3.5 shrink-0 mt-0.5" />
                       <div>
                         <span>{m.citation.policyTitle} ({m.citation.section})</span>
@@ -184,7 +184,7 @@ export default function CopilotPage() {
                   <div
                     className={`text-[10px] ${
                       m.sender === "user"
-                        ? "text-blue-100"
+                        ? "text-[#B9E4E8]"
                         : "text-zinc-400 dark:text-zinc-500"
                     } text-right`}
                   >
@@ -202,25 +202,25 @@ export default function CopilotPage() {
 
             {isTyping && (
               <div className="flex gap-3 justify-start items-center text-xs text-zinc-400 italic">
-                <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center shrink-0">
+                <div className="w-8 h-8 rounded-full bg-[#167D8D] text-white flex items-center justify-center shrink-0">
                   <Bot className="w-4 h-4" />
                 </div>
-                <div className="p-3 rounded-xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-bounce" />
-                  <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-bounce [animation-delay:0.2s]" />
-                  <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-bounce [animation-delay:0.4s]" />
+                <div className="p-3 rounded-xl bg-zinc-100 dark:bg-zinc-900 border border-[#EEEEEE] dark:border-[#163854] flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#167D8D] animate-bounce" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#167D8D] animate-bounce [animation-delay:0.2s]" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#167D8D] animate-bounce [animation-delay:0.4s]" />
                 </div>
               </div>
             )}
           </div>
 
           {/* Quick prompt pills */}
-          <div className="px-4 py-2 border-t border-zinc-100 dark:border-zinc-800 flex gap-2 overflow-x-auto text-[11px]">
+          <div className="px-4 py-2 border-t border-[#EEEEEE] dark:border-[#163854] flex gap-2 overflow-x-auto text-[11px]">
             {samplePrompts.map((p, i) => (
               <button
                 key={i}
                 onClick={() => handleSend(p)}
-                className="whitespace-nowrap px-3 py-1 rounded-full border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 hover:bg-blue-50 dark:hover:bg-blue-950/40 text-zinc-700 dark:text-zinc-300 transition-colors"
+                className="whitespace-nowrap px-3 py-1 rounded-full border border-[#EEEEEE] dark:border-[#163854] bg-[#fafafa] dark:bg-[#0a2134] hover:bg-[#eaf7f9] dark:hover:bg-[#0a2134] text-zinc-700 dark:text-zinc-300 transition-colors"
               >
                 {p}
               </button>
@@ -233,19 +233,19 @@ export default function CopilotPage() {
               e.preventDefault();
               handleSend();
             }}
-            className="p-3 border-t border-zinc-200 dark:border-zinc-800 flex gap-2"
+            className="p-3 border-t border-[#EEEEEE] dark:border-[#163854] flex gap-2"
           >
             <input
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Ask Copilot about leave balances, policies, or team attendance..."
-              className="flex-1 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl px-4 py-2.5 text-xs text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+              className="flex-1 bg-[#fafafa] dark:bg-[#0a2134] border border-[#EEEEEE] dark:border-[#163854] rounded-xl px-4 py-2.5 text-xs text-[#071B2B] dark:text-[#f0f7f9] placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-[#167D8D]/20 focus:border-[#167D8D]"
             />
             <button
               type="submit"
               disabled={!input.trim() || isTyping}
-              className="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm transition-colors"
+              className="px-4 py-2.5 rounded-xl bg-[#167D8D] hover:bg-[#126876] disabled:opacity-50 text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm transition-colors"
             >
               <Send className="w-3.5 h-3.5" />
               <span>Send</span>

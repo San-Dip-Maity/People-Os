@@ -23,7 +23,7 @@ export function AppShell({ children, user }: AppShellProps) {
   const [collapsed, setCollapsed] = React.useState(false);
 
   return (
-    <div className="min-h-screen bg-zinc-50/50 dark:bg-zinc-950 flex flex-col antialiased transition-colors">
+    <div className="min-h-screen bg-[#fafafa] dark:bg-[#071B2B] flex flex-col antialiased transition-colors">
       <div className="flex h-screen overflow-hidden">
         {/* Desktop Sidebar */}
         <div className="hidden lg:flex shrink-0">
@@ -37,14 +37,14 @@ export function AppShell({ children, user }: AppShellProps) {
         {mobileSidebarOpen && (
           <div className="fixed inset-0 z-50 lg:hidden">
             <div
-              className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity"
+              className="fixed inset-0 bg-[#071B2B]/70 backdrop-blur-xs transition-opacity"
               onClick={() => setMobileSidebarOpen(false)}
             />
-            <div className="fixed inset-y-0 left-0 w-64 bg-white dark:bg-zinc-950 flex flex-col z-10 shadow-2xl animate-in slide-in-from-left duration-200">
+            <div className="fixed inset-y-0 left-0 w-64 bg-[#071B2B] flex flex-col z-10 shadow-2xl animate-in slide-in-from-left duration-200 border-r border-[#163854]">
               <div className="absolute top-4 right-3 z-10">
                 <button
                   onClick={() => setMobileSidebarOpen(false)}
-                  className="p-1.5 rounded-lg text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200"
+                  className="p-1.5 rounded-lg text-[#8ca3b5] hover:text-white hover:bg-[#0c263d]"
                   aria-label="Close sidebar"
                 >
                   <X className="w-5 h-5" />
@@ -56,7 +56,7 @@ export function AppShell({ children, user }: AppShellProps) {
         )}
 
         {/* Main Content Area */}
-        <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+        <div className="flex-1 flex flex-col min-w-0 overflow-hidden bg-[#fafafa] dark:bg-[#071B2B]">
           <Header
             onMenuToggle={() => setMobileSidebarOpen(true)}
             userName={user?.name}

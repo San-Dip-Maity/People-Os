@@ -19,7 +19,7 @@ export default function OrganizationPage() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-1">
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50 flex items-center gap-2">
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[#071B2B] dark:text-[#f0f7f9] flex items-center gap-2">
               Organization Structure & Entity Governance
             </h1>
             <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">
@@ -29,10 +29,10 @@ export default function OrganizationPage() {
         </div>
 
         {/* Critical Business Rule Banner */}
-        <div className="p-4 rounded-xl border border-blue-200 dark:border-blue-900/60 bg-blue-50/60 dark:bg-blue-950/20 text-xs text-zinc-700 dark:text-zinc-300 flex items-start gap-3">
-          <ShieldCheck className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
+        <div className="p-4 rounded-xl border border-[#B9E4E8] dark:border-[#163854] bg-[#eaf7f9] dark:bg-[#0a2134] text-xs text-zinc-700 dark:text-zinc-300 flex items-start gap-3">
+          <ShieldCheck className="w-4 h-4 text-[#167D8D] shrink-0 mt-0.5" />
           <div className="space-y-1">
-            <h4 className="font-semibold text-blue-900 dark:text-blue-200">
+            <h4 className="font-semibold text-[#071B2B] dark:text-[#B9E4E8]">
               Architectural Invariant: Legal Entity vs. Work Location Decoupling
             </h4>
             <p className="text-zinc-600 dark:text-zinc-400">
@@ -43,7 +43,7 @@ export default function OrganizationPage() {
         </div>
 
         {/* Navigation Tabs */}
-        <div className="flex gap-2 border-b border-zinc-200 dark:border-zinc-800 pb-2 text-xs font-medium">
+        <div className="flex gap-2 border-b border-[#EEEEEE] dark:border-[#163854] pb-2 text-xs font-medium">
           {[
             { key: "entities", label: "Legal Entities (3)", icon: Building2 },
             { key: "locations", label: "Work Locations (3)", icon: MapPin },
@@ -58,7 +58,7 @@ export default function OrganizationPage() {
                 onClick={() => setTab(t.key as typeof tab)}
                 className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg transition-colors ${
                   active
-                    ? "bg-blue-600 text-white font-semibold shadow-xs"
+                    ? "bg-[#167D8D] text-white font-semibold shadow-xs"
                     : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-900"
                 }`}
               >
@@ -100,10 +100,10 @@ export default function OrganizationPage() {
             ].map((ent, i) => (
               <div
                 key={i}
-                className="p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-xs space-y-3"
+                className="p-5 rounded-xl border border-[#EEEEEE] dark:border-[#163854] bg-white dark:bg-[#0c263d] shadow-xs space-y-3"
               >
                 <div className="flex items-start justify-between">
-                  <div className="p-2 rounded-lg bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400">
+                  <div className="p-2 rounded-lg bg-[#eaf7f9] dark:bg-[#12334f] text-[#167D8D] dark:text-[#B9E4E8]">
                     <Building2 className="w-4 h-4" />
                   </div>
                   <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-zinc-100 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300">
@@ -111,25 +111,25 @@ export default function OrganizationPage() {
                   </span>
                 </div>
                 <div>
-                  <h4 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
+                  <h4 className="font-bold text-sm text-[#071B2B] dark:text-[#f0f7f9]">
                     {ent.name}
                   </h4>
                   <p className="text-xs text-zinc-500 font-mono">
                     {ent.registration}
                   </p>
                 </div>
-                <div className="pt-2 border-t border-zinc-100 dark:border-zinc-800 text-xs space-y-1.5 text-zinc-600 dark:text-zinc-400">
+                <div className="pt-2 border-t border-[#EEEEEE] dark:border-[#163854] text-xs space-y-1.5 text-zinc-600 dark:text-zinc-400">
                   <div className="flex justify-between">
                     <span>Jurisdiction:</span>
-                    <span className="font-medium text-zinc-900 dark:text-zinc-100">{ent.jurisdiction}</span>
+                    <span className="font-medium text-[#071B2B] dark:text-[#f0f7f9]">{ent.jurisdiction}</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Base Currency:</span>
-                    <span className="font-medium text-zinc-900 dark:text-zinc-100">{ent.currency}</span>
+                    <span className="font-medium text-[#071B2B] dark:text-[#f0f7f9]">{ent.currency}</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Active Contracts:</span>
-                    <span className="font-semibold text-blue-600 dark:text-blue-400">{ent.headcount}</span>
+                    <span className="font-semibold text-[#167D8D] dark:text-[#B9E4E8]">{ent.headcount}</span>
                   </div>
                 </div>
               </div>
@@ -164,27 +164,27 @@ export default function OrganizationPage() {
             ].map((loc, i) => (
               <div
                 key={i}
-                className="p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-xs space-y-3"
+                className="p-5 rounded-xl border border-[#EEEEEE] dark:border-[#163854] bg-white dark:bg-[#0c263d] shadow-xs space-y-3"
               >
                 <div className="p-2 w-fit rounded-lg bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400">
                   <MapPin className="w-4 h-4" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
+                  <h4 className="font-bold text-sm text-[#071B2B] dark:text-[#f0f7f9]">
                     {loc.city} Facility
                   </h4>
                   <p className="text-xs text-zinc-500">{loc.facility}</p>
                 </div>
-                <div className="pt-2 border-t border-zinc-100 dark:border-zinc-800 text-xs space-y-1.5 text-zinc-600 dark:text-zinc-400">
+                <div className="pt-2 border-t border-[#EEEEEE] dark:border-[#163854] text-xs space-y-1.5 text-zinc-600 dark:text-zinc-400">
                   <div className="flex justify-between">
                     <span>Local Timezone:</span>
-                    <span className="font-mono text-zinc-900 dark:text-zinc-100">{loc.timezone}</span>
+                    <span className="font-mono text-[#071B2B] dark:text-[#f0f7f9]">{loc.timezone}</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Working Week:</span>
-                    <span className="text-zinc-900 dark:text-zinc-100">{loc.workingWeek}</span>
+                    <span className="text-[#071B2B] dark:text-[#f0f7f9]">{loc.workingWeek}</span>
                   </div>
-                  <div className="pt-1 border-t border-zinc-100 dark:border-zinc-900 text-[11px] text-blue-600 dark:text-blue-400 font-medium">
+                  <div className="pt-1 border-t border-[#EEEEEE] dark:border-[#163854] text-[11px] text-[#167D8D] dark:text-[#B9E4E8] font-medium">
                     Calendar: {loc.holidayCalendar}
                   </div>
                 </div>
@@ -194,7 +194,7 @@ export default function OrganizationPage() {
         )}
 
         {tab === "departments" && (
-          <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-xs divide-y divide-zinc-200 dark:divide-zinc-800">
+          <div className="rounded-xl border border-[#EEEEEE] dark:border-[#163854] bg-white dark:bg-[#0c263d] shadow-xs divide-y divide-[#EEEEEE] dark:divide-[#163854]">
             {[
               { name: "Engineering & Architecture", head: "Sarah Connor", headcount: 780, costCenter: "CC-ENG-101" },
               { name: "Product Strategy & Design", head: "Daniel Lee", headcount: 140, costCenter: "CC-PRD-201" },
@@ -204,10 +204,10 @@ export default function OrganizationPage() {
             ].map((d, i) => (
               <div key={i} className="p-4 flex items-center justify-between text-xs hover:bg-zinc-50 dark:hover:bg-zinc-900/50">
                 <div className="space-y-0.5">
-                  <div className="font-semibold text-zinc-900 dark:text-zinc-100 text-sm">{d.name}</div>
+                  <div className="font-semibold text-[#071B2B] dark:text-[#f0f7f9] text-sm">{d.name}</div>
                   <div className="text-zinc-500">Department Lead: {d.head} • Cost Center: {d.costCenter}</div>
                 </div>
-                <span className="px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 font-semibold text-xs">
+                <span className="px-3 py-1 rounded-full bg-[#eaf7f9] dark:bg-[#12334f] text-[#071B2B] dark:text-[#B9E4E8] font-semibold text-xs">
                   {d.headcount} Members
                 </span>
               </div>
@@ -216,12 +216,12 @@ export default function OrganizationPage() {
         )}
 
         {tab === "transfers" && (
-          <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-xs overflow-hidden">
-            <div className="p-4 border-b border-zinc-200 dark:border-zinc-800">
-              <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-50">Effective-Dated Assignment Transfer Ledger</h3>
+          <div className="rounded-xl border border-[#EEEEEE] dark:border-[#163854] bg-white dark:bg-[#0c263d] shadow-xs overflow-hidden">
+            <div className="p-4 border-b border-[#EEEEEE] dark:border-[#163854]">
+              <h3 className="font-bold text-sm text-[#071B2B] dark:text-[#f0f7f9]">Effective-Dated Assignment Transfer Ledger</h3>
               <p className="text-xs text-zinc-500">Immutable historical audit trail of employee transfers between entities and locations.</p>
             </div>
-            <div className="divide-y divide-zinc-200 dark:divide-zinc-800 text-xs">
+            <div className="divide-y divide-[#EEEEEE] dark:divide-[#163854] text-xs">
               {[
                 {
                   employee: "Rajesh Kumar (EMP-0102)",
@@ -242,12 +242,12 @@ export default function OrganizationPage() {
               ].map((t, i) => (
                 <div key={i} className="p-4 hover:bg-zinc-50 dark:hover:bg-zinc-900/50 space-y-1.5">
                   <div className="flex items-center justify-between">
-                    <span className="font-semibold text-zinc-900 dark:text-zinc-100">{t.employee}</span>
+                    <span className="font-semibold text-[#071B2B] dark:text-[#f0f7f9]">{t.employee}</span>
                     <span className="text-[11px] text-zinc-400 font-mono">Effective: {t.date}</span>
                   </div>
                   <div className="flex items-center gap-2 text-zinc-600 dark:text-zinc-400">
                     <span className="line-through">{t.from}</span>
-                    <ArrowRight className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+                    <ArrowRight className="w-3.5 h-3.5 text-[#167D8D] shrink-0" />
                     <span className="font-medium text-emerald-600 dark:text-emerald-400">{t.to}</span>
                   </div>
                   <div className="text-[11px] text-zinc-500">

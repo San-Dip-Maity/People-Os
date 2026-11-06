@@ -5,7 +5,7 @@ export function SkeletonProfile() {
   return (
     <div className="space-y-6">
       {/* Profile Header */}
-      <div className="p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-sm flex flex-col sm:flex-row items-center gap-6">
+      <div className="p-6 rounded-xl border border-[#EEEEEE] dark:border-[#163854] bg-white dark:bg-[#0c263d] shadow-sm flex flex-col sm:flex-row items-center gap-6">
         <Skeleton className="h-24 w-24 rounded-full shrink-0" />
         <div className="space-y-2.5 flex-1 text-center sm:text-left">
           <Skeleton className="h-7 w-48 mx-auto sm:mx-0" />
@@ -23,7 +23,7 @@ export function SkeletonProfile() {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-2 border-b border-zinc-200 dark:border-zinc-800 pb-2">
+      <div className="flex gap-2 border-b border-[#EEEEEE] dark:border-[#163854] pb-2">
         <Skeleton className="h-9 w-24 rounded-lg" />
         <Skeleton className="h-9 w-28 rounded-lg" />
         <Skeleton className="h-9 w-24 rounded-lg" />
@@ -32,11 +32,11 @@ export function SkeletonProfile() {
 
       {/* Tab Content Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 space-y-4">
+        <div className="p-6 rounded-xl border border-[#EEEEEE] dark:border-[#163854] bg-white dark:bg-[#0c263d] space-y-4">
           <Skeleton className="h-5 w-36" />
           <div className="space-y-3">
             {Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="flex justify-between py-1 border-b border-zinc-100 dark:border-zinc-900">
+              <div key={i} className="flex justify-between py-1 border-b border-[#EEEEEE] dark:border-[#163854]">
                 <Skeleton className="h-4 w-28" />
                 <Skeleton className="h-4 w-40" />
               </div>
@@ -44,11 +44,11 @@ export function SkeletonProfile() {
           </div>
         </div>
 
-        <div className="p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 space-y-4">
+        <div className="p-6 rounded-xl border border-[#EEEEEE] dark:border-[#163854] bg-white dark:bg-[#0c263d] space-y-4">
           <Skeleton className="h-5 w-40" />
           <div className="space-y-3">
             {Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="flex justify-between py-1 border-b border-zinc-100 dark:border-zinc-900">
+              <div key={i} className="flex justify-between py-1 border-b border-[#EEEEEE] dark:border-[#163854]">
                 <Skeleton className="h-4 w-32" />
                 <Skeleton className="h-4 w-36" />
               </div>

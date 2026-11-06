@@ -13,7 +13,7 @@ export default function PerformancePage() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-1">
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50 flex items-center gap-2">
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[#071B2B] dark:text-[#f0f7f9] flex items-center gap-2">
               Performance Management & OKRs
             </h1>
             <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">
@@ -24,7 +24,7 @@ export default function PerformancePage() {
           <div className="flex items-center gap-2">
             <button
               onClick={() => alert("Open New OKR Goal form")}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold shadow-xs transition-colors"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-[#167D8D] hover:bg-[#126876] text-white text-xs font-semibold shadow-xs transition-colors"
             >
               <Plus className="w-4 h-4" />
               <span>Define New Goal / OKR</span>
@@ -33,13 +33,13 @@ export default function PerformancePage() {
         </div>
 
         {/* Current Review Cycle Banner */}
-        <div className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="p-4 rounded-xl border border-[#EEEEEE] dark:border-[#163854] bg-white dark:bg-[#0c263d] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             <div className="p-2.5 rounded-lg bg-purple-50 dark:bg-purple-950 text-purple-600 dark:text-purple-400">
               <Award className="w-4 h-4" />
             </div>
             <div>
-              <div className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
+              <div className="text-xs font-bold text-[#071B2B] dark:text-[#f0f7f9]">
                 Annual Performance Cycle 2026 (H2 Review)
               </div>
               <div className="text-[11px] text-zinc-500">
@@ -49,15 +49,15 @@ export default function PerformancePage() {
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300">
+            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-[#B9E4E8] text-[#071B2B]">
               CYCLE ACTIVE
             </span>
           </div>
         </div>
 
         {/* Company & Department OKRs */}
-        <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-xs p-5 space-y-4">
-          <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-50">
+        <div className="rounded-xl border border-[#EEEEEE] dark:border-[#163854] bg-white dark:bg-[#0c263d] shadow-xs p-5 space-y-4">
+          <h3 className="font-bold text-sm text-[#071B2B] dark:text-[#f0f7f9]">
             Active Strategic Objectives & Key Results (Q4 2026)
           </h3>
 
@@ -84,17 +84,17 @@ export default function PerformancePage() {
             ].map((okr, i) => (
               <div
                 key={i}
-                className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/40 space-y-2 text-xs"
+                className="p-4 rounded-lg border border-[#EEEEEE] dark:border-[#163854] bg-zinc-50/50 dark:bg-zinc-900/40 space-y-2 text-xs"
               >
                 <div className="flex items-start justify-between">
-                  <div className="font-semibold text-zinc-900 dark:text-zinc-100">
+                  <div className="font-semibold text-[#071B2B] dark:text-[#f0f7f9]">
                     {okr.title}
                   </div>
                   <span
                     className={`text-[10px] px-2 py-0.5 rounded-full font-semibold ${
                       okr.progress === 100
                         ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300"
-                        : "bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300"
+                        : "bg-[#B9E4E8] text-[#071B2B]"
                     }`}
                   >
                     {okr.status}
@@ -102,7 +102,7 @@ export default function PerformancePage() {
                 </div>
                 <div className="w-full bg-zinc-200 dark:bg-zinc-800 h-2 rounded-full overflow-hidden">
                   <div
-                    className="bg-blue-600 h-full rounded-full transition-all"
+                    className="bg-[#167D8D] h-full rounded-full transition-all"
                     style={{ width: `${okr.progress}%` }}
                   />
                 </div>

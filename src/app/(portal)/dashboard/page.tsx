@@ -37,7 +37,7 @@ export default function DashboardPage() {
       details: "5 days (Nov 15 - Nov 20)",
       entity: "Acme UAE Ltd",
       level: "L2 HR Approval",
-      badge: "bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300",
+      badge: "bg-[#B9E4E8] text-[#071B2B]",
       status: "PENDING",
     },
     {
@@ -88,38 +88,38 @@ export default function DashboardPage() {
         {/* Welcome & Overview Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-1">
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+            <h1 className="title-page text-[#071B2B] dark:text-[#f0f7f9]">
               Operations Command Center
             </h1>
-            <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">
+            <p className="text-supporting text-zinc-500 dark:text-zinc-400">
               Real-time workforce intelligence and human capital telemetry.
             </p>
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#eaf7f9] text-[#071B2B] dark:bg-[#0c263d] dark:text-[#B9E4E8] border border-[#B9E4E8] dark:border-[#163854]">
+              <span className="w-2 h-2 rounded-full bg-[#167D8D] animate-pulse" />
               Tenant: Acme Global (UAE / IND)
             </span>
           </div>
         </div>
 
         {/* AI People Intelligence Insight Banner */}
-        <div className="relative overflow-hidden rounded-xl border border-blue-200 dark:border-blue-900/60 bg-gradient-to-r from-blue-50/80 via-indigo-50/40 to-white dark:from-blue-950/30 dark:via-zinc-900 dark:to-zinc-950 p-4 sm:p-5 shadow-xs">
+        <div className="relative overflow-hidden rounded-xl border border-[#B9E4E8] dark:border-[#163854] bg-gradient-to-r from-[#eaf7f9] via-white to-white dark:from-[#0c263d] dark:via-[#071B2B] dark:to-[#071B2B] p-4 sm:p-5 shadow-xs">
           <div className="flex items-start gap-3.5">
-            <div className="p-2 rounded-lg bg-blue-600 text-white shrink-0 shadow-sm shadow-blue-500/20">
+            <div className="p-2 rounded-lg bg-[#167D8D] text-white shrink-0 shadow-sm shadow-[#167D8D]/20">
               <Sparkles className="w-4 h-4" />
             </div>
             <div className="flex-1 min-w-0 space-y-1">
               <div className="flex items-center justify-between">
-                <h4 className="text-xs font-semibold uppercase tracking-wider text-blue-700 dark:text-blue-300">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-[#167D8D] dark:text-[#B9E4E8]">
                   AI Workforce Insight • Effective Date Aware
                 </h4>
                 <span className="text-[11px] text-zinc-500 dark:text-zinc-400">
                   Updated 5m ago
                 </span>
               </div>
-              <p className="text-xs sm:text-sm text-zinc-700 dark:text-zinc-300">
+              <p className="text-body text-zinc-700 dark:text-zinc-300">
                 Notice: 3 employees transferred between <strong>UAE Legal Entity</strong> and{" "}
                 <strong>Bangalore Work Location</strong> have their India Holiday Calendar
                 effective from next Monday. No leave conflict detected.
@@ -133,25 +133,25 @@ export default function DashboardPage() {
           {/* Card 1 */}
           <Link
             href="/employees"
-            className="p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-xs space-y-2 hover:border-blue-300 dark:hover:border-blue-800 transition-colors block"
+            className="p-5 rounded-xl border border-[#EEEEEE] dark:border-[#163854] bg-white dark:bg-[#0c263d] shadow-xs space-y-2 hover:border-[#167D8D] dark:hover:border-[#167D8D] transition-colors block"
           >
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400">
+              <span className="text-label text-zinc-500 dark:text-zinc-400">
                 Total Headcount
               </span>
-              <div className="p-2 rounded-lg bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400">
+              <div className="p-2 rounded-lg bg-[#eaf7f9] dark:bg-[#12334f] text-[#167D8D] dark:text-[#B9E4E8]">
                 <Users className="w-4 h-4" />
               </div>
             </div>
             <div className="flex items-baseline justify-between">
-              <span className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+              <span className="text-2xl font-bold tracking-tight text-[#071B2B] dark:text-[#f0f7f9]">
                 1,248
               </span>
-              <span className="inline-flex items-center text-xs font-medium text-emerald-600 dark:text-emerald-400">
+              <span className="inline-flex items-center text-xs font-semibold text-emerald-600 dark:text-emerald-400">
                 <TrendingUp className="w-3 h-3 mr-0.5" /> +4.2%
               </span>
             </div>
-            <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
+            <p className="text-supporting text-zinc-500 dark:text-zinc-400">
               Across 3 legal entities & 5 offices
             </p>
           </Link>
@@ -159,25 +159,25 @@ export default function DashboardPage() {
           {/* Card 2 */}
           <Link
             href="/attendance"
-            className="p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-xs space-y-2 hover:border-emerald-300 dark:hover:border-emerald-800 transition-colors block"
+            className="p-5 rounded-xl border border-[#EEEEEE] dark:border-[#163854] bg-white dark:bg-[#0c263d] shadow-xs space-y-2 hover:border-[#167D8D] dark:hover:border-[#167D8D] transition-colors block"
           >
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400">
+              <span className="text-label text-zinc-500 dark:text-zinc-400">
                 Today&apos;s Attendance
               </span>
-              <div className="p-2 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400">
+              <div className="p-2 rounded-lg bg-[#eaf7f9] dark:bg-[#12334f] text-[#167D8D] dark:text-[#B9E4E8]">
                 <CalendarCheck className="w-4 h-4" />
               </div>
             </div>
             <div className="flex items-baseline justify-between">
-              <span className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+              <span className="text-2xl font-bold tracking-tight text-[#071B2B] dark:text-[#f0f7f9]">
                 96.4%
               </span>
               <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400">
                 1,203 Present
               </span>
             </div>
-            <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
+            <p className="text-supporting text-zinc-500 dark:text-zinc-400">
               28 on approved leave, 17 remote
             </p>
           </Link>
@@ -185,10 +185,10 @@ export default function DashboardPage() {
           {/* Card 3 */}
           <Link
             href="/workflows"
-            className="p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-xs space-y-2 hover:border-amber-300 dark:hover:border-amber-800 transition-colors block"
+            className="p-5 rounded-xl border border-[#EEEEEE] dark:border-[#163854] bg-white dark:bg-[#0c263d] shadow-xs space-y-2 hover:border-[#167D8D] dark:hover:border-[#167D8D] transition-colors block"
           >
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400">
+              <span className="text-label text-zinc-500 dark:text-zinc-400">
                 Pending Approvals
               </span>
               <div className="p-2 rounded-lg bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400">
@@ -196,14 +196,14 @@ export default function DashboardPage() {
               </div>
             </div>
             <div className="flex items-baseline justify-between">
-              <span className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+              <span className="text-2xl font-bold tracking-tight text-[#071B2B] dark:text-[#f0f7f9]">
                 {activePendingCount}
               </span>
-              <span className="text-xs font-medium text-amber-600 dark:text-amber-400">
+              <span className="text-xs font-semibold text-amber-600 dark:text-amber-400">
                 Queue active
               </span>
             </div>
-            <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
+            <p className="text-supporting text-zinc-500 dark:text-zinc-400">
               Leaves, Regularizations & Air
             </p>
           </Link>
@@ -211,25 +211,25 @@ export default function DashboardPage() {
           {/* Card 4 */}
           <Link
             href="/payroll"
-            className="p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-xs space-y-2 hover:border-purple-300 dark:hover:border-purple-800 transition-colors block"
+            className="p-5 rounded-xl border border-[#EEEEEE] dark:border-[#163854] bg-white dark:bg-[#0c263d] shadow-xs space-y-2 hover:border-[#167D8D] dark:hover:border-[#167D8D] transition-colors block"
           >
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-zinc-500 dark:text-zinc-400">
+              <span className="text-label text-zinc-500 dark:text-zinc-400">
                 Payroll Cycle
               </span>
-              <div className="p-2 rounded-lg bg-purple-50 dark:bg-purple-950/60 text-purple-600 dark:text-purple-400">
+              <div className="p-2 rounded-lg bg-[#eaf7f9] dark:bg-[#12334f] text-[#167D8D] dark:text-[#B9E4E8]">
                 <Clock className="w-4 h-4" />
               </div>
             </div>
             <div className="flex items-baseline justify-between">
-              <span className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+              <span className="text-2xl font-bold tracking-tight text-[#071B2B] dark:text-[#f0f7f9]">
                 Nov 2026
               </span>
-              <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300">
+              <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-[#B9E4E8] text-[#071B2B]">
                 PREVIEW
               </span>
             </div>
-            <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
+            <p className="text-supporting text-zinc-500 dark:text-zinc-400">
               Cut-off: 24th Nov • In Audit Review
             </p>
           </Link>
@@ -238,37 +238,37 @@ export default function DashboardPage() {
         {/* Two-Column Operations Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left Column: Pending Workflow Approvals (2 cols) */}
-          <div className="lg:col-span-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-xs overflow-hidden">
-            <div className="p-5 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between">
+          <div className="lg:col-span-2 rounded-xl border border-[#EEEEEE] dark:border-[#163854] bg-white dark:bg-[#0c263d] shadow-xs overflow-hidden">
+            <div className="p-5 border-b border-[#EEEEEE] dark:border-[#163854] flex items-center justify-between">
               <div>
-                <h3 className="font-semibold text-sm text-zinc-900 dark:text-zinc-50">
+                <h3 className="heading-card text-[#071B2B] dark:text-[#f0f7f9]">
                   Pending Workflow Engine Approvals
                 </h3>
-                <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                <p className="text-supporting text-zinc-500 dark:text-zinc-400">
                   Unified multi-level queue across modules
                 </p>
               </div>
               <Link
                 href="/workflows"
-                className="text-xs font-medium text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
+                className="text-xs font-semibold text-[#167D8D] dark:text-[#B9E4E8] hover:underline flex items-center gap-1"
               >
                 View All Queue <ArrowUpRight className="w-3.5 h-3.5" />
               </Link>
             </div>
 
-            <div className="divide-y divide-zinc-200 dark:divide-zinc-800">
+            <div className="divide-y divide-[#EEEEEE] dark:divide-[#163854]">
               {pendingQueue.map((item) => (
                 <div
                   key={item.id}
-                  className="p-4 sm:px-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-zinc-50/60 dark:hover:bg-zinc-900/40 transition-colors"
+                  className="p-4 sm:px-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-[#fafafa] dark:hover:bg-[#0a2134] transition-colors"
                 >
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <span className="font-medium text-xs text-zinc-900 dark:text-zinc-100">
+                      <span className="font-semibold text-xs text-[#071B2B] dark:text-[#f0f7f9]">
                         {item.employee}
                       </span>
                       <span
-                        className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${item.badge}`}
+                        className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-[#B9E4E8] text-[#071B2B]"
                       >
                         {item.type}
                       </span>
@@ -287,14 +287,14 @@ export default function DashboardPage() {
                         <button
                           onClick={() => handleDecision(item.id, "APPROVED")}
                           title="Approve request"
-                          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-medium transition-colors"
+                          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#167D8D] hover:bg-[#126876] text-white text-xs font-semibold transition-colors"
                         >
                           <CheckCircle2 className="w-3.5 h-3.5" /> Approve
                         </button>
                         <button
                           onClick={() => handleDecision(item.id, "REJECTED")}
                           title="Reject request"
-                          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-900 text-zinc-700 dark:text-zinc-300 text-xs font-medium transition-colors"
+                          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-[#EEEEEE] dark:border-[#163854] hover:bg-[#EEEEEE] dark:hover:bg-[#12334f] text-[#071B2B] dark:text-[#f0f7f9] text-xs font-semibold transition-colors"
                         >
                           <XCircle className="w-3.5 h-3.5" /> Reject
                         </button>
@@ -319,9 +319,9 @@ export default function DashboardPage() {
           {/* Right Column: Attendance Punch & Quick Actions */}
           <div className="space-y-6">
             {/* Quick Punch Widget */}
-            <div className="p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-xs space-y-4">
+            <div className="p-5 rounded-xl border border-[#EEEEEE] dark:border-[#163854] bg-white dark:bg-[#0c263d] shadow-xs space-y-4">
               <div className="flex items-center justify-between">
-                <h3 className="font-semibold text-sm text-zinc-900 dark:text-zinc-50">
+                <h3 className="heading-card text-[#071B2B] dark:text-[#f0f7f9]">
                   Self-Service Attendance
                 </h3>
                 <span className="text-[11px] font-mono text-zinc-500 dark:text-zinc-400">
@@ -329,8 +329,8 @@ export default function DashboardPage() {
                 </span>
               </div>
 
-              <div className="p-4 rounded-lg bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 text-center space-y-1">
-                <span className="text-2xl font-bold font-mono tracking-tight text-zinc-900 dark:text-zinc-100">
+              <div className="p-4 rounded-lg bg-[#fafafa] dark:bg-[#0a2134] border border-[#EEEEEE] dark:border-[#163854] text-center space-y-1">
+                <span className="text-2xl font-bold font-mono tracking-tight text-[#071B2B] dark:text-[#f0f7f9]">
                   {clockedIn ? "07h 42m" : "00h 00m"}
                 </span>
                 <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
@@ -342,10 +342,10 @@ export default function DashboardPage() {
 
               <button
                 onClick={handleClockToggle}
-                className={`w-full py-2.5 px-4 rounded-lg text-xs font-semibold shadow-xs transition-colors flex items-center justify-center gap-2 ${
+                className={`w-full py-2.5 px-4 rounded-lg text-btn shadow-xs transition-colors flex items-center justify-center gap-2 ${
                   clockedIn
                     ? "bg-red-600 hover:bg-red-700 text-white"
-                    : "bg-blue-600 hover:bg-blue-700 text-white"
+                    : "btn-primary"
                 }`}
               >
                 <Clock className="w-4 h-4" />
@@ -354,8 +354,8 @@ export default function DashboardPage() {
             </div>
 
             {/* Quick Actions */}
-            <div className="p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-xs space-y-3">
-              <h3 className="font-semibold text-xs uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+            <div className="p-5 rounded-xl border border-[#EEEEEE] dark:border-[#163854] bg-white dark:bg-[#0c263d] shadow-xs space-y-3">
+              <h3 className="text-label uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
                 Frequent Operations
               </h3>
               <div className="space-y-1.5">
@@ -368,10 +368,10 @@ export default function DashboardPage() {
                   <Link
                     key={i}
                     href={act.href}
-                    className="flex items-center justify-between p-2.5 rounded-lg text-xs font-medium text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors group"
+                    className="flex items-center justify-between p-2.5 rounded-lg text-xs font-semibold text-[#071B2B] dark:text-[#f0f7f9] hover:bg-[#eaf7f9] dark:hover:bg-[#0a2134] transition-colors group"
                   >
                     <span>{act.title}</span>
-                    <ChevronRight className="w-3.5 h-3.5 text-zinc-400 group-hover:translate-x-0.5 transition-transform" />
+                    <ChevronRight className="w-3.5 h-3.5 text-zinc-400 group-hover:text-[#167D8D] group-hover:translate-x-0.5 transition-transform" />
                   </Link>
                 ))}
               </div>

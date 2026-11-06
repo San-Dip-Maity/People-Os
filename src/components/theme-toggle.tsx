@@ -33,7 +33,7 @@ export function ThemeToggle() {
 
   if (!mounted) {
     return (
-      <div className="w-9 h-9 rounded-lg bg-zinc-100 dark:bg-zinc-800 animate-pulse" />
+      <div className="w-9 h-9 rounded-lg bg-[#EEEEEE] dark:bg-[#0c263d] animate-pulse" />
     );
   }
 
@@ -47,22 +47,22 @@ export function ThemeToggle() {
         aria-expanded={open}
         title={`Current theme: ${theme} (${resolvedTheme}). Click to choose Light, Dark, or System.`}
         className={cn(
-          "inline-flex items-center justify-center w-9 h-9 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500",
-          open && "ring-2 ring-blue-500/30 border-blue-500"
+          "inline-flex items-center justify-center w-9 h-9 rounded-lg border border-[#EEEEEE] dark:border-[#163854] bg-white dark:bg-[#0c263d] text-[#071B2B] dark:text-[#f0f7f9] hover:bg-[#EEEEEE] dark:hover:bg-[#12334f] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#167D8D]",
+          open && "ring-2 ring-[#167D8D]/30 border-[#167D8D]"
         )}
       >
         {theme === "system" ? (
-          <Monitor className="w-4 h-4 text-emerald-500" />
+          <Monitor className="w-4 h-4 text-[#167D8D]" />
         ) : isDark ? (
-          <Moon className="w-4 h-4 text-blue-400" />
+          <Moon className="w-4 h-4 text-[#B9E4E8]" />
         ) : (
           <Sun className="w-4 h-4 text-amber-500" />
         )}
       </button>
 
       {open && (
-        <div className="absolute right-0 mt-2 w-36 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-lg py-1 z-50 animate-in fade-in slide-in-from-top-2">
-          <div className="px-3 py-1.5 text-[11px] font-semibold text-zinc-400 uppercase tracking-wider">
+        <div className="absolute right-0 mt-2 w-36 rounded-xl border border-[#EEEEEE] dark:border-[#163854] bg-white dark:bg-[#0c263d] shadow-lg py-1 z-50 animate-in fade-in slide-in-from-top-2">
+          <div className="px-3 py-1.5 text-[11px] font-semibold text-[#4a6173] dark:text-[#8ca3b5] uppercase tracking-wider">
             Appearance
           </div>
 
@@ -74,8 +74,8 @@ export function ThemeToggle() {
             className={cn(
               "w-full flex items-center justify-between px-3 py-2 text-xs text-left transition-colors",
               theme === "light"
-                ? "bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300 font-semibold"
-                : "text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-900"
+                ? "bg-[#e8f4f6] text-[#167D8D] dark:bg-[#12334f] dark:text-[#B9E4E8] font-semibold"
+                : "text-[#071B2B] dark:text-[#f0f7f9] hover:bg-[#EEEEEE] dark:hover:bg-[#12334f]"
             )}
           >
             <span className="flex items-center gap-2">
@@ -92,12 +92,12 @@ export function ThemeToggle() {
             className={cn(
               "w-full flex items-center justify-between px-3 py-2 text-xs text-left transition-colors",
               theme === "dark"
-                ? "bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300 font-semibold"
-                : "text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-900"
+                ? "bg-[#e8f4f6] text-[#167D8D] dark:bg-[#12334f] dark:text-[#B9E4E8] font-semibold"
+                : "text-[#071B2B] dark:text-[#f0f7f9] hover:bg-[#EEEEEE] dark:hover:bg-[#12334f]"
             )}
           >
             <span className="flex items-center gap-2">
-              <Moon className="w-3.5 h-3.5 text-blue-400" /> Dark
+              <Moon className="w-3.5 h-3.5 text-[#B9E4E8]" /> Dark
             </span>
             {theme === "dark" && <Check className="w-3.5 h-3.5" />}
           </button>
@@ -110,12 +110,12 @@ export function ThemeToggle() {
             className={cn(
               "w-full flex items-center justify-between px-3 py-2 text-xs text-left transition-colors",
               theme === "system"
-                ? "bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300 font-semibold"
-                : "text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-900"
+                ? "bg-[#e8f4f6] text-[#167D8D] dark:bg-[#12334f] dark:text-[#B9E4E8] font-semibold"
+                : "text-[#071B2B] dark:text-[#f0f7f9] hover:bg-[#EEEEEE] dark:hover:bg-[#12334f]"
             )}
           >
             <span className="flex items-center gap-2">
-              <Monitor className="w-3.5 h-3.5 text-emerald-500" /> System
+              <Monitor className="w-3.5 h-3.5 text-[#167D8D]" /> System
             </span>
             {theme === "system" && <Check className="w-3.5 h-3.5" />}
           </button>

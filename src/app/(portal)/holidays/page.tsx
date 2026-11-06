@@ -45,7 +45,7 @@ export default function HolidaysPage() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-1">
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50 flex items-center gap-2">
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[#071B2B] dark:text-[#f0f7f9] flex items-center gap-2">
               Holiday Calendars & Regional Observance
             </h1>
             <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">
@@ -69,7 +69,7 @@ export default function HolidaysPage() {
         </div>
 
         {/* Calendar Switcher Tabs */}
-        <div className="flex gap-2 border-b border-zinc-200 dark:border-zinc-800 pb-2 text-xs font-medium">
+        <div className="flex gap-2 border-b border-[#EEEEEE] dark:border-[#163854] pb-2 text-xs font-medium">
           {[
             {
               key: "IND",
@@ -94,14 +94,14 @@ export default function HolidaysPage() {
                 onClick={() => setSelectedCalendar(c.key as typeof selectedCalendar)}
                 className={`px-4 py-2 rounded-lg transition-colors text-left ${
                   active
-                    ? "bg-blue-600 text-white font-semibold shadow-xs"
+                    ? "bg-[#167D8D] text-white font-semibold shadow-xs"
                     : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-900"
                 }`}
               >
                 <div>{c.label}</div>
                 <div
                   className={`text-[10px] ${
-                    active ? "text-blue-100" : "text-zinc-400"
+                    active ? "text-[#B9E4E8]" : "text-zinc-400"
                   }`}
                 >
                   {c.location}
@@ -112,10 +112,10 @@ export default function HolidaysPage() {
         </div>
 
         {/* Holidays List */}
-        <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-xs overflow-hidden">
-          <div className="p-4 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between">
+        <div className="rounded-xl border border-[#EEEEEE] dark:border-[#163854] bg-white dark:bg-[#0c263d] shadow-xs overflow-hidden">
+          <div className="p-4 border-b border-[#EEEEEE] dark:border-[#163854] flex items-center justify-between">
             <div>
-              <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-50">
+              <h3 className="font-bold text-sm text-[#071B2B] dark:text-[#f0f7f9]">
                 Official Observed Holidays ({holidayData[selectedCalendar].length} days)
               </h3>
               <p className="text-xs text-zinc-500">
@@ -127,18 +127,18 @@ export default function HolidaysPage() {
             </span>
           </div>
 
-          <div className="divide-y divide-zinc-200 dark:divide-zinc-800">
+          <div className="divide-y divide-[#EEEEEE] dark:divide-[#163854]">
             {holidayData[selectedCalendar].map((h, i) => (
               <div
                 key={i}
                 className="p-4 flex items-center justify-between text-xs hover:bg-zinc-50 dark:hover:bg-zinc-900/50"
               >
                 <div className="flex items-center gap-3">
-                  <div className="p-2.5 rounded-lg bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 shrink-0">
+                  <div className="p-2.5 rounded-lg bg-[#eaf7f9] dark:bg-[#12334f] text-[#167D8D] dark:text-[#B9E4E8] shrink-0">
                     <Calendar className="w-4 h-4" />
                   </div>
                   <div>
-                    <div className="font-semibold text-zinc-900 dark:text-zinc-100 text-sm">
+                    <div className="font-semibold text-[#071B2B] dark:text-[#f0f7f9] text-sm">
                       {h.name}
                     </div>
                     <div className="text-[11px] text-zinc-500 font-mono">
@@ -151,7 +151,7 @@ export default function HolidaysPage() {
                   <span className="px-2.5 py-1 rounded-full bg-zinc-100 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 font-medium text-[11px]">
                     {h.type}
                   </span>
-                  <span className="font-semibold text-zinc-900 dark:text-zinc-100 w-16 text-right">
+                  <span className="font-semibold text-[#071B2B] dark:text-[#f0f7f9] w-16 text-right">
                     {h.days} day(s)
                   </span>
                 </div>

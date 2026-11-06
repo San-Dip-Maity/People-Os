@@ -13,9 +13,9 @@ export function SkeletonCard({
   lines = 3,
 }: SkeletonCardProps) {
   return (
-    <div className="p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-sm space-y-4">
+    <div className="p-6 rounded-xl border border-[#EEEEEE] dark:border-[#163854] bg-white dark:bg-[#0c263d] shadow-sm space-y-4">
       {hasHeader && (
-        <div className="flex items-center justify-between pb-2 border-b border-zinc-100 dark:border-zinc-800">
+        <div className="flex items-center justify-between pb-2 border-b border-[#EEEEEE] dark:border-[#163854]">
           <Skeleton className="h-5 w-40" />
           <Skeleton className="h-4 w-16" />
         </div>
@@ -30,7 +30,7 @@ export function SkeletonCard({
         ))}
       </div>
       {hasFooter && (
-        <div className="pt-2 flex justify-end gap-2 border-t border-zinc-100 dark:border-zinc-800">
+        <div className="pt-2 flex justify-end gap-2 border-t border-[#EEEEEE] dark:border-[#163854]">
           <Skeleton className="h-8 w-20 rounded-md" />
           <Skeleton className="h-8 w-24 rounded-md" />
         </div>

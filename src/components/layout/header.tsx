@@ -58,53 +58,50 @@ export function Header({
       time: "10m ago",
       read: false,
       icon: Calendar,
-      type: "leave",
       link: "/leave",
     },
     {
       id: "2",
-      title: "Payroll Preview Ready",
-      description: "November 2026 payroll calculations ready for HR audit",
+      title: "Payroll Batch Pending Approval",
+      description: "October 2026 UAE Payroll cycle is ready for sign-off",
       time: "1h ago",
       read: false,
       icon: DollarSign,
-      type: "payroll",
       link: "/payroll",
     },
     {
       id: "3",
-      title: "Probation Milestone",
-      description: "Daniel Lee completed 6 months probation period",
+      title: "New Employee Onboarded",
+      description: "Rajesh Kumar joined Engineering (EMP-0102)",
       time: "3h ago",
       read: true,
       icon: UserCheck,
-      type: "employee",
       link: "/employees",
     },
   ]);
 
   const organizations = [
     {
-      id: "org-1",
+      id: "1",
       name: "Acme Technologies Global (UAE HQ)",
-      legalEntity: "Acme Holdings FZ-LLC",
-      location: "Dubai Internet City",
+      legalEntity: "Acme Holdings UAE Ltd",
+      location: "Dubai, UAE",
     },
     {
-      id: "org-2",
+      id: "2",
       name: "Acme Technologies India Pvt Ltd",
-      legalEntity: "Acme India Software Pvt Ltd",
-      location: "Bengaluru Tech Park",
+      legalEntity: "Acme India Tech Services Pvt Ltd",
+      location: "Bengaluru, India",
     },
     {
-      id: "org-3",
-      name: "Acme US Operations Inc",
-      legalEntity: "Acme Americas Delaware Corp",
-      location: "New York / Remote",
+      id: "3",
+      name: "Acme Americas Delaware Corp",
+      legalEntity: "Acme US Inc",
+      location: "New York, USA",
     },
   ];
 
-  // Outside click listener
+  // Close dropdowns on outside click
   React.useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
       if (orgRef.current && !orgRef.current.contains(e.target as Node)) {
@@ -162,12 +159,12 @@ export function Header({
     : allNavItems.slice(0, 6);
 
   return (
-    <header className="h-16 px-4 sm:px-6 bg-white dark:bg-zinc-950 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between sticky top-0 z-30 transition-colors">
+    <header className="h-16 px-4 sm:px-6 bg-white dark:bg-[#071B2B] border-b border-[#EEEEEE] dark:border-[#163854] flex items-center justify-between sticky top-0 z-30 transition-colors shadow-xs">
       {/* Left side: Hamburger + Organization Switcher */}
       <div className="flex items-center gap-3">
         <button
           onClick={onMenuToggle}
-          className="lg:hidden p-2 rounded-lg text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors"
+          className="lg:hidden p-2 rounded-lg text-[#4a6173] hover:text-[#071B2B] dark:hover:text-[#f0f7f9] hover:bg-[#EEEEEE] dark:hover:bg-[#0c263d] transition-colors"
           aria-label="Toggle navigation"
         >
           <Menu className="w-5 h-5" />
@@ -178,21 +175,21 @@ export function Header({
           <button
             onClick={() => setOrgOpen(!orgOpen)}
             aria-label="Switch organization"
-            className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-850 text-xs font-medium text-zinc-900 dark:text-zinc-100 transition-colors"
+            className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-[#EEEEEE] dark:border-[#163854] bg-[#fafafa] dark:bg-[#0c263d] hover:bg-[#EEEEEE] dark:hover:bg-[#12334f] text-xs font-medium text-[#071B2B] dark:text-[#f0f7f9] transition-colors"
           >
-            <Building className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 shrink-0" />
+            <Building className="w-3.5 h-3.5 text-[#167D8D] shrink-0" />
             <span className="font-semibold max-w-[140px] sm:max-w-[200px] truncate">
               {activeOrg}
             </span>
-            <ChevronDown className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
+            <ChevronDown className="w-3.5 h-3.5 text-[#4a6173] dark:text-[#8ca3b5] shrink-0" />
           </button>
 
           {orgOpen && (
-            <div className="absolute left-0 mt-2 w-72 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-xl py-2 z-50 animate-in fade-in slide-in-from-top-2">
-              <div className="px-3.5 py-1 text-[11px] font-semibold text-zinc-400 uppercase tracking-wider">
+            <div className="absolute left-0 mt-2 w-72 rounded-xl border border-[#EEEEEE] dark:border-[#163854] bg-white dark:bg-[#0c263d] shadow-xl py-2 z-50 animate-in fade-in slide-in-from-top-2">
+              <div className="px-3.5 py-1 text-[11px] font-semibold text-[#4a6173] dark:text-[#8ca3b5] uppercase tracking-wider">
                 Select Active Organization
               </div>
-              <div className="divide-y divide-zinc-100 dark:divide-zinc-900">
+              <div className="divide-y divide-[#EEEEEE] dark:divide-[#163854]">
                 {organizations.map((org) => {
                   const isSelected = org.name === activeOrg;
                   return (
@@ -203,20 +200,20 @@ export function Header({
                         setOrgOpen(false);
                       }}
                       className={cn(
-                        "w-full px-3.5 py-2.5 text-left flex items-start justify-between gap-2 hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-colors",
-                        isSelected && "bg-blue-50/70 dark:bg-blue-950/40"
+                        "w-full px-3.5 py-2.5 text-left flex items-start justify-between gap-2 hover:bg-[#EEEEEE] dark:hover:bg-[#12334f] transition-colors",
+                        isSelected && "bg-[#e8f4f6] dark:bg-[#12334f]"
                       )}
                     >
                       <div className="space-y-0.5">
-                        <div className="text-xs font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-1.5">
+                        <div className="text-xs font-semibold text-[#071B2B] dark:text-[#f0f7f9] flex items-center gap-1.5">
                           {org.name}
                         </div>
-                        <div className="text-[11px] text-zinc-500 dark:text-zinc-400">
+                        <div className="text-[11px] text-[#4a6173] dark:text-[#8ca3b5]">
                           {org.legalEntity} • {org.location}
                         </div>
                       </div>
                       {isSelected && (
-                        <Check className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
+                        <Check className="w-4 h-4 text-[#167D8D] shrink-0 mt-0.5" />
                       )}
                     </button>
                   );
@@ -231,13 +228,13 @@ export function Header({
       <div className="hidden md:flex items-center flex-1 max-w-md mx-6">
         <button
           onClick={() => setSearchOpen(true)}
-          className="w-full flex items-center justify-between pl-3 pr-2.5 py-1.5 text-xs rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-500 dark:text-zinc-400 hover:border-zinc-300 dark:hover:border-zinc-700 transition-all text-left"
+          className="w-full flex items-center justify-between pl-3 pr-2.5 py-1.5 text-xs rounded-lg border border-[#EEEEEE] dark:border-[#163854] bg-[#fafafa] dark:bg-[#0c263d] text-[#4a6173] dark:text-[#8ca3b5] hover:border-[#167D8D] transition-all text-left"
         >
           <span className="flex items-center gap-2">
-            <Search className="w-3.5 h-3.5 text-zinc-400" />
+            <Search className="w-3.5 h-3.5 text-[#167D8D]" />
             <span>Search modules, employees, policies...</span>
           </span>
-          <kbd className="px-1.5 py-0.5 text-[10px] font-mono font-medium text-zinc-500 bg-zinc-200/60 dark:bg-zinc-800 rounded">
+          <kbd className="px-1.5 py-0.5 text-[10px] font-mono font-medium text-[#4a6173] dark:text-[#8ca3b5] bg-[#EEEEEE] dark:bg-[#12334f] rounded">
             Ctrl K
           </kbd>
         </button>
@@ -252,41 +249,41 @@ export function Header({
           <button
             onClick={() => setNotificationOpen(!notificationOpen)}
             className={cn(
-              "relative p-2 rounded-lg text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors",
-              notificationOpen && "bg-zinc-100 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100"
+              "relative p-2 rounded-lg text-[#4a6173] hover:text-[#071B2B] dark:hover:text-[#f0f7f9] hover:bg-[#EEEEEE] dark:hover:bg-[#0c263d] transition-colors",
+              notificationOpen && "bg-[#EEEEEE] dark:bg-[#0c263d] text-[#071B2B] dark:text-[#f0f7f9]"
             )}
             aria-label="View notifications"
           >
             <Bell className="w-4 h-4" />
             {unreadCount > 0 && (
-              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-blue-600 ring-2 ring-white dark:ring-zinc-950" />
+              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[#167D8D] ring-2 ring-white dark:ring-[#071B2B]" />
             )}
           </button>
 
           {notificationOpen && (
-            <div className="absolute right-0 mt-2 w-80 sm:w-96 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-2xl z-50 animate-in fade-in slide-in-from-top-2 overflow-hidden">
-              <div className="p-3.5 border-b border-zinc-100 dark:border-zinc-800 flex items-center justify-between">
+            <div className="absolute right-0 mt-2 w-80 sm:w-96 rounded-xl border border-[#EEEEEE] dark:border-[#163854] bg-white dark:bg-[#0c263d] shadow-2xl z-50 animate-in fade-in slide-in-from-top-2 overflow-hidden">
+              <div className="p-3.5 border-b border-[#EEEEEE] dark:border-[#163854] flex items-center justify-between">
                 <div>
-                  <h4 className="text-xs font-semibold text-zinc-900 dark:text-zinc-100">
+                  <h4 className="text-xs font-semibold text-[#071B2B] dark:text-[#f0f7f9]">
                     Notifications
                   </h4>
-                  <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
+                  <p className="text-[11px] text-[#4a6173] dark:text-[#8ca3b5]">
                     {unreadCount} unread action items
                   </p>
                 </div>
                 {unreadCount > 0 && (
                   <button
                     onClick={markAllAsRead}
-                    className="text-[11px] font-medium text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
+                    className="text-[11px] font-semibold text-[#167D8D] hover:underline flex items-center gap-1"
                   >
                     <CheckCheck className="w-3 h-3" /> Mark all read
                   </button>
                 )}
               </div>
 
-              <div className="max-h-80 overflow-y-auto divide-y divide-zinc-100 dark:divide-zinc-900">
+              <div className="max-h-80 overflow-y-auto divide-y divide-[#EEEEEE] dark:divide-[#163854]">
                 {notifications.length === 0 ? (
-                  <div className="p-6 text-center text-xs text-zinc-500">
+                  <div className="p-6 text-center text-xs text-[#4a6173]">
                     No new notifications
                   </div>
                 ) : (
@@ -298,26 +295,26 @@ export function Header({
                         href={item.link}
                         onClick={() => setNotificationOpen(false)}
                         className={cn(
-                          "p-3.5 flex items-start gap-3 hover:bg-zinc-50 dark:hover:bg-zinc-900/60 transition-colors block text-left",
-                          !item.read && "bg-blue-50/40 dark:bg-blue-950/20"
+                          "p-3.5 flex items-start gap-3 hover:bg-[#EEEEEE] dark:hover:bg-[#12334f]/50 transition-colors block text-left",
+                          !item.read && "bg-[#e8f4f6]/50 dark:bg-[#12334f]/40"
                         )}
                       >
-                        <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-950 text-blue-600 dark:text-blue-400 shrink-0">
+                        <div className="p-2 rounded-lg bg-[#e8f4f6] dark:bg-[#12334f] text-[#167D8D] dark:text-[#B9E4E8] shrink-0">
                           <Icon className="w-4 h-4" />
                         </div>
                         <div className="flex-1 min-w-0 space-y-0.5">
-                          <div className="text-xs font-semibold text-zinc-900 dark:text-zinc-100">
+                          <div className="text-xs font-semibold text-[#071B2B] dark:text-[#f0f7f9]">
                             {item.title}
                           </div>
-                          <div className="text-[11px] text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                          <div className="text-[11px] text-[#4a6173] dark:text-[#8ca3b5] leading-relaxed">
                             {item.description}
                           </div>
-                          <div className="text-[10px] text-zinc-400 dark:text-zinc-500">
+                          <div className="text-[10px] text-[#8ca3b5]">
                             {item.time}
                           </div>
                         </div>
                         {!item.read && (
-                          <span className="w-1.5 h-1.5 rounded-full bg-blue-600 shrink-0 mt-1.5" />
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#167D8D] shrink-0 mt-1.5" />
                         )}
                       </Link>
                     );
@@ -325,11 +322,11 @@ export function Header({
                 )}
               </div>
 
-              <div className="p-2 border-t border-zinc-100 dark:border-zinc-800 text-center">
+              <div className="p-2 border-t border-[#EEEEEE] dark:border-[#163854] text-center">
                 <Link
                   href="/notifications"
                   onClick={() => setNotificationOpen(false)}
-                  className="text-xs font-medium text-blue-600 dark:text-blue-400 hover:underline"
+                  className="text-xs font-semibold text-[#167D8D] hover:underline"
                 >
                   View All Notifications
                 </Link>
@@ -338,42 +335,42 @@ export function Header({
           )}
         </div>
 
-        <div className="h-5 w-px bg-zinc-200 dark:border-zinc-800 hidden sm:block" />
+        <div className="h-5 w-px bg-[#EEEEEE] dark:bg-[#163854] hidden sm:block" />
 
         {/* User Profile Dropdown */}
         <div className="relative" ref={profileRef}>
           <button
             onClick={() => setProfileOpen(!profileOpen)}
             aria-label="User profile menu"
-            className="flex items-center gap-2.5 p-1 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors"
+            className="flex items-center gap-2.5 p-1 rounded-lg hover:bg-[#EEEEEE] dark:hover:bg-[#0c263d] transition-colors"
           >
-            <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white text-xs font-semibold shadow-sm">
+            <div className="w-8 h-8 rounded-full bg-[#167D8D] flex items-center justify-center text-white text-xs font-semibold shadow-xs">
               {userName
                 .split(" ")
                 .map((n) => n[0])
                 .join("")}
             </div>
             <div className="hidden sm:flex flex-col text-left">
-              <span className="text-xs font-semibold text-zinc-900 dark:text-zinc-100 leading-tight">
+              <span className="text-xs font-semibold text-[#071B2B] dark:text-[#f0f7f9] leading-tight">
                 {userName}
               </span>
-              <span className="text-[10px] text-zinc-500 dark:text-zinc-400 leading-tight">
+              <span className="text-[10px] text-[#4a6173] dark:text-[#8ca3b5] leading-tight">
                 {userRole}
               </span>
             </div>
-            <ChevronDown className="w-3.5 h-3.5 text-zinc-400 hidden sm:block" />
+            <ChevronDown className="w-3.5 h-3.5 text-[#4a6173] dark:text-[#8ca3b5] hidden sm:block" />
           </button>
 
           {profileOpen && (
-            <div className="absolute right-0 mt-2 w-56 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-xl py-1 z-50 animate-in fade-in slide-in-from-top-2">
-              <div className="px-4 py-2.5 border-b border-zinc-100 dark:border-zinc-800">
-                <p className="text-xs font-medium text-zinc-900 dark:text-zinc-100">
+            <div className="absolute right-0 mt-2 w-56 rounded-xl border border-[#EEEEEE] dark:border-[#163854] bg-white dark:bg-[#0c263d] shadow-xl py-1 z-50 animate-in fade-in slide-in-from-top-2">
+              <div className="px-4 py-2.5 border-b border-[#EEEEEE] dark:border-[#163854]">
+                <p className="text-xs font-medium text-[#071B2B] dark:text-[#f0f7f9]">
                   {userName}
                 </p>
-                <p className="text-[11px] text-zinc-500 dark:text-zinc-400 truncate">
+                <p className="text-[11px] text-[#4a6173] dark:text-[#8ca3b5] truncate">
                   alex.morgan@acmetech.com
                 </p>
-                <div className="mt-1.5 inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300">
+                <div className="mt-1.5 inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-[#B9E4E8] text-[#071B2B]">
                   {userRole}
                 </div>
               </div>
@@ -382,22 +379,22 @@ export function Header({
                 <Link
                   href="/self-service"
                   onClick={() => setProfileOpen(false)}
-                  className="w-full flex items-center gap-2 px-4 py-2 text-xs text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-colors"
+                  className="w-full flex items-center gap-2 px-4 py-2 text-xs text-[#071B2B] dark:text-[#f0f7f9] hover:bg-[#EEEEEE] dark:hover:bg-[#12334f] transition-colors"
                 >
-                  <User className="w-3.5 h-3.5 text-zinc-500" />
+                  <User className="w-3.5 h-3.5 text-[#167D8D]" />
                   My Profile & Portal
                 </Link>
                 <Link
                   href="/settings"
                   onClick={() => setProfileOpen(false)}
-                  className="w-full flex items-center gap-2 px-4 py-2 text-xs text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-colors"
+                  className="w-full flex items-center gap-2 px-4 py-2 text-xs text-[#071B2B] dark:text-[#f0f7f9] hover:bg-[#EEEEEE] dark:hover:bg-[#12334f] transition-colors"
                 >
-                  <ShieldAlert className="w-3.5 h-3.5 text-zinc-500" />
+                  <ShieldAlert className="w-3.5 h-3.5 text-[#167D8D]" />
                   Security & MFA Settings
                 </Link>
               </div>
 
-              <div className="border-t border-zinc-100 dark:border-zinc-800 pt-1">
+              <div className="border-t border-[#EEEEEE] dark:border-[#163854] pt-1">
                 <button
                   onClick={handleSignOut}
                   className="w-full flex items-center gap-2 px-4 py-2 text-xs text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors"
@@ -415,34 +412,34 @@ export function Header({
       {searchOpen && (
         <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 px-4">
           <div
-            className="fixed inset-0 bg-black/50 backdrop-blur-xs transition-opacity"
+            className="fixed inset-0 bg-[#071B2B]/60 backdrop-blur-xs transition-opacity"
             onClick={() => setSearchOpen(false)}
           />
-          <div className="relative w-full max-w-lg rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-2xl overflow-hidden z-10 animate-in fade-in zoom-in-95 duration-150">
-            <div className="p-4 border-b border-zinc-200 dark:border-zinc-800 flex items-center gap-3">
-              <Search className="w-4 h-4 text-zinc-400 shrink-0" />
+          <div className="relative w-full max-w-lg rounded-2xl border border-[#EEEEEE] dark:border-[#163854] bg-white dark:bg-[#0c263d] shadow-2xl overflow-hidden z-10 animate-in fade-in zoom-in-95 duration-150">
+            <div className="p-4 border-b border-[#EEEEEE] dark:border-[#163854] flex items-center gap-3">
+              <Search className="w-4 h-4 text-[#167D8D] shrink-0" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Type to search modules, employees, or policies..."
                 autoFocus
-                className="w-full bg-transparent text-sm text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-none"
+                className="w-full bg-transparent text-sm text-[#071B2B] dark:text-[#f0f7f9] placeholder-[#8ca3b5] focus:outline-none"
               />
               <button
                 onClick={() => setSearchOpen(false)}
-                className="p-1 rounded text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
+                className="p-1 rounded text-[#4a6173] hover:text-[#071B2B] dark:hover:text-[#f0f7f9]"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
             <div className="p-2 max-h-80 overflow-y-auto space-y-1">
-              <div className="px-3 py-1.5 text-[10px] font-semibold text-zinc-400 uppercase tracking-wider">
+              <div className="px-3 py-1.5 text-[10px] font-semibold text-[#4a6173] dark:text-[#8ca3b5] uppercase tracking-wider">
                 Modules & Quick Jump
               </div>
               {searchResults.length === 0 ? (
-                <div className="p-6 text-center text-xs text-zinc-500">
+                <div className="p-6 text-center text-xs text-[#4a6173]">
                   No matching module found.
                 </div>
               ) : (
@@ -453,21 +450,21 @@ export function Header({
                       key={item.href}
                       href={item.href}
                       onClick={() => setSearchOpen(false)}
-                      className="flex items-center justify-between px-3 py-2.5 rounded-lg text-xs font-medium text-zinc-700 dark:text-zinc-300 hover:bg-blue-50 hover:text-blue-700 dark:hover:bg-blue-950/60 dark:hover:text-blue-300 transition-colors group"
+                      className="flex items-center justify-between px-3 py-2.5 rounded-lg text-xs font-medium text-[#071B2B] dark:text-[#f0f7f9] hover:bg-[#e8f4f6] hover:text-[#167D8D] dark:hover:bg-[#12334f] dark:hover:text-[#B9E4E8] transition-colors group"
                     >
                       <span className="flex items-center gap-3">
-                        <Icon className="w-4 h-4 text-zinc-400 group-hover:text-blue-600 dark:group-hover:text-blue-400" />
+                        <Icon className="w-4 h-4 text-[#8ca3b5] group-hover:text-[#167D8D] dark:group-hover:text-[#B9E4E8]" />
                         <span>{item.title}</span>
                       </span>
-                      <ArrowRight className="w-3.5 h-3.5 text-zinc-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+                      <ArrowRight className="w-3.5 h-3.5 text-[#167D8D] opacity-0 group-hover:opacity-100 transition-opacity" />
                     </Link>
                   );
                 })
               )}
             </div>
 
-            <div className="p-3 bg-zinc-50 dark:bg-zinc-900/40 border-t border-zinc-200 dark:border-zinc-800 text-[11px] text-zinc-500 flex items-center justify-between">
-              <span>Press <kbd className="px-1 py-0.5 rounded bg-zinc-200 dark:bg-zinc-800 text-[10px]">Esc</kbd> to exit</span>
+            <div className="p-3 bg-[#fafafa] dark:bg-[#071B2B]/50 border-t border-[#EEEEEE] dark:border-[#163854] text-[11px] text-[#4a6173] dark:text-[#8ca3b5] flex items-center justify-between">
+              <span>Press <kbd className="px-1 py-0.5 rounded bg-[#EEEEEE] dark:bg-[#12334f] text-[10px]">Esc</kbd> to exit</span>
               <span>PeopleOS Unified Search</span>
             </div>
           </div>

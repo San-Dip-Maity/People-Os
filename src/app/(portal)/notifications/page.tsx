@@ -72,7 +72,7 @@ export default function NotificationsPage() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-1">
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50 flex items-center gap-2">
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[#071B2B] dark:text-[#f0f7f9] flex items-center gap-2">
               Notification Center & Alert Broadcasts
             </h1>
             <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">
@@ -83,7 +83,7 @@ export default function NotificationsPage() {
           <div className="flex items-center gap-2">
             <button
               onClick={markAllRead}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-900 text-xs font-semibold transition-colors"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg border border-[#EEEEEE] dark:border-[#163854] hover:bg-zinc-100 dark:hover:bg-zinc-900 text-xs font-semibold transition-colors"
             >
               <CheckCheck className="w-3.5 h-3.5" />
               <span>Mark All As Read</span>
@@ -92,7 +92,7 @@ export default function NotificationsPage() {
         </div>
 
         {/* Filter Pills */}
-        <div className="flex gap-2 border-b border-zinc-200 dark:border-zinc-800 pb-2 text-xs font-medium">
+        <div className="flex gap-2 border-b border-[#EEEEEE] dark:border-[#163854] pb-2 text-xs font-medium">
           {[
             { key: "ALL", label: `All (${notifications.length})` },
             {
@@ -107,7 +107,7 @@ export default function NotificationsPage() {
               className={cn(
                 "px-3 py-1.5 rounded-lg transition-colors",
                 filter === tab.key
-                  ? "bg-blue-600 text-white font-semibold shadow-xs"
+                  ? "bg-[#167D8D] text-white font-semibold shadow-xs"
                   : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-900"
               )}
             >
@@ -117,7 +117,7 @@ export default function NotificationsPage() {
         </div>
 
         {/* Notifications List */}
-        <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-xs divide-y divide-zinc-200 dark:divide-zinc-800 overflow-hidden text-xs">
+        <div className="rounded-xl border border-[#EEEEEE] dark:border-[#163854] bg-white dark:bg-[#0c263d] shadow-xs divide-y divide-[#EEEEEE] dark:divide-[#163854] overflow-hidden text-xs">
           {filtered.length === 0 ? (
             <div className="p-8 text-center text-zinc-500">
               No notifications matching this filter.
@@ -130,16 +130,16 @@ export default function NotificationsPage() {
                   key={item.id}
                   className={cn(
                     "p-4 flex items-start gap-4 hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors",
-                    !item.read && "bg-blue-50/40 dark:bg-blue-950/20"
+                    !item.read && "bg-[#eaf7f9] dark:bg-[#0a2134]"
                   )}
                 >
-                  <div className="p-2.5 rounded-xl bg-blue-100 dark:bg-blue-950 text-blue-600 dark:text-blue-400 shrink-0">
+                  <div className="p-2.5 rounded-xl bg-[#B9E4E8] dark:bg-[#12334f] text-[#167D8D] dark:text-[#B9E4E8] shrink-0">
                     <Icon className="w-4 h-4" />
                   </div>
 
                   <div className="flex-1 min-w-0 space-y-1">
                     <div className="flex items-center justify-between">
-                      <h4 className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
+                      <h4 className="font-semibold text-sm text-[#071B2B] dark:text-[#f0f7f9]">
                         {item.title}
                       </h4>
                       <span className="text-[11px] text-zinc-400 font-mono">
@@ -152,7 +152,7 @@ export default function NotificationsPage() {
                     <div className="pt-1">
                       <Link
                         href={item.link}
-                        className="text-blue-600 dark:text-blue-400 font-medium hover:underline inline-flex items-center gap-1"
+                        className="text-[#167D8D] dark:text-[#B9E4E8] font-medium hover:underline inline-flex items-center gap-1"
                       >
                         Navigate to Record →
                       </Link>
@@ -160,7 +160,7 @@ export default function NotificationsPage() {
                   </div>
 
                   {!item.read && (
-                    <span className="w-2 h-2 rounded-full bg-blue-600 shrink-0 mt-2" />
+                    <span className="w-2 h-2 rounded-full bg-[#167D8D] shrink-0 mt-2" />
                   )}
                 </div>
               );

@@ -182,10 +182,10 @@ export default function EmployeesPage() {
         {/* Page Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-1">
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50 flex items-center gap-2">
+            <h1 className="title-page text-[#071B2B] dark:text-[#f0f7f9] flex items-center gap-2">
               Employee Directory & Lifecycle
             </h1>
-            <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">
+            <p className="text-supporting text-zinc-500 dark:text-zinc-400">
               Manage workforce records, effective-dated assignments, and employment status.
             </p>
           </div>
@@ -193,16 +193,16 @@ export default function EmployeesPage() {
           <div className="flex items-center gap-2">
             <button
               onClick={() => setAddModalOpen(true)}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold shadow-xs transition-colors"
+              className="btn-primary"
             >
-              <Plus className="w-4 h-4" />
+              <Plus className="w-4 h-4 mr-1" />
               <span>Add Employee</span>
             </button>
           </div>
         </div>
 
         {/* Filter and Search Bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-xs">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 p-4 rounded-xl border border-[#EEEEEE] dark:border-[#163854] bg-white dark:bg-[#0c263d] shadow-xs">
           <div className="relative w-full sm:w-72">
             <Search className="w-3.5 h-3.5 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2" />
             <input
@@ -210,7 +210,7 @@ export default function EmployeesPage() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search by name, email, or ID..."
-              className="w-full pl-9 pr-3 py-1.5 text-xs rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+              className="w-full pl-9 pr-3 py-1.5 text-xs rounded-lg border border-[#EEEEEE] dark:border-[#163854] bg-[#fafafa] dark:bg-[#0a2134] text-[#071B2B] dark:text-[#f0f7f9] placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-[#167D8D]/20 focus:border-[#167D8D]"
             />
           </div>
 
@@ -219,7 +219,7 @@ export default function EmployeesPage() {
               value={deptFilter}
               onChange={(e) => setDeptFilter(e.target.value)}
               aria-label="Filter by department"
-              className="px-2.5 py-1.5 text-xs rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 focus:outline-none"
+              className="px-2.5 py-1.5 text-xs rounded-lg border border-[#EEEEEE] dark:border-[#163854] bg-[#fafafa] dark:bg-[#0a2134] text-[#071B2B] dark:text-[#f0f7f9] focus:outline-none"
             >
               <option value="ALL">All Departments</option>
               <option value="Engineering">Engineering</option>
@@ -232,7 +232,7 @@ export default function EmployeesPage() {
               value={entityFilter}
               onChange={(e) => setEntityFilter(e.target.value)}
               aria-label="Filter by legal entity"
-              className="px-2.5 py-1.5 text-xs rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 focus:outline-none"
+              className="px-2.5 py-1.5 text-xs rounded-lg border border-[#EEEEEE] dark:border-[#163854] bg-[#fafafa] dark:bg-[#0a2134] text-[#071B2B] dark:text-[#f0f7f9] focus:outline-none"
             >
               <option value="ALL">All Legal Entities</option>
               <option value="Acme Holdings UAE Ltd">Acme UAE Ltd</option>
@@ -242,10 +242,10 @@ export default function EmployeesPage() {
         </div>
 
         {/* Employee Table */}
-        <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-xs overflow-hidden">
+        <div className="rounded-xl border border-[#EEEEEE] dark:border-[#163854] bg-white dark:bg-[#0c263d] shadow-xs overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-zinc-50 dark:bg-zinc-900/60 border-b border-zinc-200 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400 uppercase font-semibold">
+              <thead className="bg-[#fafafa] dark:bg-[#071B2B] border-b border-[#EEEEEE] dark:border-[#163854] text-zinc-500 dark:text-zinc-400 uppercase font-semibold">
                 <tr>
                   <th className="px-5 py-3.5">Employee</th>
                   <th className="px-5 py-3.5">Role & Department</th>
@@ -255,7 +255,7 @@ export default function EmployeesPage() {
                   <th className="px-5 py-3.5 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800">
+              <tbody className="divide-y divide-[#EEEEEE] dark:divide-[#163854]">
                 {filtered.length === 0 ? (
                   <tr>
                     <td colSpan={6} className="px-5 py-8 text-center text-zinc-500">
@@ -270,11 +270,11 @@ export default function EmployeesPage() {
                       className="hover:bg-zinc-50/70 dark:hover:bg-zinc-900/50 cursor-pointer transition-colors"
                     >
                       <td className="px-5 py-3.5 flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 font-bold text-xs flex items-center justify-center shrink-0">
+                        <div className="w-8 h-8 rounded-full bg-[#B9E4E8] dark:bg-[#12334f] text-[#071B2B] dark:text-[#B9E4E8] font-bold text-xs flex items-center justify-center shrink-0">
                           {emp.avatar}
                         </div>
                         <div>
-                          <div className="font-semibold text-zinc-900 dark:text-zinc-100">
+                          <div className="font-semibold text-[#071B2B] dark:text-[#f0f7f9]">
                             {emp.name}
                           </div>
                           <div className="text-[11px] text-zinc-500 font-mono">
@@ -316,7 +316,7 @@ export default function EmployeesPage() {
                       </td>
 
                       <td className="px-5 py-3.5 text-right">
-                        <span className="text-blue-600 dark:text-blue-400 font-medium hover:underline inline-flex items-center gap-1">
+                        <span className="text-[#167D8D] dark:text-[#B9E4E8] font-medium hover:underline inline-flex items-center gap-1">
                           View Profile <ChevronRight className="w-3 h-3" />
                         </span>
                       </td>
@@ -335,10 +335,10 @@ export default function EmployeesPage() {
               className="fixed inset-0 bg-black/50 backdrop-blur-xs transition-opacity"
               onClick={() => setSelectedEmp(null)}
             />
-            <div className="relative w-full max-w-lg bg-white dark:bg-zinc-950 h-full shadow-2xl z-10 flex flex-col overflow-y-auto animate-in slide-in-from-right duration-200 border-l border-zinc-200 dark:border-zinc-800">
-              <div className="p-6 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between">
+            <div className="relative w-full max-w-lg bg-white dark:bg-[#0c263d] h-full shadow-2xl z-10 flex flex-col overflow-y-auto animate-in slide-in-from-right duration-200 border-l border-[#EEEEEE] dark:border-[#163854]">
+              <div className="p-6 border-b border-[#EEEEEE] dark:border-[#163854] flex items-center justify-between">
                 <div>
-                  <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-50">
+                  <h3 className="font-bold text-base text-[#071B2B] dark:text-[#f0f7f9]">
                     Employee Profile
                   </h3>
                   <p className="text-xs text-zinc-500">{selectedEmp.code}</p>
@@ -353,12 +353,12 @@ export default function EmployeesPage() {
 
               <div className="p-6 space-y-6 flex-1">
                 {/* Header card */}
-                <div className="flex items-center gap-4 p-4 rounded-xl bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800">
-                  <div className="w-14 h-14 rounded-full bg-blue-600 text-white font-bold text-lg flex items-center justify-center shrink-0">
+                <div className="flex items-center gap-4 p-4 rounded-xl bg-[#fafafa] dark:bg-[#0a2134] border border-[#EEEEEE] dark:border-[#163854]">
+                  <div className="w-14 h-14 rounded-full bg-[#167D8D] text-white font-bold text-lg flex items-center justify-center shrink-0">
                     {selectedEmp.avatar}
                   </div>
                   <div>
-                    <h4 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
+                    <h4 className="font-bold text-sm text-[#071B2B] dark:text-[#f0f7f9]">
                       {selectedEmp.name}
                     </h4>
                     <p className="text-xs text-zinc-500">{selectedEmp.designation}</p>
@@ -374,8 +374,8 @@ export default function EmployeesPage() {
                 </div>
 
                 {/* Organizational Assignment Rule Callout */}
-                <div className="p-4 rounded-xl border border-blue-200 dark:border-blue-900/60 bg-blue-50/40 dark:bg-blue-950/20 space-y-2">
-                  <div className="text-xs font-semibold text-blue-900 dark:text-blue-200 flex items-center gap-1.5">
+                <div className="p-4 rounded-xl border border-[#B9E4E8] dark:border-[#163854] bg-[#eaf7f9] dark:bg-[#0a2134] space-y-2">
+                  <div className="text-xs font-semibold text-[#071B2B] dark:text-[#B9E4E8] flex items-center gap-1.5">
                     <Building2 className="w-3.5 h-3.5" />
                     Effective Organizational Assignment
                   </div>
@@ -386,7 +386,7 @@ export default function EmployeesPage() {
                     <p>
                       <strong>Physical Work Location:</strong> {selectedEmp.workLocation}
                     </p>
-                    <p className="text-blue-700 dark:text-blue-300 pt-1 border-t border-blue-200/60 dark:border-blue-900/40">
+                    <p className="text-[#071B2B] dark:text-[#B9E4E8] pt-1 border-t border-[#B9E4E8]/60 dark:border-[#163854]">
                       Notice: Holiday calendar assigned based on physical Work Location ({selectedEmp.workLocation}), independent of employing entity.
                     </p>
                   </div>
@@ -397,7 +397,7 @@ export default function EmployeesPage() {
                   <h5 className="text-xs font-semibold uppercase tracking-wider text-zinc-400">
                     Contact & Reporting Hierarchy
                   </h5>
-                  <div className="space-y-2 text-xs divide-y divide-zinc-100 dark:divide-zinc-900">
+                  <div className="space-y-2 text-xs divide-y divide-[#EEEEEE] dark:divide-[#163854]">
                     <div className="flex justify-between py-1.5">
                       <span className="text-zinc-500">Corporate Email:</span>
                       <span className="font-medium text-zinc-800 dark:text-zinc-200">
@@ -426,10 +426,10 @@ export default function EmployeesPage() {
                 </div>
               </div>
 
-              <div className="p-4 border-t border-zinc-200 dark:border-zinc-800 flex gap-2">
+              <div className="p-4 border-t border-[#EEEEEE] dark:border-[#163854] flex gap-2">
                 <button
                   onClick={() => setSelectedEmp(null)}
-                  className="flex-1 py-2 px-3 rounded-lg border border-zinc-200 dark:border-zinc-800 text-xs font-semibold hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors"
+                  className="flex-1 py-2 px-3 rounded-lg border border-[#EEEEEE] dark:border-[#163854] text-xs font-semibold hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors"
                 >
                   Close Profile
                 </button>
@@ -445,9 +445,9 @@ export default function EmployeesPage() {
               className="fixed inset-0 bg-black/50 backdrop-blur-xs"
               onClick={() => setAddModalOpen(false)}
             />
-            <div className="relative w-full max-w-md bg-white dark:bg-zinc-950 rounded-2xl shadow-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden z-10 p-6 space-y-4">
-              <div className="flex items-center justify-between pb-3 border-b border-zinc-200 dark:border-zinc-800">
-                <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-50">
+            <div className="relative w-full max-w-md bg-white dark:bg-[#0c263d] rounded-2xl shadow-2xl border border-[#EEEEEE] dark:border-[#163854] overflow-hidden z-10 p-6 space-y-4">
+              <div className="flex items-center justify-between pb-3 border-b border-[#EEEEEE] dark:border-[#163854]">
+                <h3 className="font-bold text-sm text-[#071B2B] dark:text-[#f0f7f9]">
                   Onboard New Employee
                 </h3>
                 <button
@@ -471,7 +471,7 @@ export default function EmployeesPage() {
                       setNewForm({ ...newForm, name: e.target.value })
                     }
                     placeholder="e.g. Liam Gallagher"
-                    className="w-full px-3 py-2 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                    className="w-full px-3 py-2 rounded-lg border border-[#EEEEEE] dark:border-[#163854] bg-[#fafafa] dark:bg-[#0a2134] text-[#071B2B] dark:text-[#f0f7f9] focus:outline-none focus:ring-2 focus:ring-[#167D8D]/20"
                   />
                 </div>
 
@@ -487,7 +487,7 @@ export default function EmployeesPage() {
                       setNewForm({ ...newForm, email: e.target.value })
                     }
                     placeholder="e.g. liam.g@acme.com"
-                    className="w-full px-3 py-2 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                    className="w-full px-3 py-2 rounded-lg border border-[#EEEEEE] dark:border-[#163854] bg-[#fafafa] dark:bg-[#0a2134] text-[#071B2B] dark:text-[#f0f7f9] focus:outline-none focus:ring-2 focus:ring-[#167D8D]/20"
                   />
                 </div>
 
@@ -501,7 +501,7 @@ export default function EmployeesPage() {
                       onChange={(e) =>
                         setNewForm({ ...newForm, department: e.target.value })
                       }
-                      className="w-full px-3 py-2 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 focus:outline-none"
+                      className="w-full px-3 py-2 rounded-lg border border-[#EEEEEE] dark:border-[#163854] bg-[#fafafa] dark:bg-[#0a2134] text-[#071B2B] dark:text-[#f0f7f9] focus:outline-none"
                     >
                       <option>Engineering</option>
                       <option>Product</option>
@@ -521,7 +521,7 @@ export default function EmployeesPage() {
                         setNewForm({ ...newForm, designation: e.target.value })
                       }
                       placeholder="e.g. DevOps Engineer"
-                      className="w-full px-3 py-2 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 focus:outline-none"
+                      className="w-full px-3 py-2 rounded-lg border border-[#EEEEEE] dark:border-[#163854] bg-[#fafafa] dark:bg-[#0a2134] text-[#071B2B] dark:text-[#f0f7f9] focus:outline-none"
                     />
                   </div>
                 </div>
@@ -535,7 +535,7 @@ export default function EmployeesPage() {
                     onChange={(e) =>
                       setNewForm({ ...newForm, legalEntity: e.target.value })
                     }
-                    className="w-full px-3 py-2 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 focus:outline-none"
+                    className="w-full px-3 py-2 rounded-lg border border-[#EEEEEE] dark:border-[#163854] bg-[#fafafa] dark:bg-[#0a2134] text-[#071B2B] dark:text-[#f0f7f9] focus:outline-none"
                   >
                     <option>Acme Holdings UAE Ltd</option>
                     <option>Acme Americas Delaware Corp</option>
@@ -551,7 +551,7 @@ export default function EmployeesPage() {
                     onChange={(e) =>
                       setNewForm({ ...newForm, workLocation: e.target.value })
                     }
-                    className="w-full px-3 py-2 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 focus:outline-none"
+                    className="w-full px-3 py-2 rounded-lg border border-[#EEEEEE] dark:border-[#163854] bg-[#fafafa] dark:bg-[#0a2134] text-[#071B2B] dark:text-[#f0f7f9] focus:outline-none"
                   >
                     <option>Dubai Internet City</option>
                     <option>Bengaluru Tech Park</option>
@@ -563,13 +563,13 @@ export default function EmployeesPage() {
                   <button
                     type="button"
                     onClick={() => setAddModalOpen(false)}
-                    className="px-3 py-2 rounded-lg border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400"
+                    className="px-3 py-2 rounded-lg border border-[#EEEEEE] dark:border-[#163854] text-zinc-600 dark:text-zinc-400"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="px-4 py-2 rounded-lg bg-blue-600 text-white font-semibold"
+                    className="px-4 py-2 rounded-lg bg-[#167D8D] text-white font-semibold"
                   >
                     Create Employee
                   </button>

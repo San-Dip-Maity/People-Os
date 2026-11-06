@@ -13,7 +13,7 @@ export function Skeleton({
   return (
     <div
       className={cn(
-        "rounded-md bg-zinc-200 dark:bg-zinc-800",
+        "rounded-md bg-[#EEEEEE] dark:bg-[#12334f]",
         shimmer ? "animate-shimmer" : "animate-pulse",
         className
       )}

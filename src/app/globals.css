@@ -2,57 +2,244 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+@theme {
+  --font-sans: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  /* Official Brand Palette */
+  --color-brand-navy: #071B2B;
+  --color-brand-teal: #167D8D;
+  --color-brand-aqua: #B9E4E8;
+  --color-brand-grey: #EEEEEE;
+
+  /* Shaded Navy Variations for Dark Surfaces & Borders */
+  --color-navy-950: #040f18;
+  --color-navy-900: #071B2B;
+  --color-navy-850: #0a2134;
+  --color-navy-800: #0c263d;
+  --color-navy-750: #0f2e47;
+  --color-navy-700: #12334f;
+  --color-navy-600: #1b4365;
+  --color-navy-border: #163854;
+
+  /* Shaded Teal Variations for Actions & Hover */
+  --color-teal-600: #126876;
+  --color-teal-700: #0e535e;
+  --color-teal-100: #e8f4f6;
+  --color-teal-50: #f2f9fa;
+
+  /* Shaded Aqua Variations for Highlights & Badges */
+  --color-aqua-100: #B9E4E8;
+  --color-aqua-50: #eaf7f9;
+  --color-aqua-dark: #0e4c54;
+
+  /* Shaded Neutral Grey Variations */
+  --color-grey-50: #fafafa;
+  --color-grey-100: #f5f5f5;
+  --color-grey-200: #EEEEEE;
+  --color-grey-300: #e0e0e0;
+  --color-grey-400: #cccccc;
+}
+
 @layer base {
   :root {
     --background: #ffffff;
-    --foreground: #09090b;
+    --foreground: #071B2B;
     --card: #ffffff;
-    --card-foreground: #09090b;
+    --card-foreground: #071B2B;
     --popover: #ffffff;
-    --popover-foreground: #09090b;
-    --primary: #2563eb;
+    --popover-foreground: #071B2B;
+    --primary: #167D8D;
     --primary-foreground: #ffffff;
-    --secondary: #f4f4f5;
-    --secondary-foreground: #18181b;
-    --muted: #f4f4f5;
-    --muted-foreground: #71717a;
-    --accent: #f4f4f5;
-    --accent-foreground: #18181b;
-    --destructive: #ef4444;
+    --secondary: #EEEEEE;
+    --secondary-foreground: #071B2B;
+    --muted: #EEEEEE;
+    --muted-foreground: #4a6173;
+    --accent: #B9E4E8;
+    --accent-foreground: #071B2B;
+    --destructive: #dc2626;
     --destructive-foreground: #ffffff;
-    --border: #e4e4e7;
-    --input: #e4e4e7;
-    --ring: #2563eb;
+    --border: #e0e0e0;
+    --input: #e0e0e0;
+    --ring: #167D8D;
     --radius: 0.5rem;
   }
 
   .dark {
-    --background: #09090b;
-    --foreground: #fafafa;
-    --card: #121215;
-    --card-foreground: #fafafa;
-    --popover: #121215;
-    --popover-foreground: #fafafa;
-    --primary: #3b82f6;
+    --background: #071B2B;
+    --foreground: #f0f7f9;
+    --card: #0c263d;
+    --card-foreground: #f0f7f9;
+    --popover: #0c263d;
+    --popover-foreground: #f0f7f9;
+    --primary: #167D8D;
     --primary-foreground: #ffffff;
-    --secondary: #27272a;
-    --secondary-foreground: #fafafa;
-    --muted: #27272a;
-    --muted-foreground: #a1a1aa;
-    --accent: #27272a;
-    --accent-foreground: #fafafa;
-    --destructive: #7f1d1d;
+    --secondary: #12334f;
+    --secondary-foreground: #f0f7f9;
+    --muted: #12334f;
+    --muted-foreground: #8ca3b5;
+    --accent: #0f364a;
+    --accent-foreground: #B9E4E8;
+    --destructive: #b91c1c;
     --destructive-foreground: #fef2f2;
-    --border: #27272a;
-    --input: #27272a;
-    --ring: #3b82f6;
+    --border: #163854;
+    --input: #163854;
+    --ring: #167D8D;
   }
 }
 
 body {
   background-color: var(--background);
   color: var(--foreground);
-  font-feature-settings: "rlig" 1, "calt" 1;
+  font-family: var(--font-sans);
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+}
+
+/* ---------------- Typography Scale Tokens ---------------- */
+.title-page {
+  font-size: 1.75rem; /* 28px */
+  line-height: 2.125rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+@media (min-width: 640px) {
+  .title-page {
+    font-size: 2rem; /* 32px */
+    line-height: 2.375rem;
+  }
+}
+
+.heading-section {
+  font-size: 1.25rem; /* 20px */
+  line-height: 1.625rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+@media (min-width: 640px) {
+  .heading-section {
+    font-size: 1.5rem; /* 24px */
+    line-height: 1.875rem;
+  }
+}
+
+.heading-card {
+  font-size: 1rem; /* 16px */
+  line-height: 1.375rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+@media (min-width: 640px) {
+  .heading-card {
+    font-size: 1.125rem; /* 18px */
+    line-height: 1.5rem;
+  }
+}
+
+.text-body {
+  font-size: 0.875rem; /* 14px */
+  line-height: 1.375rem;
+  font-weight: 400;
+}
+@media (min-width: 640px) {
+  .text-body {
+    font-size: 1rem; /* 16px */
+    line-height: 1.5rem;
+  }
+}
+
+.text-label {
+  font-size: 0.8125rem; /* 13px */
+  line-height: 1.125rem;
+  font-weight: 500;
+}
+@media (min-width: 640px) {
+  .text-label {
+    font-size: 0.875rem; /* 14px */
+    line-height: 1.25rem;
+  }
+}
+
+.text-supporting {
+  font-size: 0.75rem; /* 12px */
+  line-height: 1rem;
+  font-weight: 400;
+}
+@media (min-width: 640px) {
+  .text-supporting {
+    font-size: 0.8125rem; /* 13px */
+    line-height: 1.125rem;
+  }
+}
+
+.text-btn {
+  font-size: 0.875rem; /* 14px */
+  line-height: 1.25rem;
+  font-weight: 600;
+}
+
+/* ---------------- Reusable Component Utilities ---------------- */
+.btn-primary {
+  background-color: #167D8D;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.875rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 2px 0 rgba(7, 27, 43, 0.05);
+  transition: all 150ms ease-in-out;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.btn-primary:hover {
+  background-color: #126876;
+}
+.btn-primary:active {
+  transform: scale(0.99);
+}
+
+.btn-secondary {
+  background-color: #EEEEEE;
+  color: #071B2B;
+  font-weight: 600;
+  font-size: 0.875rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 150ms ease-in-out;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.btn-secondary:hover {
+  background-color: #e0e0e0;
+}
+.dark .btn-secondary {
+  background-color: #12334f;
+  color: #f0f7f9;
+}
+.dark .btn-secondary:hover {
+  background-color: #1b4365;
+}
+
+.badge-aqua {
+  background-color: #B9E4E8;
+  color: #071B2B;
+  font-weight: 600;
+  font-size: 0.6875rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.badge-teal {
+  background-color: #167D8D;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.6875rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
 }
 
 /* Skeleton Shimmer Pulse */
@@ -69,7 +256,7 @@ body {
   background: linear-gradient(
     90deg,
     var(--muted) 0%,
-    rgba(255, 255, 255, 0.08) 50%,
+    rgba(185, 228, 232, 0.15) 50%,
     var(--muted) 100%
   );
   background-size: 200% 100%;

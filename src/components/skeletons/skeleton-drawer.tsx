@@ -3,8 +3,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export function SkeletonDrawer() {
   return (
-    <div className="w-full max-w-md h-full p-6 border-l border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 space-y-6">
-      <div className="flex items-center justify-between pb-4 border-b border-zinc-200 dark:border-zinc-800">
+    <div className="w-full max-w-md h-full p-6 border-l border-[#EEEEEE] dark:border-[#163854] bg-white dark:bg-[#0c263d] space-y-6">
+      <div className="flex items-center justify-between pb-4 border-b border-[#EEEEEE] dark:border-[#163854]">
         <Skeleton className="h-6 w-36" />
         <Skeleton className="h-8 w-8 rounded-full" />
       </div>
@@ -16,7 +16,7 @@ export function SkeletonDrawer() {
         <Skeleton className="h-4 w-4/6" />
       </div>
 
-      <div className="space-y-3 pt-4 border-t border-zinc-200 dark:border-zinc-800">
+      <div className="space-y-3 pt-4 border-t border-[#EEEEEE] dark:border-[#163854]">
         {Array.from({ length: 4 }).map((_, i) => (
           <div key={i} className="flex justify-between">
             <Skeleton className="h-4 w-24" />

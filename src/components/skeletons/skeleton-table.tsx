@@ -24,9 +24,9 @@ export function SkeletonTable({
         </div>
       )}
 
-      <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 overflow-hidden shadow-sm">
+      <div className="rounded-xl border border-[#EEEEEE] dark:border-[#163854] bg-white dark:bg-[#0c263d] overflow-hidden shadow-sm">
         {/* Table Header */}
-        <div className="flex items-center px-6 py-3.5 bg-zinc-50 dark:bg-zinc-900/60 border-b border-zinc-200 dark:border-zinc-800">
+        <div className="flex items-center px-6 py-3.5 bg-[#fafafa] dark:bg-[#0a2134] border-b border-[#EEEEEE] dark:border-[#163854]">
           {Array.from({ length: columns }).map((_, i) => (
             <div key={i} className="flex-1">
               <Skeleton className="h-4 w-24" />
@@ -35,7 +35,7 @@ export function SkeletonTable({
         </div>
 
         {/* Table Rows */}
-        <div className="divide-y divide-zinc-200 dark:divide-zinc-800">
+        <div className="divide-y divide-[#EEEEEE] dark:divide-[#163854]">
           {Array.from({ length: rows }).map((_, r) => (
             <div key={r} className="flex items-center px-6 py-4 space-x-4">
               {Array.from({ length: columns }).map((_, c) => (
@@ -54,7 +54,7 @@ export function SkeletonTable({
         </div>
 
         {/* Table Pagination */}
-        <div className="flex items-center justify-between px-6 py-3.5 bg-zinc-50 dark:bg-zinc-900/40 border-t border-zinc-200 dark:border-zinc-800">
+        <div className="flex items-center justify-between px-6 py-3.5 bg-[#fafafa] dark:bg-[#0a2134] border-t border-[#EEEEEE] dark:border-[#163854]">
           <Skeleton className="h-4 w-36" />
           <div className="flex items-center gap-2">
             <Skeleton className="h-8 w-8 rounded-md" />

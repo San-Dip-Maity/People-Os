@@ -182,3 +182,4 @@ test.describe("PeopleOS — Complete Application, Landing Page & Auth Verificati
     await expect(html).toHaveClass(/light/);
   });
 });
+

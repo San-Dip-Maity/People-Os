@@ -51,7 +51,7 @@ export default function DocumentsPage() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-1">
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50 flex items-center gap-2">
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[#071B2B] dark:text-[#f0f7f9] flex items-center gap-2">
               Document Management & Private Vault
             </h1>
             <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">
@@ -62,7 +62,7 @@ export default function DocumentsPage() {
           <div className="flex items-center gap-2">
             <button
               onClick={() => alert("Upload document file with signed encryption")}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold shadow-xs transition-colors"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-[#167D8D] hover:bg-[#126876] text-white text-xs font-semibold shadow-xs transition-colors"
             >
               <Upload className="w-4 h-4" />
               <span>Upload Document</span>
@@ -71,10 +71,10 @@ export default function DocumentsPage() {
         </div>
 
         {/* Private S3 Security Callout */}
-        <div className="p-4 rounded-xl border border-blue-200 dark:border-blue-900/60 bg-blue-50/60 dark:bg-blue-950/20 text-xs text-zinc-700 dark:text-zinc-300 flex items-start gap-3">
-          <ShieldCheck className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
+        <div className="p-4 rounded-xl border border-[#B9E4E8] dark:border-[#163854] bg-[#eaf7f9] dark:bg-[#0a2134] text-xs text-zinc-700 dark:text-zinc-300 flex items-start gap-3">
+          <ShieldCheck className="w-4 h-4 text-[#167D8D] shrink-0 mt-0.5" />
           <div className="space-y-1">
-            <h4 className="font-semibold text-blue-900 dark:text-blue-200">
+            <h4 className="font-semibold text-[#071B2B] dark:text-[#B9E4E8]">
               Private Object Storage & Ephemeral Signed URLs
             </h4>
             <p className="text-zinc-600 dark:text-zinc-400">
@@ -84,9 +84,9 @@ export default function DocumentsPage() {
         </div>
 
         {/* Documents Table */}
-        <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-xs overflow-hidden">
-          <div className="p-4 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between">
-            <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-50">
+        <div className="rounded-xl border border-[#EEEEEE] dark:border-[#163854] bg-white dark:bg-[#0c263d] shadow-xs overflow-hidden">
+          <div className="p-4 border-b border-[#EEEEEE] dark:border-[#163854] flex items-center justify-between">
+            <h3 className="font-bold text-sm text-[#071B2B] dark:text-[#f0f7f9]">
               Document Repository ({docs.length} items)
             </h3>
             <span className="text-xs text-zinc-500">
@@ -94,7 +94,7 @@ export default function DocumentsPage() {
             </span>
           </div>
 
-          <div className="divide-y divide-zinc-200 dark:divide-zinc-800 text-xs">
+          <div className="divide-y divide-[#EEEEEE] dark:divide-[#163854] text-xs">
             {docs.map((doc, i) => {
               const isExpiring = doc.expires.includes("2026-11");
               return (
@@ -103,11 +103,11 @@ export default function DocumentsPage() {
                   className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="p-2.5 rounded-lg bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 shrink-0">
+                    <div className="p-2.5 rounded-lg bg-[#eaf7f9] dark:bg-[#12334f] text-[#167D8D] dark:text-[#B9E4E8] shrink-0">
                       <FileText className="w-4 h-4" />
                     </div>
                     <div>
-                      <div className="font-semibold text-zinc-900 dark:text-zinc-100 text-sm">
+                      <div className="font-semibold text-[#071B2B] dark:text-[#f0f7f9] text-sm">
                         {doc.title}
                       </div>
                       <div className="text-[11px] text-zinc-500">
@@ -125,7 +125,7 @@ export default function DocumentsPage() {
 
                     <button
                       onClick={() => alert(`Generating ephemeral signed URL for: ${doc.title}`)}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-900 text-zinc-700 dark:text-zinc-300 font-medium transition-colors"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#EEEEEE] dark:border-[#163854] hover:bg-zinc-100 dark:hover:bg-zinc-900 text-zinc-700 dark:text-zinc-300 font-medium transition-colors"
                     >
                       <Download className="w-3.5 h-3.5" />
                       <span>Download</span>

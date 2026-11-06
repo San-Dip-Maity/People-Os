@@ -8,3 +8,4 @@ export async function loginAsAdmin(page: Page) {
   await page.waitForURL("**/dashboard", { timeout: 15000 });
   await expect(page.getByRole("heading", { name: /Operations Command Center/i })).toBeVisible();
 }
+
