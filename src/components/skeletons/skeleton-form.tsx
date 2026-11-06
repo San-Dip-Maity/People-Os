@@ -25,3 +25,4 @@ export function SkeletonForm({ fields = 6 }: { fields?: number }) {
     </div>
   );
 }
+

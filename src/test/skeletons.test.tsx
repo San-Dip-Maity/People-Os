@@ -39,3 +39,4 @@ describe("Skeleton Loading System", () => {
     expect(container.querySelector(".grid")).toBeInTheDocument();
   });
 });
+
