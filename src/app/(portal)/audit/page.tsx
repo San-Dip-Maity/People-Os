@@ -4,13 +4,25 @@ import * as React from "react";
 import {
   ShieldCheck,
   Download,
+  Loader2,
 } from "lucide-react";
 import { toast } from "@/components/ui/toast";
 
+interface AuditLogItem {
+  id: string;
+  actor: string;
+  action: string;
+  resource: string;
+  details: string;
+  ip: string;
+  time: string;
+  badge: string;
+}
+
 export default function AuditPage() {
   const [filterAction, setFilterAction] = React.useState("ALL");
-
-  const logs = [
+  const [loading, setLoading] = React.useState(true);
+  const [logs, setLogs] = React.useState<AuditLogItem[]>([
     {
       id: "AUD-8901",
       actor: "Alex Morgan (HR Admin)",
@@ -24,8 +36,8 @@ export default function AuditPage() {
     {
       id: "AUD-8902",
       actor: "Copilot AI (Tool Sandbox)",
-      action: "AI_ACTION",
-      resource: "PolicyQuery",
+      action: "AI_QUERY",
+      resource: "AICopilot",
       details: "Retrieved Global Leave Policy Sec 4.2 with citation",
       ip: "Internal RPC",
       time: "2026-11-06 15:30:00 UTC",
@@ -34,9 +46,9 @@ export default function AuditPage() {
     {
       id: "AUD-8903",
       actor: "Aisha Al-Mansoor (Finance)",
-      action: "UPDATE",
+      action: "LOCK_PAYROLL",
       resource: "PayrollRun (PR-NOV26)",
-      details: "Updated statutory social security deduction for UAE entity",
+      details: "November 2026 payroll locked and finalized",
       ip: "10.0.4.19",
       time: "2026-11-06 14:15:22 UTC",
       badge: "bg-[#B9E4E8] text-[#071B2B]",
@@ -51,7 +63,26 @@ export default function AuditPage() {
       time: "2026-11-06 09:00:15 UTC",
       badge: "bg-zinc-100 text-zinc-700 dark:bg-zinc-900 dark:text-zinc-300",
     },
-  ];
+  ]);
+
+  React.useEffect(() => {
+    async function loadAuditLogs() {
+      try {
+        const res = await fetch(`/api/audit${filterAction !== "ALL" ? `?action=${filterAction}` : ""}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data.logs && data.logs.length > 0) {
+            setLogs(data.logs);
+          }
+        }
+      } catch (err) {
+        console.error("Failed to load audit logs:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadAuditLogs();
+  }, [filterAction]);
 
   const filtered = logs.filter(
     (l) => filterAction === "ALL" || l.action === filterAction
@@ -73,7 +104,12 @@ export default function AuditPage() {
 
           <div className="flex items-center gap-2">
             <button
-              onClick={() => toast.success("Audit Trail Exported", "Tamper-evident compliance log exported as cryptographically verified CSV.")}
+              onClick={() =>
+                toast.success(
+                  "Audit Trail Exported",
+                  "Tamper-evident compliance log exported as cryptographically verified CSV."
+                )
+              }
               className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg border border-[#EEEEEE] dark:border-[#163854] hover:bg-zinc-100 dark:hover:bg-zinc-900 text-xs font-semibold transition-colors"
             >
               <Download className="w-3.5 h-3.5" />
@@ -99,7 +135,7 @@ export default function AuditPage() {
         <div className="rounded-xl border border-[#EEEEEE] dark:border-[#163854] bg-white dark:bg-[#0c263d] shadow-xs overflow-hidden">
           <div className="p-4 border-b border-[#EEEEEE] dark:border-[#163854] flex items-center justify-between">
             <h3 className="font-bold text-sm text-[#071B2B] dark:text-[#f0f7f9]">
-              Audit Event Stream
+              Audit Event Stream ({filtered.length} entries)
             </h3>
 
             <select
@@ -111,7 +147,9 @@ export default function AuditPage() {
               <option value="APPROVE">Approvals</option>
               <option value="UPDATE">Updates</option>
               <option value="LOGIN">Authentication</option>
-              <option value="AI_ACTION">AI Actions</option>
+              <option value="AI_QUERY">AI Inquiries</option>
+              <option value="CLOCK_IN">Attendance Punches</option>
+              <option value="CREATE_EMPLOYEE">Onboarding</option>
             </select>
           </div>
 
@@ -128,40 +166,57 @@ export default function AuditPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#EEEEEE] dark:divide-[#163854]">
-                {filtered.map((log) => (
-                  <tr key={log.id} className="hover:bg-zinc-50 dark:hover:bg-zinc-900/50">
-                    <td className="px-5 py-3.5">
-                      <div className="font-mono text-zinc-400">{log.id}</div>
-                      <div className="text-[11px] text-zinc-500 font-mono">
-                        {log.time}
+                {loading ? (
+                  <tr>
+                    <td colSpan={6} className="px-5 py-8 text-center text-zinc-500">
+                      <div className="flex items-center justify-center gap-2">
+                        <Loader2 className="w-4 h-4 animate-spin text-[#167D8D]" />
+                        <span>Loading audit ledger...</span>
                       </div>
                     </td>
-
-                    <td className="px-5 py-3.5 font-medium text-zinc-800 dark:text-zinc-200">
-                      {log.actor}
-                    </td>
-
-                    <td className="px-5 py-3.5">
-                      <span
-                        className={`text-[10px] px-2 py-0.5 rounded-full font-semibold ${log.badge}`}
-                      >
-                        {log.action}
-                      </span>
-                    </td>
-
-                    <td className="px-5 py-3.5 font-mono text-zinc-700 dark:text-zinc-300">
-                      {log.resource}
-                    </td>
-
-                    <td className="px-5 py-3.5 text-zinc-600 dark:text-zinc-400 max-w-xs">
-                      {log.details}
-                    </td>
-
-                    <td className="px-5 py-3.5 text-right font-mono text-zinc-400 text-[11px]">
-                      {log.ip}
+                  </tr>
+                ) : filtered.length === 0 ? (
+                  <tr>
+                    <td colSpan={6} className="px-5 py-8 text-center text-zinc-500">
+                      No audit events found.
                     </td>
                   </tr>
-                ))}
+                ) : (
+                  filtered.map((log) => (
+                    <tr key={log.id} className="hover:bg-zinc-50 dark:hover:bg-zinc-900/50">
+                      <td className="px-5 py-3.5">
+                        <div className="font-mono text-zinc-400">{log.id.slice(0, 12)}...</div>
+                        <div className="text-[11px] text-zinc-500 font-mono">
+                          {log.time}
+                        </div>
+                      </td>
+
+                      <td className="px-5 py-3.5 font-medium text-zinc-800 dark:text-zinc-200">
+                        {log.actor}
+                      </td>
+
+                      <td className="px-5 py-3.5">
+                        <span
+                          className={`text-[10px] px-2 py-0.5 rounded-full font-semibold ${log.badge}`}
+                        >
+                          {log.action}
+                        </span>
+                      </td>
+
+                      <td className="px-5 py-3.5 font-mono text-zinc-700 dark:text-zinc-300">
+                        {log.resource}
+                      </td>
+
+                      <td className="px-5 py-3.5 text-zinc-600 dark:text-zinc-400 max-w-xs truncate">
+                        {log.details}
+                      </td>
+
+                      <td className="px-5 py-3.5 text-right font-mono text-zinc-400 text-[11px]">
+                        {log.ip}
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>

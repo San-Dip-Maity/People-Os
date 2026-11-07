@@ -116,3 +116,4 @@ export async function PUT(req: Request) {
     return NextResponse.json({ error: "Failed to save tenant settings" }, { status: 500 });
   }
 }
+

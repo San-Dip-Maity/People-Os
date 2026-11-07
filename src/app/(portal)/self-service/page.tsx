@@ -17,21 +17,83 @@ import { toast } from "@/components/ui/toast";
 export default function SelfServicePage() {
   const [hrRequestOpen, setHrRequestOpen] = React.useState(false);
   const [requestText, setRequestText] = React.useState("");
+  const [category, setCategory] = React.useState("Salary Certificate Request");
   const [submitted, setSubmitted] = React.useState(false);
+  const [submitting, setSubmitting] = React.useState(false);
+  const [profile, setProfile] = React.useState({
+    name: "Alex Morgan",
+    code: "EMP-0001",
+    department: "People Operations Lead",
+    legalEntity: "Acme Holdings UAE Ltd",
+    workLocation: "Dubai Internet City",
+  });
+  const [balances, setBalances] = React.useState({
+    annualLeave: 18.5,
+    sickLeave: 12.0,
+    casualLeave: 3.0,
+    airTicketEntitlements: 1,
+  });
 
-  const handleSubmitRequest = (e: React.FormEvent) => {
+  React.useEffect(() => {
+    async function loadESS() {
+      try {
+        const res = await fetch("/api/self-service");
+        if (res.ok) {
+          const data = await res.json();
+          if (data.profile) {
+            setProfile(data.profile);
+          }
+          if (data.balances) {
+            setBalances(data.balances);
+          }
+        }
+      } catch (err) {
+        console.error("Failed to load ESS data:", err);
+      }
+    }
+    loadESS();
+  }, []);
+
+  const handleSubmitRequest = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!requestText.trim()) {
       toast.warning("Empty Ticket", "Please describe your inquiry or request before submitting.");
       return;
     }
-    setSubmitted(true);
-    toast.success("HR Inquiry Logged", "Inquiry logged to database and dispatched to People Operations.");
-    setTimeout(() => {
-      setSubmitted(false);
-      setRequestText("");
-      setHrRequestOpen(false);
-    }, 1500);
+
+    setSubmitting(true);
+    try {
+      const res = await fetch("/api/self-service", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          inquiryText: requestText,
+          category,
+        }),
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        toast.error("Ticket Failed", data.error || "Could not log HR ticket.");
+        return;
+      }
+
+      setSubmitted(true);
+      toast.success(
+        "HR Inquiry Logged",
+        data.message || "Inquiry logged to database and dispatched to People Operations."
+      );
+      setTimeout(() => {
+        setSubmitted(false);
+        setRequestText("");
+        setHrRequestOpen(false);
+      }, 1500);
+    } catch (err) {
+      console.error("HR request submit error:", err);
+      toast.error("Network Error", "Could not reach database API.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -62,23 +124,28 @@ export default function SelfServicePage() {
         {/* Profile Summary Card */}
         <div className="p-6 rounded-2xl border border-[#EEEEEE] dark:border-[#163854] bg-white dark:bg-[#0c263d] shadow-xs flex flex-col sm:flex-row items-center sm:items-start gap-6">
           <div className="w-20 h-20 rounded-2xl bg-[#167D8D] text-white font-bold text-2xl flex items-center justify-center shrink-0 shadow-md">
-            AM
+            {profile.name
+              .split(" ")
+              .map((n) => n[0])
+              .join("")
+              .slice(0, 2)
+              .toUpperCase()}
           </div>
           <div className="flex-1 text-center sm:text-left space-y-2">
             <div>
               <h3 className="font-bold text-lg text-[#071B2B] dark:text-[#f0f7f9]">
-                Alex Morgan
+                {profile.name}
               </h3>
               <p className="text-xs text-zinc-500">
-                People Operations Lead • Acme Holdings UAE Ltd
+                {profile.department} • {profile.legalEntity}
               </p>
             </div>
             <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 pt-1 text-xs text-zinc-600 dark:text-zinc-400">
               <span className="px-2.5 py-1 rounded-full bg-zinc-100 dark:bg-zinc-900">
-                ID: EMP-0001
+                ID: {profile.code}
               </span>
               <span className="px-2.5 py-1 rounded-full bg-zinc-100 dark:bg-zinc-900">
-                Dubai Internet City
+                {profile.workLocation}
               </span>
               <span className="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300 font-semibold">
                 Permanent Full-Time
@@ -103,7 +170,7 @@ export default function SelfServicePage() {
               <Calendar className="w-4 h-4 text-[#167D8D]" />
             </div>
             <div className="text-2xl font-bold text-[#071B2B] dark:text-[#f0f7f9]">
-              18.5 <span className="text-xs font-normal text-zinc-500">Days</span>
+              {balances.annualLeave} <span className="text-xs font-normal text-zinc-500">Days</span>
             </div>
             <p className="text-[11px] text-zinc-500">Accrues 2.08 days / month</p>
           </div>
@@ -114,7 +181,7 @@ export default function SelfServicePage() {
               <AlertCircle className="w-4 h-4 text-emerald-600" />
             </div>
             <div className="text-2xl font-bold text-[#071B2B] dark:text-[#f0f7f9]">
-              12.0 <span className="text-xs font-normal text-zinc-500">Days</span>
+              {balances.sickLeave} <span className="text-xs font-normal text-zinc-500">Days</span>
             </div>
             <p className="text-[11px] text-zinc-500">Full statutory coverage</p>
           </div>
@@ -125,7 +192,7 @@ export default function SelfServicePage() {
               <Plane className="w-4 h-4 text-purple-600" />
             </div>
             <div className="text-2xl font-bold text-[#071B2B] dark:text-[#f0f7f9]">
-              1 <span className="text-xs font-normal text-zinc-500">Ticket</span>
+              {balances.airTicketEntitlements} <span className="text-xs font-normal text-zinc-500">Ticket</span>
             </div>
             <p className="text-[11px] text-zinc-500">Service milestone earned (1 Yr)</p>
           </div>
@@ -213,11 +280,15 @@ export default function SelfServicePage() {
                     <label className="block text-zinc-600 dark:text-zinc-400 mb-1">
                       Category
                     </label>
-                    <select className="w-full px-3 py-2 rounded-lg border border-[#EEEEEE] dark:border-[#163854] bg-[#fafafa] dark:bg-[#0a2134] text-[#071B2B] dark:text-[#f0f7f9] focus:outline-none">
-                      <option>Salary Certificate Request</option>
-                      <option>Air Ticket Claim Invoicing</option>
-                      <option>Insurance Endorsement</option>
-                      <option>General HR Policy Query</option>
+                    <select
+                      value={category}
+                      onChange={(e) => setCategory(e.target.value)}
+                      className="w-full px-3 py-2 rounded-lg border border-[#EEEEEE] dark:border-[#163854] bg-[#fafafa] dark:bg-[#0a2134] text-[#071B2B] dark:text-[#f0f7f9] focus:outline-none"
+                    >
+                      <option value="Salary Certificate Request">Salary Certificate Request</option>
+                      <option value="Air Ticket Claim Invoicing">Air Ticket Claim Invoicing</option>
+                      <option value="Insurance Endorsement">Insurance Endorsement</option>
+                      <option value="General HR Policy Query">General HR Policy Query</option>
                     </select>
                   </div>
                   <div>
@@ -243,9 +314,10 @@ export default function SelfServicePage() {
                     </button>
                     <button
                       type="submit"
-                      className="px-4 py-1.5 rounded-lg bg-[#167D8D] text-white font-semibold"
+                      disabled={submitting}
+                      className="px-4 py-1.5 rounded-lg bg-[#167D8D] text-white font-semibold disabled:opacity-50"
                     >
-                      Submit Ticket
+                      {submitting ? "Submitting..." : "Submit Ticket"}
                     </button>
                   </div>
                 </form>

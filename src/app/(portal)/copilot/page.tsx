@@ -43,7 +43,7 @@ export default function CopilotPage() {
     "Show employees completing probation this month",
   ];
 
-  const handleSend = (textToSend?: string) => {
+  const handleSend = async (textToSend?: string) => {
     const query = textToSend || input;
     if (!query.trim()) {
       toast.warning("Empty Query", "Please ask a question or select a suggestion.");
@@ -62,34 +62,19 @@ export default function CopilotPage() {
     if (!textToSend) setInput("");
     setIsTyping(true);
 
-    setTimeout(() => {
-      let replyText = "";
-      let citation = undefined;
+    try {
+      const res = await fetch("/api/copilot", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query }),
+      });
+      const data = await res.json();
 
-      if (query.toLowerCase().includes("leave")) {
-        replyText =
-          "According to your tenant profile (Acme Global), you currently have **18.5 days of Annual Leave** remaining for the 2026 cycle. You also have 1 unlocked Air Ticket Entitlement credited on your 1-year anniversary.";
-        citation = {
-          policyTitle: "Global Leave & Service Entitlement Policy",
-          section: "Sec 4.2 - Annual Accrual & Air Allowance",
-          effectiveDate: "2026-01-01",
-        };
-      } else if (query.toLowerCase().includes("absent") || query.toLowerCase().includes("team")) {
-        replyText =
-          "In your department today (Engineering), 1 team member is on approved sick leave (**Marcus Vance**), and 2 team members are working remotely (**Elena Rostova**, **David Kim**). Team attendance rate is 92%.";
-      } else if (query.toLowerCase().includes("uae") || query.toLowerCase().includes("india") || query.toLowerCase().includes("calendar")) {
-        replyText =
-          "In PeopleOS, **Legal Entity** (e.g. Acme UAE Ltd) and **Work Location** (e.g. Bangalore Tech Park) are decoupled. Employees employed under a UAE contract but working physically in India receive the **India Holiday Calendar** by default under an effective-dated assignment, ensuring local statutory observance.";
-        citation = {
-          policyTitle: "Cross-Border Assignment & Holiday Protocol",
-          section: "Sec 2.1 - Decoupled Location & Entity Assignments",
-          effectiveDate: "2026-01-01",
-        };
-      } else if (query.toLowerCase().includes("probation")) {
-        replyText =
-          "There are 2 employees in your organization completing their probation period this month: **Daniel Lee** (confirmed Nov 18) and **Aisha Al-Mansoor** (confirmed Nov 24). HR review forms have been drafted.";
-      } else {
-        replyText = `I analyzed your request: "${query}". All records in your tenant boundary are current. Let me know if you would like me to generate an approval workflow draft or pull an export.`;
+      let replyText = data.replyText;
+      const citation = data.citation;
+
+      if (!res.ok) {
+        replyText = "I encountered an error querying organizational records. Please try again.";
       }
 
       const botMsgId = `bot-${msgCountRef.current++}`;
@@ -102,8 +87,18 @@ export default function CopilotPage() {
       };
 
       setMessages((prev) => [...prev, botMsg]);
+    } catch (err) {
+      console.error("Copilot query error:", err);
+      const botMsg: Message = {
+        id: `bot-${msgCountRef.current++}`,
+        sender: "copilot",
+        text: "Network communication error connecting to PeopleOS Copilot API.",
+        timestamp: "Just now",
+      };
+      setMessages((prev) => [...prev, botMsg]);
+    } finally {
       setIsTyping(false);
-    }, 600);
+    }
   };
 
   return (

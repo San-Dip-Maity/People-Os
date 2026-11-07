@@ -195,3 +195,4 @@ export async function PATCH(req: Request) {
     return NextResponse.json({ error: "Failed to update leave status" }, { status: 500 });
   }
 }
+

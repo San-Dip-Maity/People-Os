@@ -326,6 +326,284 @@ export async function seedDatabase() {
     console.log(`Seeded ${initialAttendance.length} initial attendance records`);
   }
 
+  // 7. Seed initial Payroll Run and Compensation Records
+  const existingPayroll = await prisma.payrollRun.count({
+    where: { tenantId: tenant.id },
+  });
+
+  if (existingPayroll === 0) {
+    const payrollRun = await prisma.payrollRun.create({
+      data: {
+        tenantId: tenant.id,
+        cycleName: "November 2026",
+        grossAmount: "$1,428,500.00",
+        statutoryDeductions: "$142,320.50",
+        netAmount: "$1,286,179.50",
+        status: "PREVIEW",
+        locked: false,
+      },
+    });
+
+    await prisma.compensationRecord.createMany({
+      data: [
+        {
+          tenantId: tenant.id,
+          payrollRunId: payrollRun.id,
+          employeeName: "Sarah Connor (EMP-0101)",
+          legalEntity: "Acme Holdings UAE Ltd",
+          currency: "AED",
+          baseSalary: "28,000.00",
+          allowances: "4,500.00",
+          deductions: "0.00",
+          netPayable: "32,500.00",
+        },
+        {
+          tenantId: tenant.id,
+          payrollRunId: payrollRun.id,
+          employeeName: "Rajesh Kumar (EMP-0102)",
+          legalEntity: "Acme Holdings UAE Ltd",
+          currency: "AED",
+          baseSalary: "18,500.00",
+          allowances: "2,200.00",
+          deductions: "0.00",
+          netPayable: "20,700.00",
+        },
+        {
+          tenantId: tenant.id,
+          payrollRunId: payrollRun.id,
+          employeeName: "Daniel Lee (EMP-0103)",
+          legalEntity: "Acme Americas Corp",
+          currency: "USD",
+          baseSalary: "12,500.00",
+          allowances: "1,000.00",
+          deductions: "2,850.00",
+          netPayable: "10,650.00",
+        },
+      ],
+    });
+    console.log("Seeded initial payroll run and compensation records");
+  }
+
+  // 8. Seed initial Job Requisitions
+  const existingJobs = await prisma.jobRequisition.count({
+    where: { tenantId: tenant.id },
+  });
+
+  if (existingJobs === 0) {
+    await prisma.jobRequisition.createMany({
+      data: [
+        {
+          tenantId: tenant.id,
+          code: "REQ-0101",
+          title: "Senior Cloud Platform Engineer",
+          department: "Engineering",
+          legalEntity: "Acme Holdings UAE Ltd",
+          workLocation: "Dubai or Remote",
+          applicantsCount: 48,
+          status: "PUBLISHED",
+        },
+        {
+          tenantId: tenant.id,
+          code: "REQ-0102",
+          title: "Frontend Technical Lead (Next.js)",
+          department: "Engineering",
+          legalEntity: "Acme Technologies India Pvt Ltd",
+          workLocation: "Bengaluru Tech Park",
+          applicantsCount: 62,
+          status: "PUBLISHED",
+        },
+        {
+          tenantId: tenant.id,
+          code: "REQ-0103",
+          title: "People Analytics Specialist",
+          department: "Human Resources",
+          legalEntity: "Acme Holdings UAE Ltd",
+          workLocation: "Dubai Internet City",
+          applicantsCount: 32,
+          status: "INTERVIEWING",
+        },
+      ],
+    });
+    console.log("Seeded initial job requisitions");
+  }
+
+  // 9. Seed initial Goals & OKRs
+  const existingGoals = await prisma.goalOKR.count({
+    where: { tenantId: tenant.id },
+  });
+
+  if (existingGoals === 0) {
+    await prisma.goalOKR.createMany({
+      data: [
+        {
+          tenantId: tenant.id,
+          title: "Achieve SOC 2 Type II & ISO 27001 Certification",
+          category: "COMPANY",
+          owner: "Alex Morgan",
+          department: "Executive & Security",
+          progress: 85,
+          targetDate: "2026-12-15",
+          status: "ON_TRACK",
+        },
+        {
+          tenantId: tenant.id,
+          title: "Automate Cross-Border Entity Payroll WPS Reconciliation",
+          category: "DEPARTMENT",
+          owner: "Aisha Al-Mansoor",
+          department: "Finance & Payroll",
+          progress: 68,
+          targetDate: "2026-11-30",
+          status: "ON_TRACK",
+        },
+        {
+          tenantId: tenant.id,
+          title: "Maintain 99.95% Human Capital Telemetry Availability",
+          category: "DEPARTMENT",
+          owner: "Marcus Vance",
+          department: "Engineering",
+          progress: 94,
+          targetDate: "2026-12-31",
+          status: "ON_TRACK",
+        },
+      ],
+    });
+    console.log("Seeded initial goals and OKRs");
+  }
+
+  // 10. Seed initial Document Records
+  const existingDocs = await prisma.documentRecord.count({
+    where: { tenantId: tenant.id },
+  });
+
+  if (existingDocs === 0) {
+    await prisma.documentRecord.createMany({
+      data: [
+        {
+          tenantId: tenant.id,
+          title: "Global Employee Code of Conduct 2026",
+          category: "Policies & Handbooks",
+          fileSize: "2.4 MB PDF",
+          scope: "All Employees",
+          expiresAt: "2027-01-01",
+        },
+        {
+          tenantId: tenant.id,
+          title: "Cross-Border Holiday Calendar Protocol",
+          category: "Policies & Handbooks",
+          fileSize: "840 KB PDF",
+          scope: "UAE & India Entities",
+          expiresAt: "Permanent",
+        },
+        {
+          tenantId: tenant.id,
+          title: "Standard Employment Agreement (UAE)",
+          category: "Contracts & Letters",
+          fileSize: "1.1 MB PDF",
+          scope: "Acme Holdings UAE",
+          expiresAt: "Permanent",
+        },
+        {
+          tenantId: tenant.id,
+          title: "Executive Residence Visa Copy — Sarah Connor",
+          category: "IDs & Compliance",
+          fileSize: "520 KB PDF",
+          scope: "Confidential HR",
+          expiresAt: "2026-11-28",
+        },
+      ],
+    });
+    console.log("Seeded initial document records");
+  }
+
+  // 11. Seed initial Holiday Calendars
+  const existingHolidays = await prisma.holiday.count({
+    where: { tenantId: tenant.id },
+  });
+
+  if (existingHolidays === 0) {
+    await prisma.holiday.createMany({
+      data: [
+        { tenantId: tenant.id, calendarCode: "UAE", name: "New Year's Day", date: "2026-01-01", type: "Statutory Public", daysCount: 1 },
+        { tenantId: tenant.id, calendarCode: "UAE", name: "Eid Al-Fitr (Estimated)", date: "2026-03-20 to 2026-03-23", type: "Religious Public", daysCount: 4 },
+        { tenantId: tenant.id, calendarCode: "UAE", name: "UAE National Day", date: "2026-12-02 to 2026-12-03", type: "National Holiday", daysCount: 2 },
+        { tenantId: tenant.id, calendarCode: "IND", name: "Republic Day", date: "2026-01-26", type: "National Holiday", daysCount: 1 },
+        { tenantId: tenant.id, calendarCode: "IND", name: "Independence Day", date: "2026-08-15", type: "National Holiday", daysCount: 1 },
+        { tenantId: tenant.id, calendarCode: "IND", name: "Diwali (Deepavali)", date: "2026-11-08 to 2026-11-09", type: "Festival Public", daysCount: 2 },
+        { tenantId: tenant.id, calendarCode: "USA", name: "New Year's Day", date: "2026-01-01", type: "Federal Statutory", daysCount: 1 },
+        { tenantId: tenant.id, calendarCode: "USA", name: "Independence Day", date: "2026-07-04", type: "Federal Holiday", daysCount: 1 },
+        { tenantId: tenant.id, calendarCode: "USA", name: "Thanksgiving Day", date: "2026-11-26", type: "Federal Holiday", daysCount: 1 },
+      ],
+    });
+    console.log("Seeded initial holiday records");
+  }
+
+  // 12. Seed initial Timesheets
+  const existingTimesheets = await prisma.timesheet.count({
+    where: { tenantId: tenant.id },
+  });
+
+  if (existingTimesheets === 0) {
+    await prisma.timesheet.createMany({
+      data: [
+        {
+          tenantId: tenant.id,
+          employeeName: "Alex Morgan",
+          weekNumber: 45,
+          weekRange: "Nov 02 — Nov 06, 2026",
+          totalHours: 40.0,
+          status: "SUBMITTED",
+          reviewer: "Marcus Vance (VP Engineering)",
+        },
+      ],
+    });
+    console.log("Seeded initial timesheets");
+  }
+
+  // 13. Seed initial Notifications
+  const existingNotifications = await prisma.notification.count({
+    where: { tenantId: tenant.id },
+  });
+
+  if (existingNotifications === 0) {
+    await prisma.notification.createMany({
+      data: [
+        {
+          tenantId: tenant.id,
+          title: "New Leave Application",
+          description: "Sarah Connor requested 5 days Annual Leave (Nov 15 - Nov 19)",
+          category: "APPROVALS",
+          isRead: false,
+          link: "/leave",
+        },
+        {
+          tenantId: tenant.id,
+          title: "Payroll Calculations Ready for Review",
+          description: "November 2026 payroll preview generated across all entities",
+          category: "APPROVALS",
+          isRead: false,
+          link: "/payroll",
+        },
+        {
+          tenantId: tenant.id,
+          title: "Employee Probation Confirmation",
+          description: "Daniel Lee completed 6 months probation period successfully",
+          category: "SYSTEM",
+          isRead: true,
+          link: "/employees",
+        },
+        {
+          tenantId: tenant.id,
+          title: "Updated Cross-Border Holiday Calendar Assigned",
+          description: "Rajesh Kumar reassigned to India Public Calendar with effective date Nov 10",
+          category: "SYSTEM",
+          isRead: true,
+          link: "/holidays",
+        },
+      ],
+    });
+    console.log("Seeded initial notifications");
+  }
+
   return { tenant, user };
 }
 

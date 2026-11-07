@@ -7,22 +7,32 @@ import {
   DollarSign,
   UserCheck,
   FileText,
+  Bell,
 } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { toast } from "@/components/ui/toast";
 
+interface NotificationItem {
+  id: string;
+  title: string;
+  description: string;
+  category: string;
+  isRead: boolean;
+  link: string | null;
+  createdAt: string;
+}
+
 export default function NotificationsPage() {
   const [filter, setFilter] = React.useState<"ALL" | "UNREAD" | "APPROVALS">("ALL");
-  const [notifications, setNotifications] = React.useState([
+  const [notifications, setNotifications] = React.useState<NotificationItem[]>([
     {
       id: "1",
       title: "New Leave Application",
       description: "Sarah Connor requested 5 days Annual Leave (Nov 15 - Nov 19)",
       category: "APPROVALS",
-      time: "10m ago",
-      read: false,
-      icon: Calendar,
+      createdAt: new Date().toISOString(),
+      isRead: false,
       link: "/leave",
     },
     {
@@ -30,9 +40,8 @@ export default function NotificationsPage() {
       title: "Payroll Calculations Ready for Review",
       description: "November 2026 payroll preview generated across all entities",
       category: "APPROVALS",
-      time: "1h ago",
-      read: false,
-      icon: DollarSign,
+      createdAt: new Date().toISOString(),
+      isRead: false,
       link: "/payroll",
     },
     {
@@ -40,9 +49,8 @@ export default function NotificationsPage() {
       title: "Employee Probation Confirmation",
       description: "Daniel Lee completed 6 months probation period successfully",
       category: "SYSTEM",
-      time: "3h ago",
-      read: true,
-      icon: UserCheck,
+      createdAt: new Date().toISOString(),
+      isRead: true,
       link: "/employees",
     },
     {
@@ -50,22 +58,79 @@ export default function NotificationsPage() {
       title: "Updated Cross-Border Holiday Calendar Assigned",
       description: "Rajesh Kumar reassigned to India Public Calendar with effective date Nov 10",
       category: "SYSTEM",
-      time: "1d ago",
-      read: true,
-      icon: FileText,
+      createdAt: new Date().toISOString(),
+      isRead: true,
       link: "/holidays",
     },
   ]);
 
+  React.useEffect(() => {
+    async function loadNotifications() {
+      try {
+        const res = await fetch("/api/notifications");
+        if (res.ok) {
+          const data = await res.json();
+          if (data.notifications && data.notifications.length > 0) {
+            setNotifications(data.notifications);
+          }
+        }
+      } catch (err) {
+        console.error("Failed to load notifications:", err);
+      }
+    }
+    loadNotifications();
+  }, []);
+
   const filtered = notifications.filter((n) => {
-    if (filter === "UNREAD") return !n.read;
+    if (filter === "UNREAD") return !n.isRead;
     if (filter === "APPROVALS") return n.category === "APPROVALS";
     return true;
   });
 
-  const markAllRead = () => {
-    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
-    toast.info("Notifications Cleared", "All alerts marked as read in database.");
+  const markAllRead = async () => {
+    setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
+    try {
+      const res = await fetch("/api/notifications", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ all: true }),
+      });
+      if (res.ok) {
+        toast.info("Notifications Cleared", "All alerts marked as read in database.");
+      }
+    } catch (err) {
+      console.error("Mark all read error:", err);
+    }
+  };
+
+  const markAsRead = async (id: string) => {
+    setNotifications((prev) =>
+      prev.map((n) => (n.id === id ? { ...n, isRead: true } : n))
+    );
+    try {
+      await fetch("/api/notifications", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+    } catch (err) {
+      console.error("Mark read error:", err);
+    }
+  };
+
+  const getIcon = (category: string) => {
+    switch (category) {
+      case "APPROVALS":
+        return Calendar;
+      case "PAYROLL":
+        return DollarSign;
+      case "EMPLOYEE":
+        return UserCheck;
+      case "COMPLIANCE":
+        return FileText;
+      default:
+        return Bell;
+    }
   };
 
   return (
@@ -78,7 +143,7 @@ export default function NotificationsPage() {
               Notification Center & Alert Broadcasts
             </h1>
             <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">
-              In-app alert feeds, workflow approvals, and policy updates.
+              Live in-app alert feeds, workflow approvals, and policy updates.
             </p>
           </div>
 
@@ -99,7 +164,7 @@ export default function NotificationsPage() {
             { key: "ALL", label: `All (${notifications.length})` },
             {
               key: "UNREAD",
-              label: `Unread (${notifications.filter((n) => !n.read).length})`,
+              label: `Unread (${notifications.filter((n) => !n.isRead).length})`,
             },
             { key: "APPROVALS", label: "Approvals Only" },
           ].map((tab) => (
@@ -126,13 +191,14 @@ export default function NotificationsPage() {
             </div>
           ) : (
             filtered.map((item) => {
-              const Icon = item.icon;
+              const Icon = getIcon(item.category);
               return (
                 <div
                   key={item.id}
+                  onClick={() => markAsRead(item.id)}
                   className={cn(
-                    "p-4 flex items-start gap-4 hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors",
-                    !item.read && "bg-[#eaf7f9] dark:bg-[#0a2134]"
+                    "p-4 flex items-start gap-4 hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors cursor-pointer",
+                    !item.isRead && "bg-[#eaf7f9] dark:bg-[#0a2134]"
                   )}
                 >
                   <div className="p-2.5 rounded-xl bg-[#B9E4E8] dark:bg-[#12334f] text-[#167D8D] dark:text-[#B9E4E8] shrink-0">
@@ -145,23 +211,25 @@ export default function NotificationsPage() {
                         {item.title}
                       </h4>
                       <span className="text-[11px] text-zinc-400 font-mono">
-                        {item.time}
+                        {new Date(item.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                       </span>
                     </div>
                     <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed">
                       {item.description}
                     </p>
-                    <div className="pt-1">
-                      <Link
-                        href={item.link}
-                        className="text-[#167D8D] dark:text-[#B9E4E8] font-medium hover:underline inline-flex items-center gap-1"
-                      >
-                        Navigate to Record →
-                      </Link>
-                    </div>
+                    {item.link && (
+                      <div className="pt-1">
+                        <Link
+                          href={item.link}
+                          className="text-[#167D8D] dark:text-[#B9E4E8] font-medium hover:underline inline-flex items-center gap-1"
+                        >
+                          Navigate to Record →
+                        </Link>
+                      </div>
+                    )}
                   </div>
 
-                  {!item.read && (
+                  {!item.isRead && (
                     <span className="w-2 h-2 rounded-full bg-[#167D8D] shrink-0 mt-2" />
                   )}
                 </div>

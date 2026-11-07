@@ -10,8 +10,57 @@ import {
   Layers,
 } from "lucide-react";
 
+interface OrgData {
+  entities: Array<{
+    id: string;
+    name: string;
+    jurisdiction: string;
+    regNumber: string;
+    currency: string;
+    employeesCount: number;
+  }>;
+  locations: Array<{
+    id: string;
+    name: string;
+    address: string;
+    timezone: string;
+    calendar: string;
+  }>;
+  departments: Array<{
+    name: string;
+    lead: string;
+    count: number;
+  }>;
+  transfers: Array<{
+    id: string;
+    employee: string;
+    from: string;
+    to: string;
+    legalEntity: string;
+    effectiveDate: string;
+    calendarChange: string;
+    status: string;
+  }>;
+}
+
 export default function OrganizationPage() {
   const [tab, setTab] = React.useState<"entities" | "locations" | "departments" | "transfers">("entities");
+  const [orgData, setOrgData] = React.useState<OrgData | null>(null);
+
+  React.useEffect(() => {
+    async function loadOrg() {
+      try {
+        const res = await fetch("/api/organization");
+        if (res.ok) {
+          const data = await res.json();
+          setOrgData(data);
+        }
+      } catch (err) {
+        console.error("Failed to load organization data:", err);
+      }
+    }
+    loadOrg();
+  }, []);
 
   return (
     <>
@@ -45,10 +94,10 @@ export default function OrganizationPage() {
         {/* Navigation Tabs */}
         <div className="flex gap-2 border-b border-[#EEEEEE] dark:border-[#163854] pb-2 text-xs font-medium">
           {[
-            { key: "entities", label: "Legal Entities (3)", icon: Building2 },
-            { key: "locations", label: "Work Locations (3)", icon: MapPin },
-            { key: "departments", label: "Departments (5)", icon: Layers },
-            { key: "transfers", label: "Assignment History", icon: History },
+            { key: "entities", label: `Legal Entities (${orgData?.entities?.length || 3})`, icon: Building2 },
+            { key: "locations", label: `Work Locations (${orgData?.locations?.length || 3})`, icon: MapPin },
+            { key: "departments", label: `Departments (${orgData?.departments?.length || 5})`, icon: Layers },
+            { key: "transfers", label: `Assignment History (${orgData?.transfers?.length || 2})`, icon: History },
           ].map((t) => {
             const Icon = t.icon;
             const active = tab === t.key;

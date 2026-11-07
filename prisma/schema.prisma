@@ -29,6 +29,13 @@ model Tenant {
   leaveRequests     LeaveRequest[]
   attendanceRecords AttendanceRecord[]
   workflowItems     WorkflowItem[]
+  payrollRuns       PayrollRun[]
+  jobRequisitions   JobRequisition[]
+  goals             GoalOKR[]
+  documents         DocumentRecord[]
+  holidays          Holiday[]
+  timesheets        Timesheet[]
+  notifications     Notification[]
 
   @@index([slug])
   @@index([isActive])
@@ -230,4 +237,180 @@ model PasswordResetToken {
 
   @@index([email])
   @@index([token])
+}
+
+// -------------------------------------------------------------
+// Payroll & Compensation Models
+// -------------------------------------------------------------
+
+model PayrollRun {
+  id                  String               @id @default(uuid())
+  tenantId            String
+  cycleName           String               // e.g. "November 2026"
+  grossAmount         String               // formatted or decimal string
+  statutoryDeductions String
+  netAmount           String
+  status              String               @default("PREVIEW") // PREVIEW, FINALIZED, PAID
+  locked              Boolean              @default(false)
+  lockedAt            DateTime?
+  lockedBy            String?
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+
+  tenant              Tenant               @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  records             CompensationRecord[]
+
+  @@index([tenantId, cycleName])
+  @@index([tenantId, status])
+}
+
+model CompensationRecord {
+  id           String      @id @default(uuid())
+  tenantId     String
+  payrollRunId String
+  employeeName String
+  legalEntity  String
+  currency     String      @default("AED")
+  baseSalary   String
+  allowances   String
+  deductions   String
+  netPayable   String
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  payrollRun   PayrollRun  @relation(fields: [payrollRunId], references: [id], onDelete: Cascade)
+
+  @@index([payrollRunId])
+  @@index([tenantId])
+}
+
+// -------------------------------------------------------------
+// Recruitment & ATS Models
+// -------------------------------------------------------------
+
+model JobRequisition {
+  id              String   @id @default(uuid())
+  tenantId        String
+  code            String
+  title           String
+  department      String
+  legalEntity     String
+  workLocation    String
+  applicantsCount Int      @default(0)
+  status          String   @default("PUBLISHED") // DRAFT, PUBLISHED, INTERVIEWING, CLOSED
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  tenant          Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, status])
+  @@index([tenantId, department])
+}
+
+// -------------------------------------------------------------
+// Performance Management & OKRs
+// -------------------------------------------------------------
+
+model GoalOKR {
+  id          String   @id @default(uuid())
+  tenantId    String
+  title       String
+  category    String   // COMPANY, DEPARTMENT, INDIVIDUAL
+  owner       String
+  department  String
+  progress    Int      @default(0) // 0 - 100
+  targetDate  String
+  status      String   @default("ON_TRACK") // ON_TRACK, AT_RISK, BEHIND, COMPLETED
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  tenant      Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, status])
+  @@index([tenantId, department])
+}
+
+// -------------------------------------------------------------
+// Document Management & Policies
+// -------------------------------------------------------------
+
+model DocumentRecord {
+  id          String   @id @default(uuid())
+  tenantId    String
+  title       String
+  category    String   // Policies & Handbooks, Contracts & Letters, IDs & Compliance
+  fileSize    String
+  scope       String   @default("All Employees")
+  expiresAt   String?  // YYYY-MM-DD or "Permanent"
+  fileUrl     String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  tenant      Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, category])
+}
+
+// -------------------------------------------------------------
+// Holiday Calendars
+// -------------------------------------------------------------
+
+model Holiday {
+  id           String   @id @default(uuid())
+  tenantId     String
+  calendarCode String   // UAE, IND, USA
+  name         String
+  date         String   // YYYY-MM-DD or range
+  type         String   // Statutory Public, National Holiday, Religious Public
+  daysCount    Float    @default(1)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  tenant       Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, calendarCode])
+}
+
+// -------------------------------------------------------------
+// Timesheets & Project Hours
+// -------------------------------------------------------------
+
+model Timesheet {
+  id           String   @id @default(uuid())
+  tenantId     String
+  employeeName String
+  weekNumber   Int
+  weekRange    String   // "Nov 02 — Nov 06, 2026"
+  totalHours   Float    @default(40.0)
+  status       String   @default("SUBMITTED") // DRAFT, SUBMITTED, APPROVED, REJECTED
+  reviewer     String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  tenant       Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, status])
+  @@index([tenantId, employeeName])
+}
+
+// -------------------------------------------------------------
+// In-App Notifications
+// -------------------------------------------------------------
+
+model Notification {
+  id          String   @id @default(uuid())
+  tenantId    String
+  userId      String?
+  title       String
+  description String
+  category    String   @default("SYSTEM") // APPROVALS, SYSTEM, PAYROLL, COMPLIANCE
+  isRead      Boolean  @default(false)
+  link        String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  tenant      Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, isRead])
+  @@index([tenantId, category])
 }

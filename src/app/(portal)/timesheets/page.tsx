@@ -4,11 +4,81 @@ import * as React from "react";
 import {
   Send,
   Calendar,
+  Loader2,
+  CheckCircle2,
 } from "lucide-react";
 import { toast } from "@/components/ui/toast";
 
 export default function TimesheetsPage() {
   const [submitted, setSubmitted] = React.useState(false);
+  const [submitting, setSubmitting] = React.useState(false);
+  const [timesheetInfo, setTimesheetInfo] = React.useState({
+    weekNumber: 45,
+    weekRange: "Nov 02 — Nov 06, 2026",
+    reviewer: "Marcus Vance (VP Engineering)",
+    totalHours: 40.0,
+    status: "SUBMITTED",
+  });
+
+  React.useEffect(() => {
+    async function loadTimesheet() {
+      try {
+        const res = await fetch("/api/timesheets");
+        if (res.ok) {
+          const data = await res.json();
+          if (data.timesheets && data.timesheets.length > 0) {
+            const latest = data.timesheets[0];
+            setSubmitted(latest.status === "SUBMITTED" || latest.status === "APPROVED");
+            setTimesheetInfo({
+              weekNumber: latest.weekNumber,
+              weekRange: latest.weekRange,
+              reviewer: latest.reviewer || "Marcus Vance (VP Engineering)",
+              totalHours: latest.totalHours,
+              status: latest.status,
+            });
+          }
+        }
+      } catch (err) {
+        console.error("Failed to load timesheet:", err);
+      }
+    }
+    loadTimesheet();
+  }, []);
+
+  const handleSubmitTimesheet = async () => {
+    setSubmitting(true);
+    try {
+      const res = await fetch("/api/timesheets", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          weekNumber: 45,
+          weekRange: "Nov 02 — Nov 06, 2026",
+          totalHours: 40.0,
+          reviewer: "Marcus Vance (VP Engineering)",
+        }),
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        toast.error("Submission Failed", data.error || "Could not submit timesheet.");
+        return;
+      }
+
+      setSubmitted(true);
+      setTimesheetInfo((prev) => ({ ...prev, status: "SUBMITTED" }));
+
+      toast.success(
+        "Timesheet Submitted",
+        data.message || "Weekly allocation (40.0h) saved to database and submitted for manager approval."
+      );
+    } catch (err) {
+      console.error("Timesheet submit error:", err);
+      toast.error("Network Error", "Could not reach database API.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <>
@@ -26,16 +96,21 @@ export default function TimesheetsPage() {
 
           <div className="flex items-center gap-2">
             <button
-              onClick={() => {
-                setSubmitted(true);
-                toast.success(
-                  "Timesheet Submitted",
-                  "Weekly allocation (40.0h) saved to database and submitted for manager approval."
-                );
-              }}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-[#167D8D] hover:bg-[#126876] text-white text-xs font-semibold shadow-xs transition-colors"
+              onClick={handleSubmitTimesheet}
+              disabled={submitting || submitted}
+              className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-white text-xs font-semibold shadow-xs transition-colors ${
+                submitted
+                  ? "bg-zinc-600 cursor-not-allowed"
+                  : "bg-[#167D8D] hover:bg-[#126876]"
+              }`}
             >
-              <Send className="w-3.5 h-3.5" />
+              {submitting ? (
+                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+              ) : submitted ? (
+                <CheckCircle2 className="w-3.5 h-3.5" />
+              ) : (
+                <Send className="w-3.5 h-3.5" />
+              )}
               <span>{submitted ? "Timesheet Submitted" : "Submit Week For Review"}</span>
             </button>
           </div>
@@ -49,10 +124,10 @@ export default function TimesheetsPage() {
             </div>
             <div>
               <div className="text-xs font-bold text-[#071B2B] dark:text-[#f0f7f9]">
-                Week 45: Nov 02 — Nov 06, 2026
+                Week {timesheetInfo.weekNumber}: {timesheetInfo.weekRange}
               </div>
               <div className="text-[11px] text-zinc-500">
-                Assigned Reviewer: Marcus Vance (VP Engineering)
+                Assigned Reviewer: {timesheetInfo.reviewer}
               </div>
             </div>
           </div>
@@ -61,7 +136,7 @@ export default function TimesheetsPage() {
             <div className="text-right">
               <div className="text-xs text-zinc-500">Weekly Total</div>
               <div className="text-lg font-bold text-[#071B2B] dark:text-[#f0f7f9]">
-                40.0 hrs
+                {timesheetInfo.totalHours.toFixed(1)} hrs
               </div>
             </div>
             <span
@@ -71,7 +146,7 @@ export default function TimesheetsPage() {
                   : "bg-[#B9E4E8] text-[#071B2B]"
               }`}
             >
-              {submitted ? "UNDER REVIEW" : "DRAFT"}
+              {timesheetInfo.status}
             </span>
           </div>
         </div>
