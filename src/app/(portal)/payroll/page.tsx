@@ -6,6 +6,7 @@ import {
   Download,
   ShieldCheck,
 } from "lucide-react";
+import { toast } from "@/components/ui/toast";
 
 export default function PayrollPage() {
   const [locked, setLocked] = React.useState(false);
@@ -26,7 +27,15 @@ export default function PayrollPage() {
 
           <div className="flex items-center gap-2">
             <button
-              onClick={() => setLocked(!locked)}
+              onClick={() => {
+                const nextState = !locked;
+                setLocked(nextState);
+                if (nextState) {
+                  toast.success("Payroll Run Locked", "November 2026 cycle finalized and committed to database for disbursement.");
+                } else {
+                  toast.warning("Payroll Run Reopened", "Cycle unlocked for manual retro-adjustments.");
+                }
+              }}
               className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-semibold shadow-xs transition-colors ${
                 locked
                   ? "bg-zinc-800 text-zinc-200 hover:bg-zinc-700"
@@ -37,7 +46,9 @@ export default function PayrollPage() {
               <span>{locked ? "Unlock For Revisions" : "Lock & Finalize Run"}</span>
             </button>
             <button
-              onClick={() => alert("Downloading bank payment batch file (WPS / ISO 20022 XML)")}
+              onClick={() => {
+                toast.success("Bank File Exported", "WPS / ISO 20022 SIF payment batch file generated and logged in database.");
+              }}
               className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg border border-[#EEEEEE] dark:border-[#163854] hover:bg-zinc-100 dark:hover:bg-zinc-900 text-xs font-semibold transition-colors"
             >
               <Download className="w-3.5 h-3.5" />

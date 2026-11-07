@@ -5,6 +5,7 @@ import {
   Award,
   Plus,
 } from "lucide-react";
+import { toast } from "@/components/ui/toast";
 
 export default function PerformancePage() {
   return (
@@ -23,7 +24,7 @@ export default function PerformancePage() {
 
           <div className="flex items-center gap-2">
             <button
-              onClick={() => alert("Open New OKR Goal form")}
+              onClick={() => toast.info("Goal Designer", "New OKR goal definition panel initialized.")}
               className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-[#167D8D] hover:bg-[#126876] text-white text-xs font-semibold shadow-xs transition-colors"
             >
               <Plus className="w-4 h-4" />

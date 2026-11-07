@@ -8,6 +8,7 @@ import {
   ShieldCheck,
   AlertTriangle,
 } from "lucide-react";
+import { toast } from "@/components/ui/toast";
 
 export default function DocumentsPage() {
   const docs = [
@@ -61,7 +62,7 @@ export default function DocumentsPage() {
 
           <div className="flex items-center gap-2">
             <button
-              onClick={() => alert("Upload document file with signed encryption")}
+              onClick={() => toast.info("Vault Upload", "Secure signed document upload modal initialized.")}
               className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-[#167D8D] hover:bg-[#126876] text-white text-xs font-semibold shadow-xs transition-colors"
             >
               <Upload className="w-4 h-4" />
@@ -124,7 +125,7 @@ export default function DocumentsPage() {
                     )}
 
                     <button
-                      onClick={() => alert(`Generating ephemeral signed URL for: ${doc.title}`)}
+                      onClick={() => toast.success("Signed URL Generated", `Ephemeral download link created for ${doc.title} (expires in 15 mins).`)}
                       className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#EEEEEE] dark:border-[#163854] hover:bg-zinc-100 dark:hover:bg-zinc-900 text-zinc-700 dark:text-zinc-300 font-medium transition-colors"
                     >
                       <Download className="w-3.5 h-3.5" />

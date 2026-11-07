@@ -6,15 +6,71 @@ import {
   Shield,
   Save,
   CheckCircle2,
+  Loader2,
 } from "lucide-react";
+import { toast } from "@/components/ui/toast";
 
 export default function SettingsPage() {
   const [saved, setSaved] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
+  const [tenantName, setTenantName] = React.useState("Acme Global Technologies (HQ)");
+  const [hq, setHq] = React.useState("Dubai Internet City, UAE");
+  const [currency, setCurrency] = React.useState("USD");
 
-  const handleSave = (e: React.FormEvent) => {
+  React.useEffect(() => {
+    async function loadSettings() {
+      try {
+        const res = await fetch("/api/settings");
+        if (res.ok) {
+          const data = await res.json();
+          if (data.tenant) {
+            setTenantName(data.tenant.name);
+            if (data.tenant.settings?.currency) {
+              setCurrency(data.tenant.settings.currency);
+            }
+          }
+        }
+      } catch (err) {
+        console.error("Failed to load settings:", err);
+      }
+    }
+    loadSettings();
+  }, []);
+
+  const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
+    setLoading(true);
+
+    try {
+      const res = await fetch("/api/settings", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: tenantName,
+          currency,
+          timezone: "Asia/Dubai",
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        toast.error("Save Failed", data.error || "Failed to persist tenant settings to database.");
+        return;
+      }
+
+      setSaved(true);
+      setTimeout(() => setSaved(false), 3000);
+      toast.success(
+        "Tenant Settings Saved",
+        "Tenant identity and organization preferences committed to database successfully."
+      );
+    } catch (err) {
+      console.error("Settings save error:", err);
+      toast.error("Network Error", "Could not reach database.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -23,10 +79,10 @@ export default function SettingsPage() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-1">
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[#071B2B] dark:text-[#f0f7f9] flex items-center gap-2">
+            <h1 className="title-page text-[#071B2B] dark:text-[#f0f7f9] flex items-center gap-2">
               Tenant Settings & Access Control
             </h1>
-            <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">
+            <p className="text-supporting text-zinc-500 dark:text-zinc-400">
               Manage organization preferences, tenant isolation policies, and RBAC matrix.
             </p>
           </div>
@@ -35,7 +91,7 @@ export default function SettingsPage() {
         {saved && (
           <div className="p-3.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-xs font-semibold text-emerald-800 dark:text-emerald-300 flex items-center gap-2">
             <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-            Tenant configurations saved successfully.
+            Tenant configurations saved to database successfully.
           </div>
         )}
 
@@ -43,25 +99,26 @@ export default function SettingsPage() {
         <form onSubmit={handleSave} className="space-y-6">
           {/* General Tenant Settings */}
           <div className="p-6 rounded-xl border border-[#EEEEEE] dark:border-[#163854] bg-white dark:bg-[#0c263d] shadow-xs space-y-4">
-            <h3 className="font-bold text-sm text-[#071B2B] dark:text-[#f0f7f9] flex items-center gap-2">
+            <h3 className="heading-card text-[#071B2B] dark:text-[#f0f7f9] flex items-center gap-2">
               <Building className="w-4 h-4 text-[#167D8D]" />
               Tenant Identity & Localization
             </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
               <div>
-                <label className="block text-zinc-600 dark:text-zinc-400 mb-1">
+                <label className="text-label block text-zinc-600 dark:text-zinc-400 mb-1">
                   Tenant Organization Name
                 </label>
                 <input
                   type="text"
-                  defaultValue="Acme Technologies Global"
-                  className="w-full px-3 py-2 rounded-lg border border-[#EEEEEE] dark:border-[#163854] bg-[#fafafa] dark:bg-[#0a2134] text-[#071B2B] dark:text-[#f0f7f9] focus:outline-none"
+                  value={tenantName}
+                  onChange={(e) => setTenantName(e.target.value)}
+                  className="w-full px-3 py-2 rounded-lg border border-[#EEEEEE] dark:border-[#163854] bg-[#fafafa] dark:bg-[#0a2134] text-[#071B2B] dark:text-[#f0f7f9] focus:outline-none focus:ring-2 focus:ring-[#167D8D]/20 focus:border-[#167D8D]"
                 />
               </div>
 
               <div>
-                <label className="block text-zinc-600 dark:text-zinc-400 mb-1">
+                <label className="text-label block text-zinc-600 dark:text-zinc-400 mb-1">
                   Tenant Domain Slug
                 </label>
                 <input
@@ -73,24 +130,30 @@ export default function SettingsPage() {
               </div>
 
               <div>
-                <label className="block text-zinc-600 dark:text-zinc-400 mb-1">
+                <label className="text-label block text-zinc-600 dark:text-zinc-400 mb-1">
                   Primary Headquarters
                 </label>
                 <input
                   type="text"
-                  defaultValue="Dubai Internet City, UAE"
-                  className="w-full px-3 py-2 rounded-lg border border-[#EEEEEE] dark:border-[#163854] bg-[#fafafa] dark:bg-[#0a2134] text-[#071B2B] dark:text-[#f0f7f9] focus:outline-none"
+                  value={hq}
+                  onChange={(e) => setHq(e.target.value)}
+                  className="w-full px-3 py-2 rounded-lg border border-[#EEEEEE] dark:border-[#163854] bg-[#fafafa] dark:bg-[#0a2134] text-[#071B2B] dark:text-[#f0f7f9] focus:outline-none focus:ring-2 focus:ring-[#167D8D]/20 focus:border-[#167D8D]"
                 />
               </div>
 
               <div>
-                <label className="block text-zinc-600 dark:text-zinc-400 mb-1">
+                <label className="text-label block text-zinc-600 dark:text-zinc-400 mb-1">
                   Default Currency
                 </label>
-                <select className="w-full px-3 py-2 rounded-lg border border-[#EEEEEE] dark:border-[#163854] bg-[#fafafa] dark:bg-[#0a2134] text-[#071B2B] dark:text-[#f0f7f9] focus:outline-none">
-                  <option>AED — United Arab Emirates Dirham</option>
-                  <option>USD — US Dollar</option>
-                  <option>INR — Indian Rupee</option>
+                <select
+                  value={currency}
+                  onChange={(e) => setCurrency(e.target.value)}
+                  className="w-full px-3 py-2 rounded-lg border border-[#EEEEEE] dark:border-[#163854] bg-[#fafafa] dark:bg-[#0a2134] text-[#071B2B] dark:text-[#f0f7f9] focus:outline-none"
+                >
+                  <option value="USD">USD — US Dollar</option>
+                  <option value="AED">AED — United Arab Emirates Dirham</option>
+                  <option value="INR">INR — Indian Rupee</option>
+                  <option value="EUR">EUR — Euro</option>
                 </select>
               </div>
             </div>
@@ -98,7 +161,7 @@ export default function SettingsPage() {
 
           {/* Granular RBAC Preview */}
           <div className="p-6 rounded-xl border border-[#EEEEEE] dark:border-[#163854] bg-white dark:bg-[#0c263d] shadow-xs space-y-4">
-            <h3 className="font-bold text-sm text-[#071B2B] dark:text-[#f0f7f9] flex items-center gap-2">
+            <h3 className="heading-card text-[#071B2B] dark:text-[#f0f7f9] flex items-center gap-2">
               <Shield className="w-4 h-4 text-emerald-600" />
               Role-Based Access Control (RBAC) Hierarchy
             </h3>
@@ -131,10 +194,19 @@ export default function SettingsPage() {
           <div className="flex justify-end gap-3">
             <button
               type="submit"
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#167D8D] hover:bg-[#126876] text-white text-xs font-semibold shadow-xs transition-colors"
+              disabled={loading}
+              className="btn-primary disabled:opacity-50"
             >
-              <Save className="w-4 h-4" />
-              <span>Save Tenant Preferences</span>
+              {loading ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-1.5 animate-spin" /> Saving...
+                </>
+              ) : (
+                <>
+                  <Save className="w-4 h-4 mr-1.5" />
+                  <span>Save Tenant Preferences</span>
+                </>
+              )}
             </button>
           </div>
         </form>

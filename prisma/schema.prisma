@@ -15,16 +15,20 @@ datasource db {
 // -------------------------------------------------------------
 
 model Tenant {
-  id          String   @id @default(uuid())
-  slug        String   @unique
-  name        String
-  isActive    Boolean  @default(true)
-  settings    Json?    // Global tenant preferences
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id                String             @id @default(uuid())
+  slug              String             @unique
+  name              String
+  isActive          Boolean            @default(true)
+  settings          Json?              // Global tenant preferences
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
 
-  users       UserMembership[]
-  auditLogs   AuditLog[]
+  users             UserMembership[]
+  auditLogs         AuditLog[]
+  employees         Employee[]
+  leaveRequests     LeaveRequest[]
+  attendanceRecords AttendanceRecord[]
+  workflowItems     WorkflowItem[]
 
   @@index([slug])
   @@index([isActive])
@@ -79,6 +83,113 @@ model UserMembership {
   @@unique([tenantId, userId])
   @@index([tenantId])
   @@index([userId])
+}
+
+// -------------------------------------------------------------
+// Workforce & Employee Directory
+// -------------------------------------------------------------
+
+model Employee {
+  id             String             @id @default(uuid())
+  tenantId       String
+  code           String
+  name           String
+  email          String
+  phone          String?
+  department     String
+  designation    String
+  legalEntity    String
+  workLocation   String
+  employmentType String             @default("Full-Time Permanent")
+  status         String             @default("ACTIVE") // ACTIVE, PROBATION, NOTICE, TERMINATED
+  joinDate       String
+  manager        String?
+  avatar         String?
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+
+  tenant         Tenant             @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  leaveRequests  LeaveRequest[]
+  attendanceRecords AttendanceRecord[]
+
+  @@unique([tenantId, code])
+  @@index([tenantId, email])
+  @@index([tenantId, department])
+  @@index([tenantId, status])
+}
+
+// -------------------------------------------------------------
+// Time & Leave Management
+// -------------------------------------------------------------
+
+model LeaveRequest {
+  id             String    @id @default(uuid())
+  tenantId       String
+  employeeId     String?
+  employeeName   String
+  department     String
+  type           String    // Annual Leave, Sick Leave, Casual Leave, Remote Work
+  startDate      String
+  endDate        String
+  daysCount      Float
+  reason         String?
+  status         String    @default("PENDING") // PENDING, APPROVED, REJECTED
+  approvedBy     String?
+  decisionNotes  String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  tenant         Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  employee       Employee? @relation(fields: [employeeId], references: [id], onDelete: SetNull)
+
+  @@index([tenantId, status])
+  @@index([tenantId, employeeId])
+}
+
+model AttendanceRecord {
+  id             String    @id @default(uuid())
+  tenantId       String
+  employeeId     String?
+  employeeName   String
+  date           String    // YYYY-MM-DD
+  checkIn        String?
+  checkOut       String?
+  totalDuration  String?
+  status         String    @default("PRESENT") // PRESENT, LATE, HALF_DAY, ABSENT, ON_LEAVE
+  shift          String    @default("General (09:00 - 18:00)")
+  ipAddress      String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  tenant         Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  employee       Employee? @relation(fields: [employeeId], references: [id], onDelete: SetNull)
+
+  @@index([tenantId, date])
+  @@index([tenantId, employeeId])
+}
+
+// -------------------------------------------------------------
+// Unified Workflow Approvals
+// -------------------------------------------------------------
+
+model WorkflowItem {
+  id             String    @id @default(uuid())
+  tenantId       String
+  code           String
+  title          String
+  type           String    // Annual Leave, Attendance Regularization, Air Entitlement Claim
+  employee       String
+  details        String
+  entity         String
+  level          String
+  status         String    @default("PENDING") // PENDING, APPROVED, REJECTED
+  approvedBy     String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  tenant         Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, status])
 }
 
 // -------------------------------------------------------------

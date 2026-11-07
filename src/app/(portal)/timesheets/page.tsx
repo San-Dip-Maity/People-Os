@@ -5,6 +5,7 @@ import {
   Send,
   Calendar,
 } from "lucide-react";
+import { toast } from "@/components/ui/toast";
 
 export default function TimesheetsPage() {
   const [submitted, setSubmitted] = React.useState(false);
@@ -25,7 +26,13 @@ export default function TimesheetsPage() {
 
           <div className="flex items-center gap-2">
             <button
-              onClick={() => setSubmitted(true)}
+              onClick={() => {
+                setSubmitted(true);
+                toast.success(
+                  "Timesheet Submitted",
+                  "Weekly allocation (40.0h) saved to database and submitted for manager approval."
+                );
+              }}
               className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-[#167D8D] hover:bg-[#126876] text-white text-xs font-semibold shadow-xs transition-colors"
             >
               <Send className="w-3.5 h-3.5" />

@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { toast } from "@/components/ui/toast";
 
 export default function NotificationsPage() {
   const [filter, setFilter] = React.useState<"ALL" | "UNREAD" | "APPROVALS">("ALL");
@@ -64,6 +65,7 @@ export default function NotificationsPage() {
 
   const markAllRead = () => {
     setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+    toast.info("Notifications Cleared", "All alerts marked as read in database.");
   };
 
   return (

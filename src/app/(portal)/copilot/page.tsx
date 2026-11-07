@@ -9,6 +9,7 @@ import {
   FileText,
   User,
 } from "lucide-react";
+import { toast } from "@/components/ui/toast";
 
 interface Message {
   id: string;
@@ -44,7 +45,10 @@ export default function CopilotPage() {
 
   const handleSend = (textToSend?: string) => {
     const query = textToSend || input;
-    if (!query.trim()) return;
+    if (!query.trim()) {
+      toast.warning("Empty Query", "Please ask a question or select a suggestion.");
+      return;
+    }
 
     const userMsgId = `usr-${msgCountRef.current++}`;
     const userMsg: Message = {

@@ -17,6 +17,7 @@ import {
   CheckCircle2,
   ShieldCheck,
 } from "lucide-react";
+import { toast } from "@/components/ui/toast";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -48,17 +49,23 @@ export default function SignupPage() {
 
     // Client-side validations
     if (!isPasswordStrong) {
-      setError("Password must meet all complexity requirements (8+ characters, uppercase, lowercase, and a number).");
+      const msg = "Password must meet all complexity requirements (8+ characters, uppercase, lowercase, and a number).";
+      setError(msg);
+      toast.warning("Weak Password", msg);
       return;
     }
 
     if (password !== confirmPassword) {
-      setError("Passwords do not match.");
+      const msg = "Passwords do not match.";
+      setError(msg);
+      toast.warning("Password Mismatch", msg);
       return;
     }
 
     if (!terms) {
-      setError("You must accept the terms of service and privacy policy to continue.");
+      const msg = "You must accept the terms of service and privacy policy to continue.";
+      setError(msg);
+      toast.warning("Terms Required", msg);
       return;
     }
 
@@ -84,18 +91,26 @@ export default function SignupPage() {
         if (data.details?.fieldErrors) {
           setFieldErrors(data.details.fieldErrors);
         }
-        setError(data.error || "Registration failed. Please review the highlighted fields.");
+        const errorMsg = data.error || "Registration failed. Please review the highlighted fields.";
+        setError(errorMsg);
+        toast.error("Registration Failed", errorMsg);
         setLoading(false);
         return;
       }
 
       setSuccess(true);
+      toast.success(
+        "Workspace Created",
+        `Welcome ${fullName}! Your organization tenant "${organizationName}" has been provisioned in database.`
+      );
       setTimeout(() => {
         router.push("/dashboard");
         router.refresh();
       }, 700);
     } catch {
-      setError("An unexpected network error occurred. Please try again.");
+      const netMsg = "An unexpected network error occurred. Please try again.";
+      setError(netMsg);
+      toast.error("Network Error", netMsg);
       setLoading(false);
     }
   };

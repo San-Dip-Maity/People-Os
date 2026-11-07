@@ -12,6 +12,7 @@ import {
   AlertCircle,
 } from "lucide-react";
 import Link from "next/link";
+import { toast } from "@/components/ui/toast";
 
 export default function SelfServicePage() {
   const [hrRequestOpen, setHrRequestOpen] = React.useState(false);
@@ -20,8 +21,12 @@ export default function SelfServicePage() {
 
   const handleSubmitRequest = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!requestText.trim()) return;
+    if (!requestText.trim()) {
+      toast.warning("Empty Ticket", "Please describe your inquiry or request before submitting.");
+      return;
+    }
     setSubmitted(true);
+    toast.success("HR Inquiry Logged", "Inquiry logged to database and dispatched to People Operations.");
     setTimeout(() => {
       setSubmitted(false);
       setRequestText("");

@@ -23,6 +23,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { navigationConfig } from "@/config/navigation";
+import { toast } from "@/components/ui/toast";
 
 interface HeaderProps {
   onMenuToggle?: () => void;
@@ -137,11 +138,13 @@ export function Header({
 
   const markAllAsRead = () => {
     setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+    toast.info("Notifications Cleared", "All notification alerts marked as read.");
   };
 
   const handleSignOut = async () => {
     try {
       await fetch("/api/auth/logout", { method: "POST" });
+      toast.info("Signed Out", "Your session has been terminated.");
     } catch {
       // ignore
     }

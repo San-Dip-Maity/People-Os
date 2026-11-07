@@ -59,7 +59,7 @@ test.describe("PeopleOS — Complete Application, Landing Page & Auth Verificati
     await page.getByRole("button", { name: /Create Organization/i }).click();
 
     // Should display validation error
-    await expect(page.getByText(/Password must meet all complexity requirements/i)).toBeVisible();
+    await expect(page.getByText(/Password must meet all complexity requirements/i).first()).toBeVisible();
 
     // 2. Test duplicate email rejection (admin@peopleos.dev is already seeded)
     await page.getByPlaceholder("sarah@acme.com").fill("admin@peopleos.dev");
@@ -67,7 +67,7 @@ test.describe("PeopleOS — Complete Application, Landing Page & Auth Verificati
     await page.locator('input[type="password"]').nth(1).fill("StrongPass2026!");
     await page.getByRole("button", { name: /Create Organization/i }).click();
 
-    await expect(page.getByText(/An account with this work email address already exists/i)).toBeVisible();
+    await expect(page.getByText(/An account with this work email address already exists/i).first()).toBeVisible();
 
     // 3. Test successful fresh registration
     const uniqueEmail = `test.user.${Date.now()}@domain-${Math.random().toString(36).substring(2, 6)}.dev`;
@@ -78,7 +78,7 @@ test.describe("PeopleOS — Complete Application, Landing Page & Auth Verificati
     await page.getByRole("button", { name: /Create Organization/i }).click();
 
     // Verify success banner and redirect into dashboard
-    await expect(page.getByText(/Workspace provisioned successfully/i)).toBeVisible();
+    await expect(page.getByText(/Workspace provisioned successfully/i)).toBeVisible({ timeout: 15000 });
     await page.waitForURL("**/dashboard", { timeout: 15000 });
     await expect(page.getByRole("heading", { name: /Operations Command Center/i })).toBeVisible();
   });
@@ -96,7 +96,7 @@ test.describe("PeopleOS — Complete Application, Landing Page & Auth Verificati
     await page.getByPlaceholder("••••••••").fill("WrongPassword123!");
     await page.getByRole("button", { name: /Sign In to Dashboard/i }).click();
 
-    await expect(page.getByText(/Invalid email or password/i)).toBeVisible();
+    await expect(page.getByText(/Invalid email or password/i).first()).toBeVisible();
 
     // 2. Test valid admin login with Remember Me
     await page.getByPlaceholder("••••••••").fill("Admin@PeopleOS2026!");

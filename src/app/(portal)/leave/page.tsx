@@ -9,7 +9,9 @@ import {
   AlertCircle,
   Check,
   X,
+  Loader2,
 } from "lucide-react";
+import { toast } from "@/components/ui/toast";
 
 interface LeaveRequest {
   id: string;
@@ -24,6 +26,7 @@ interface LeaveRequest {
 
 export default function LeavePage() {
   const [applyModalOpen, setApplyModalOpen] = React.useState(false);
+  const [submitting, setSubmitting] = React.useState(false);
   const [requests, setRequests] = React.useState<LeaveRequest[]>([
     {
       id: "LR-901",
@@ -57,6 +60,44 @@ export default function LeavePage() {
     },
   ]);
 
+  // Load from database on mount
+  React.useEffect(() => {
+    async function loadLeaves() {
+      try {
+        const res = await fetch("/api/leave");
+        if (res.ok) {
+          const data = await res.json();
+          if (data.leaveRequests && data.leaveRequests.length > 0) {
+            setRequests(
+              data.leaveRequests.map((l: {
+                id: string;
+                employeeName: string;
+                type: string;
+                startDate: string;
+                endDate: string;
+                daysCount: number;
+                reason?: string;
+                status: "PENDING" | "APPROVED" | "REJECTED";
+              }) => ({
+                id: l.id,
+                employee: l.employeeName,
+                type: l.type,
+                startDate: l.startDate,
+                endDate: l.endDate,
+                days: l.daysCount,
+                reason: l.reason || "",
+                status: l.status,
+              }))
+            );
+          }
+        }
+      } catch (err) {
+        console.error("Failed to load leave records from DB:", err);
+      }
+    }
+    loadLeaves();
+  }, []);
+
   const [form, setForm] = React.useState({
     type: "Annual Leave",
     startDate: "",
@@ -64,30 +105,94 @@ export default function LeavePage() {
     reason: "",
   });
 
-  const handleApply = (e: React.FormEvent) => {
+  const handleApply = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.startDate || !form.endDate) return;
+    if (!form.startDate || !form.endDate) {
+      toast.warning("Incomplete Dates", "Please select both a start date and an end date.");
+      return;
+    }
 
-    const newReq: LeaveRequest = {
-      id: `LR-${Math.floor(1000 + Math.random() * 9000)}`,
-      employee: "Alex Morgan",
-      type: form.type,
-      startDate: form.startDate,
-      endDate: form.endDate,
-      days: 3,
-      reason: form.reason || "Personal leave request",
-      status: "PENDING",
-    };
+    if (new Date(form.startDate) > new Date(form.endDate)) {
+      toast.error("Invalid Date Range", "Start date cannot be after end date.");
+      return;
+    }
 
-    setRequests([newReq, ...requests]);
-    setApplyModalOpen(false);
-    setForm({ type: "Annual Leave", startDate: "", endDate: "", reason: "" });
+    setSubmitting(true);
+    try {
+      const res = await fetch("/api/leave", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          employeeName: "Alex Morgan",
+          department: "Operations",
+          type: form.type,
+          startDate: form.startDate,
+          endDate: form.endDate,
+          daysCount: 3,
+          reason: form.reason || "Scheduled personal leave request",
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        toast.error("Leave Application Failed", data.error || "Could not save leave request.");
+        return;
+      }
+
+      const createdItem: LeaveRequest = {
+        id: data.leaveRequest.id,
+        employee: data.leaveRequest.employeeName,
+        type: data.leaveRequest.type,
+        startDate: data.leaveRequest.startDate,
+        endDate: data.leaveRequest.endDate,
+        days: data.leaveRequest.daysCount,
+        reason: data.leaveRequest.reason || "",
+        status: "PENDING",
+      };
+
+      setRequests((prev) => [createdItem, ...prev]);
+      setApplyModalOpen(false);
+      setForm({ type: "Annual Leave", startDate: "", endDate: "", reason: "" });
+      toast.success(
+        "Leave Application Submitted",
+        `Your ${form.type} application for 3 day(s) was saved to database and submitted for manager approval.`
+      );
+    } catch (err) {
+      console.error("Leave submit error:", err);
+      toast.error("Network Error", "Could not reach database API.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
-  const handleAction = (id: string, newStatus: "APPROVED" | "REJECTED") => {
-    setRequests(
-      requests.map((r) => (r.id === id ? { ...r, status: newStatus } : r))
+  const handleAction = async (id: string, newStatus: "APPROVED" | "REJECTED") => {
+    setRequests((prev) =>
+      prev.map((r) => (r.id === id ? { ...r, status: newStatus } : r))
     );
+
+    try {
+      const res = await fetch("/api/leave", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, decision: newStatus }),
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        toast.error("Update Failed", data.error || "Could not update leave status.");
+        return;
+      }
+
+      if (newStatus === "APPROVED") {
+        toast.success("Leave Request Approved", "Status updated in database.");
+      } else {
+        toast.warning("Leave Request Rejected", "Status updated in database.");
+      }
+    } catch (err) {
+      console.error("Leave decision error:", err);
+      toast.error("Network Error", "Could not update status in database.");
+    }
   };
 
   return (
@@ -352,9 +457,11 @@ export default function LeavePage() {
                   </button>
                   <button
                     type="submit"
-                    className="px-4 py-1.5 rounded-lg bg-[#167D8D] text-white font-semibold"
+                    disabled={submitting}
+                    className="inline-flex items-center gap-2 px-4 py-1.5 rounded-lg bg-[#167D8D] text-white font-semibold disabled:opacity-50"
                   >
-                    Submit for Approval
+                    {submitting && <Loader2 className="w-4 h-4 animate-spin" />}
+                    {submitting ? "Submitting..." : "Submit for Approval"}
                   </button>
                 </div>
               </form>

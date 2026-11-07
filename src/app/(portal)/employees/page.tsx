@@ -8,7 +8,9 @@ import {
   MapPin,
   X,
   ChevronRight,
+  Loader2,
 } from "lucide-react";
+import { toast } from "@/components/ui/toast";
 interface Employee {
   id: string;
   code: string;
@@ -116,6 +118,25 @@ export default function EmployeesPage() {
   const [entityFilter, setEntityFilter] = React.useState("ALL");
   const [selectedEmp, setSelectedEmp] = React.useState<Employee | null>(null);
   const [addModalOpen, setAddModalOpen] = React.useState(false);
+  const [submitting, setSubmitting] = React.useState(false);
+
+  // Load from database on mount
+  React.useEffect(() => {
+    async function loadEmployees() {
+      try {
+        const res = await fetch("/api/employees");
+        if (res.ok) {
+          const data = await res.json();
+          if (data.employees && data.employees.length > 0) {
+            setEmployees(data.employees);
+          }
+        }
+      } catch (err) {
+        console.error("Failed to load employees from DB:", err);
+      }
+    }
+    loadEmployees();
+  }, []);
 
   // New employee form state
   const [newForm, setNewForm] = React.useState({
@@ -138,42 +159,56 @@ export default function EmployeesPage() {
     return matchesSearch && matchesDept && matchesEntity;
   });
 
-  const handleAddEmployee = (e: React.FormEvent) => {
+  const handleAddEmployee = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newForm.name || !newForm.email) return;
+    if (!newForm.name || !newForm.email) {
+      toast.warning("Incomplete Information", "Full name and corporate email are required.");
+      return;
+    }
 
-    const newEmp: Employee = {
-      id: `emp-${Date.now()}`,
-      code: `EMP-0${employees.length + 101}`,
-      name: newForm.name,
-      email: newForm.email,
-      phone: "+971 50 000 0000",
-      department: newForm.department,
-      designation: newForm.designation || "Associate",
-      legalEntity: newForm.legalEntity,
-      workLocation: newForm.workLocation,
-      employmentType: "Full-Time",
-      status: "PROBATION",
-      joinDate: new Date().toISOString().split("T")[0],
-      manager: "Alex Morgan",
-      avatar: newForm.name
-        .split(" ")
-        .map((n) => n[0])
-        .join("")
-        .toUpperCase()
-        .slice(0, 2),
-    };
+    setSubmitting(true);
+    try {
+      const res = await fetch("/api/employees", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: newForm.name,
+          email: newForm.email,
+          department: newForm.department,
+          designation: newForm.designation || "Associate",
+          legalEntity: newForm.legalEntity,
+          workLocation: newForm.workLocation,
+          status: "PROBATION",
+        }),
+      });
 
-    setEmployees((prev) => [newEmp, ...prev]);
-    setAddModalOpen(false);
-    setNewForm({
-      name: "",
-      email: "",
-      department: "Engineering",
-      designation: "",
-      legalEntity: "Acme Holdings UAE Ltd",
-      workLocation: "Dubai Internet City",
-    });
+      const data = await res.json();
+
+      if (!res.ok) {
+        toast.error("Onboarding Failed", data.error || "Failed to persist employee record.");
+        return;
+      }
+
+      setEmployees((prev) => [data.employee, ...prev]);
+      setAddModalOpen(false);
+      setNewForm({
+        name: "",
+        email: "",
+        department: "Engineering",
+        designation: "",
+        legalEntity: "Acme Holdings UAE Ltd",
+        workLocation: "Dubai Internet City",
+      });
+      toast.success(
+        "Employee Onboarded",
+        `Employee ${data.employee.name} (${data.employee.code}) saved to database successfully.`
+      );
+    } catch (err) {
+      console.error("Employee creation error:", err);
+      toast.error("Network Error", "Could not reach database API.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -569,9 +604,16 @@ export default function EmployeesPage() {
                   </button>
                   <button
                     type="submit"
-                    className="px-4 py-2 rounded-lg bg-[#167D8D] text-white font-semibold"
+                    disabled={submitting}
+                    className="btn-primary disabled:opacity-50"
                   >
-                    Create Employee
+                    {submitting ? (
+                      <>
+                        <Loader2 className="w-3.5 h-3.5 mr-1.5 animate-spin" /> Saving...
+                      </>
+                    ) : (
+                      "Create Employee"
+                    )}
                   </button>
                 </div>
               </form>

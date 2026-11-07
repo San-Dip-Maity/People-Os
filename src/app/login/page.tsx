@@ -15,6 +15,7 @@ import {
   CheckCircle2,
   Sparkles,
 } from "lucide-react";
+import { toast } from "@/components/ui/toast";
 
 function LoginForm() {
   const router = useRouter();
@@ -44,18 +45,23 @@ function LoginForm() {
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.error || "Authentication failed. Please verify your credentials.");
+        const errorMsg = data.error || "Authentication failed. Please verify your credentials.";
+        setError(errorMsg);
+        toast.error("Sign In Failed", errorMsg);
         setLoading(false);
         return;
       }
 
       setSuccess(true);
+      toast.success("Welcome Back", "Authentication successful. Redirecting to your dashboard...");
       setTimeout(() => {
         router.push(returnUrl);
         router.refresh();
       }, 500);
     } catch {
-      setError("An unexpected network error occurred. Please check your connection.");
+      const networkError = "An unexpected network error occurred. Please check your connection.";
+      setError(networkError);
+      toast.error("Network Error", networkError);
       setLoading(false);
     }
   };
@@ -64,6 +70,7 @@ function LoginForm() {
     setEmail("admin@peopleos.dev");
     setPassword("Admin@PeopleOS2026!");
     setError(null);
+    toast.info("Demo Account Filled", "Admin credentials filled for Acme Global Technologies.");
   };
 
   return (

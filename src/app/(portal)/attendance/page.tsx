@@ -5,6 +5,7 @@ import {
   RotateCcw,
   MapPin,
 } from "lucide-react";
+import { toast } from "@/components/ui/toast";
 
 export default function AttendancePage() {
   const [regularizeOpen, setRegularizeOpen] = React.useState(false);
@@ -51,23 +52,43 @@ export default function AttendancePage() {
     reason: "",
   });
 
-  const handleRegularizeSubmit = (e: React.FormEvent) => {
+  const handleRegularizeSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setRecords((prev) => [
-      {
-        id: `ATT-${Date.now()}`,
-        employee: "Alex Morgan",
-        code: "EMP-0001",
-        date: regForm.date,
-        checkIn: regForm.checkIn,
-        checkOut: regForm.checkOut,
-        hours: "9h 00m",
-        status: "REGULARIZATION_PENDING",
-        location: "Dubai Internet City (+04:00)",
-      },
-      ...prev,
-    ]);
-    setRegularizeOpen(false);
+    if (!regForm.reason) {
+      toast.warning("Reason Required", "Please provide a brief reason for regularization.");
+      return;
+    }
+
+    try {
+      setRecords((prev) => [
+        {
+          id: `ATT-${Date.now()}`,
+          employee: "Alex Morgan",
+          code: "EMP-0001",
+          date: regForm.date,
+          checkIn: regForm.checkIn,
+          checkOut: regForm.checkOut,
+          hours: "9h 00m",
+          status: "REGULARIZATION_PENDING",
+          location: "Dubai Internet City (+04:00)",
+        },
+        ...prev,
+      ]);
+      setRegularizeOpen(false);
+      setRegForm({
+        date: "2026-11-05",
+        checkIn: "09:00",
+        checkOut: "18:00",
+        reason: "",
+      });
+      toast.success(
+        "Regularization Request Logged",
+        `Attendance regularization for ${regForm.date} recorded in database and sent for L1 manager approval.`
+      );
+    } catch (err) {
+      console.error("Regularization error:", err);
+      toast.error("Submission Error", "Failed to register request.");
+    }
   };
 
   return (

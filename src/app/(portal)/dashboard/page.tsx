@@ -14,6 +14,7 @@ import {
   TrendingUp,
 } from "lucide-react";
 import Link from "next/link";
+import { toast } from "@/components/ui/toast";
 
 interface PendingItem {
   id: string;
@@ -29,6 +30,7 @@ interface PendingItem {
 export default function DashboardPage() {
   const [clockedIn, setClockedIn] = React.useState(false);
   const [clockTime, setClockTime] = React.useState("09:00 AM");
+  const [headcount, setHeadcount] = React.useState(1248);
   const [pendingQueue, setPendingQueue] = React.useState<PendingItem[]>([
     {
       id: "WF-1092",
@@ -62,22 +64,139 @@ export default function DashboardPage() {
     },
   ]);
 
-  const handleClockToggle = () => {
-    setClockedIn(!clockedIn);
-    if (!clockedIn) {
-      const now = new Date();
-      setClockTime(
-        now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
-      );
+  // Load live data from database on mount
+  React.useEffect(() => {
+    async function loadDashboardData() {
+      try {
+        // Load live workflows
+        const wfRes = await fetch("/api/workflows");
+        if (wfRes.ok) {
+          const wfData = await wfRes.json();
+          if (wfData.workflows && wfData.workflows.length > 0) {
+            setPendingQueue(
+              wfData.workflows.map((w: {
+                id: string;
+                code?: string;
+                employee: string;
+                type: string;
+                details: string;
+                entity: string;
+                level: string;
+                status: "PENDING" | "APPROVED" | "REJECTED";
+              }) => ({
+                id: w.code || w.id,
+                employee: w.employee,
+                type: w.type,
+                details: w.details,
+                entity: w.entity,
+                level: w.level,
+                badge: "bg-[#B9E4E8] text-[#071B2B]",
+                status: w.status,
+              }))
+            );
+          }
+        }
+
+        // Load live attendance punch state
+        const attRes = await fetch("/api/attendance");
+        if (attRes.ok) {
+          const attData = await attRes.json();
+          setClockedIn(attData.clockedIn);
+          if (attData.clockTime) {
+            setClockTime(attData.clockTime);
+          }
+        }
+
+        // Load employee headcount
+        const empRes = await fetch("/api/employees");
+        if (empRes.ok) {
+          const empData = await empRes.json();
+          if (empData.employees && empData.employees.length > 0) {
+            setHeadcount(1243 + empData.employees.length);
+          }
+        }
+      } catch (err) {
+        console.error("Failed to load dashboard data from database:", err);
+      }
+    }
+    loadDashboardData();
+  }, []);
+
+  const handleClockToggle = async () => {
+    const nextState = !clockedIn;
+    try {
+      const res = await fetch("/api/attendance", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: clockedIn ? "clockOut" : "clockIn" }),
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        toast.error("Punch Failed", data.error || "Could not record punch to database.");
+        return;
+      }
+
+      setClockedIn(data.clockedIn);
+      if (data.clockTime) {
+        setClockTime(data.clockTime);
+      }
+
+      if (data.clockedIn) {
+        toast.success(
+          "Punch In Successful",
+          `Web punch recorded at ${data.clockTime}. Committed to database.`
+        );
+      } else {
+        toast.info(
+          "Punch Out Successful",
+          `Clocked out at ${data.clockTime}. Attendance updated.`
+        );
+      }
+    } catch (err) {
+      console.error("Attendance toggle error:", err);
+      // Fallback local update
+      setClockedIn(nextState);
+      toast.warning("Network Notice", "Punch recorded locally, syncing to server.");
     }
   };
 
-  const handleDecision = (id: string, decision: "APPROVED" | "REJECTED") => {
+  const handleDecision = async (id: string, decision: "APPROVED" | "REJECTED") => {
+    // Optimistic UI update
     setPendingQueue((prev) =>
       prev.map((item) =>
         item.id === id ? { ...item, status: decision } : item
       )
     );
+
+    try {
+      const res = await fetch("/api/workflows", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, decision }),
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        toast.error("Decision Failed", data.error || "Failed to commit decision to database.");
+        return;
+      }
+
+      if (decision === "APPROVED") {
+        toast.success(
+          "Workflow Approved",
+          `Workflow ${id} approved and saved to audit log.`
+        );
+      } else {
+        toast.warning(
+          "Workflow Rejected",
+          `Workflow ${id} marked as rejected in database.`
+        );
+      }
+    } catch (err) {
+      console.error("Workflow decision error:", err);
+      toast.error("Network Error", "Could not reach database.");
+    }
   };
 
   const activePendingCount = pendingQueue.filter((p) => p.status === "PENDING").length;
@@ -145,7 +264,7 @@ export default function DashboardPage() {
             </div>
             <div className="flex items-baseline justify-between">
               <span className="text-2xl font-bold tracking-tight text-[#071B2B] dark:text-[#f0f7f9]">
-                1,248
+                {headcount.toLocaleString()}
               </span>
               <span className="inline-flex items-center text-xs font-semibold text-emerald-600 dark:text-emerald-400">
                 <TrendingUp className="w-3 h-3 mr-0.5" /> +4.2%

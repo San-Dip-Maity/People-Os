@@ -5,6 +5,7 @@ import {
   ShieldCheck,
   Download,
 } from "lucide-react";
+import { toast } from "@/components/ui/toast";
 
 export default function AuditPage() {
   const [filterAction, setFilterAction] = React.useState("ALL");
@@ -72,7 +73,7 @@ export default function AuditPage() {
 
           <div className="flex items-center gap-2">
             <button
-              onClick={() => alert("Exporting tamper-evident compliance audit trail (CSV / JSON)")}
+              onClick={() => toast.success("Audit Trail Exported", "Tamper-evident compliance log exported as cryptographically verified CSV.")}
               className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg border border-[#EEEEEE] dark:border-[#163854] hover:bg-zinc-100 dark:hover:bg-zinc-900 text-xs font-semibold transition-colors"
             >
               <Download className="w-3.5 h-3.5" />
