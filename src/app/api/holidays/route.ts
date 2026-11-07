@@ -91,3 +91,4 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Failed to add holiday" }, { status: 500 });
   }
 }
+
